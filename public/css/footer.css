@@ -1,0 +1,16 @@
+.footer-yokkute {
+    background: #0f172a; /* dark bleu moderne */
+}
+
+.footer-yokkute a:hover {
+    color: #38bdf8 !important; /* bleu clair */
+    transition: 0.3s;
+}
+
+.footer-icons a {
+    transition: transform 0.3s ease;
+}
+
+.footer-icons a:hover {
+    transform: scale(1.2);
+}

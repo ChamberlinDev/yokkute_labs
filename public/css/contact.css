@@ -1,0 +1,309 @@
+    
+    /* ── Ajouts CSS pour icônes SVG — contact.css ── */
+
+/* Labels avec icône inline */
+label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+label svg {
+    color: #2ECC71;
+    flex-shrink: 0;
+}
+
+/* En-tête du form-card */
+.form-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 0.5px solid #e8f0eb;
+}
+.form-card-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0a0f0c;
+}
+.form-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(46,204,113,0.1);
+    border: 0.5px solid rgba(46,204,113,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: #2ECC71;
+    flex-shrink: 0;
+}
+
+/* Info-card icône */
+.info-card-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: rgba(46,204,113,0.08);
+    border: 0.5px solid rgba(46,204,113,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: #2ECC71;
+    flex-shrink: 0;
+}
+
+/* Response banner icône */
+.response-banner .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2ECC71;
+    flex-shrink: 0;
+}
+
+/* Promise badges */
+.pbadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.pbadge svg {
+    flex-shrink: 0;
+}
+
+/* Bouton submit */
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Bouton CTA outline */
+.btn-cta-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+    
+    /* ── ANIMATIONS ───────────────────────────── */
+    @keyframes fadeUp {
+        from { opacity:0; transform:translateY(28px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes float {
+        0%,100% { transform:translateY(0); }
+        50%      { transform:translateY(-6px); }
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ── HERO ─────────────────────────────────── */
+    .contact-hero {
+        position: relative;
+        background: #0d0d1a;
+        padding: 5rem 0 4rem;
+        overflow: hidden;
+    }
+    .contact-hero-bg {
+        position: absolute; inset: 0;
+        background:
+            radial-gradient(ellipse 60% 70% at 80% 50%, rgba(62,207,114,.10) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 60% at 10% 80%, rgba(59,130,246,.09) 0%, transparent 70%);
+    }
+    .contact-hero-grid {
+        position: absolute; inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+        background-size: 48px 48px;
+    }
+    .contact-hero .hero-tag {
+        font-size: .7rem; font-weight:700; letter-spacing:.14em;
+        text-transform:uppercase; color:#3ecf72;
+        animation: fadeUp .6s ease both;
+    }
+    .contact-hero h1 {
+        font-family:'Sora',sans-serif;
+        font-size: clamp(2rem,5vw,3rem);
+        font-weight:800; color:#fff; line-height:1.2;
+        animation: fadeUp .7s .1s ease both;
+    }
+    .contact-hero p {
+        color:#9ca3af; font-size:.95rem; max-width:520px;
+        animation: fadeUp .7s .2s ease both;
+    }
+
+    /* ── PROMISE BADGES ───────────────────────── */
+    .promise-badges {
+        display: flex; flex-wrap:wrap; gap:.6rem;
+        margin-top: 1.5rem;
+        animation: fadeUp .7s .3s ease both;
+    }
+    .pbadge {
+        display:inline-flex; align-items:center; gap:.4rem;
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.1);
+        color: #d1d5db;
+        font-size: .78rem; font-weight:600;
+        padding: .35rem .9rem; border-radius:99px;
+    }
+    .pbadge .dot {
+        width:7px; height:7px; border-radius:50%;
+        background:#3ecf72;
+        animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+        0%,100% { box-shadow:0 0 0 0 rgba(62,207,114,.5); }
+        50%      { box-shadow:0 0 0 6px rgba(62,207,114,0); }
+    }
+
+    /* ── MAIN SECTION ─────────────────────────── */
+    .contact-main { padding: 4rem 0; background:#f8f9fb; }
+
+    /* ── INFO SIDE ────────────────────────────── */
+    .info-heading {
+        font-family:'Sora',sans-serif;
+        font-size: clamp(1.4rem,2.5vw,1.85rem);
+        font-weight:800; color:#111; line-height:1.3;
+    }
+    .info-card {
+        display:flex; align-items:center; gap:1rem;
+        background:#fff; border-radius:14px;
+        padding:1rem 1.2rem;
+        border-left: 4px solid #3ecf72;
+        box-shadow: 0 2px 16px rgba(0,0,0,.05);
+        transition: transform .25s, box-shadow .25s;
+    }
+    .info-card:hover {
+        transform:translateX(4px);
+        box-shadow: 0 6px 24px rgba(0,0,0,.09);
+    }
+    .info-card-icon {
+        font-size:1.5rem;
+        animation: float 3s ease-in-out infinite;
+        flex-shrink:0;
+    }
+    .info-card:nth-child(2) .info-card-icon { animation-delay:.6s; }
+    .info-card:nth-child(3) .info-card-icon { animation-delay:1.2s; }
+    .info-card-type {
+        font-size:.68rem; font-weight:700;
+        letter-spacing:.1em; text-transform:uppercase; color:#9ca3af;
+    }
+    .info-card-value {
+        font-size:.92rem; font-weight:600; color:#111; margin-top:.1rem;
+    }
+    .info-card-value a { color:inherit; text-decoration:none; }
+    .info-card-value a:hover { color:#3ecf72; }
+
+    /* ── RESPONSE TIME BANNER ─────────────────── */
+    .response-banner {
+        background: linear-gradient(135deg, rgba(62,207,114,.1), rgba(59,130,246,.08));
+        border: 1px solid rgba(62,207,114,.2);
+        border-radius: 12px;
+        padding: .9rem 1.2rem;
+        display: flex; align-items: center; gap: .75rem;
+        font-size: .85rem; color: #374151;
+    }
+    .response-banner strong { color:#111; }
+    .response-banner .icon { font-size:1.2rem; flex-shrink:0; }
+
+    /* ── FORM CARD ────────────────────────────── */
+    .form-card {
+        background:#fff;
+        border-radius:20px;
+        padding:2.5rem;
+        box-shadow: 0 8px 48px rgba(0,0,0,.08);
+        border: 1px solid #eef0f3;
+    }
+    .form-card h2 {
+        font-family:'Sora',sans-serif;
+        font-size:1.4rem; font-weight:800; color:#111;
+        margin-bottom:1.75rem;
+    }
+    .form-card label {
+        display:block;
+        font-size:.78rem; font-weight:700;
+        letter-spacing:.06em; text-transform:uppercase;
+        color:#6b7280; margin-bottom:.4rem;
+    }
+    .form-card input,
+    .form-card select,
+    .form-card textarea {
+        width:100%;
+        background:#f8f9fb;
+        border: 1.5px solid #eef0f3;
+        border-radius:10px;
+        padding:.7rem 1rem;
+        font-size:.92rem; color:#111;
+        transition: border-color .2s, box-shadow .2s;
+        outline:none;
+    }
+    .form-card input:focus,
+    .form-card select:focus,
+    .form-card textarea:focus {
+        border-color:#3ecf72;
+        box-shadow: 0 0 0 3px rgba(62,207,114,.12);
+        background:#fff;
+    }
+    .form-card textarea { min-height:130px; resize:vertical; }
+    .form-card select { cursor:pointer; }
+
+    .btn-submit {
+        display:block; width:100%;
+        background: linear-gradient(135deg,#3ecf72,#2bb85e);
+        color:#fff; font-weight:700; font-size:1rem;
+        padding:.9rem; border-radius:12px;
+        border:none; cursor:pointer;
+        box-shadow: 0 4px 20px rgba(62,207,114,.3);
+        transition: transform .2s, box-shadow .2s;
+        letter-spacing:.02em;
+    }
+    .btn-submit:hover {
+        transform:translateY(-3px);
+        box-shadow: 0 8px 32px rgba(62,207,114,.45);
+    }
+    .form-note {
+        font-size:.75rem; color:#9ca3af;
+        text-align:center; margin-top:1rem; line-height:1.6;
+    }
+
+    /* ── CTA STRIP ────────────────────────────── */
+    .cta-contact {
+        background: #0d0d1a;
+        padding: 4.5rem 0;
+        text-align:center;
+        position:relative; overflow:hidden;
+    }
+    .cta-contact::before {
+        content:'';
+        position:absolute; inset:0;
+        background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(62,207,114,.07) 0%, transparent 70%);
+    }
+    .cta-contact h2 {
+        font-family:'Sora',sans-serif;
+        font-size:clamp(1.5rem,3.5vw,2.2rem);
+        font-weight:800; color:#fff; position:relative; z-index:1;
+    }
+    .cta-contact p {
+        color:#9ca3af; max-width:480px;
+        margin:.75rem auto 1.75rem;
+        font-size:.93rem; position:relative; z-index:1;
+    }
+    .btn-cta-outline {
+        display:inline-block;
+        border: 2px solid #3ecf72;
+        color:#3ecf72; font-weight:700;
+        padding:.75rem 1.75rem; border-radius:12px;
+        text-decoration:none; font-size:.95rem;
+        position:relative; z-index:1;
+        transition: background .2s, color .2s, transform .2s;
+    }
+    .btn-cta-outline:hover {
+        background:#3ecf72; color:#fff;
+        transform:translateY(-3px);
+    }

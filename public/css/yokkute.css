@@ -445,6 +445,7 @@ a { text-decoration: none; color: inherit; }
 /* ── DIVIDER ── */
 .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
 
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
     .navbar-yokkute { padding: 0 1rem; }

@@ -2,9 +2,23 @@
 @section('title', 'À propos — Yokkuté Labs')
 @section('content')
 
+
+<link href="{{ asset('css/propos.css') }}" rel="stylesheet">
+
 {{-- ═══ HEADER ═══ --}}
-<section style="background:#1a1a2e; padding:4rem 0;">
-    <div class="container">
+<section style="
+    background: url('{{ asset('images/apropos.jpg') }}') center/cover no-repeat;
+    padding: 4rem 0;
+    position: relative;">
+    {{-- Overlay sombre pour lisibilité --}}
+    <div style="
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.60);
+        backdrop-filter: blur(1px);
+    "></div>
+
+    <div class="container" style="position: relative; z-index: 1;">
         <p class="mb-2" style="font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#3ecf72;">À propos</p>
         <h1 class="fw-bold mb-2" style="color:white; font-family:'Sora',sans-serif; font-size:clamp(2rem,5vw,3rem);">Yokkuté Labs.</h1>
         <p style="color:#9ca3af; font-size:.95rem; margin:0;">Qui nous sommes, ce en quoi nous croyons, et pourquoi ça compte pour vous.</p>
@@ -12,15 +26,27 @@
 </section>
 
 {{-- ═══ QUI SOMMES-NOUS ═══ --}}
-<section class="py-5">
+<section class="py-5 overflow-hidden">
     <div class="container">
         <div class="row g-5 align-items-center">
-            <div class="col-lg-5">
+
+            {{-- Colonne texte --}}
+            <div class="col-lg-6">
                 <p class="section-tag-about">Qui sommes-nous ?</p>
-                <h2 class="fw-bold mb-3" style="font-family:'Sora',sans-serif;">Une équipe née de la conviction que le numérique est un levier, pas un luxe.</h2>
+                <h2 class="fw-bold mb-3" style="font-family:'Sora',sans-serif; font-size:clamp(1.6rem,3.5vw,2.2rem); line-height:1.3;">
+                    Une équipe née de la conviction que le numérique est un levier, pas un luxe.
+                </h2>
+
+                <p class="text-muted" style="font-size:.95rem; line-height:1.8;">
+                    Yokkuté Labs est une agence de transformation numérique fondée par des praticiens passionnés par le potentiel des entreprises africaines. Notre nom reflète notre philosophie : <strong class="text-dark">Yokkuté</strong>, qui évoque l'effort, l'élan et la progression — parce que la transformation réelle se construit, elle ne s'achète pas.
+                </p>
+                <p class="text-muted" style="font-size:.95rem; line-height:1.8;">
+                    Nous ne sommes pas une ESN qui vend des licences. Nous sommes des partenaires de terrain qui retroussent leurs manches à vos côtés — de la stratégie à l'exécution, du diagnostic à la formation de vos équipes.
+                </p>
+
                 {{-- Stat pills --}}
                 <div class="d-flex gap-3 mt-4 flex-wrap">
-                    <div class="stat-pill green-pill">
+                    <div class="stat-pill blue-pill">
                         <span class="pill-num">7</span>
                         <span class="pill-label">Expertises</span>
                     </div>
@@ -28,17 +54,48 @@
                         <span class="pill-num">100%</span>
                         <span class="pill-label">Sur-mesure</span>
                     </div>
-                    <div class="stat-pill green-pill">
+                    <div class="stat-pill blue-pill">
                         <span class="pill-num">0</span>
                         <span class="pill-label">Jargon inutile</span>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-7">
-                <p class="text-muted">Yokkuté Labs est une agence de transformation numérique fondée par des praticiens passionnés par le potentiel des entreprises africaines. Notre nom reflète notre philosophie : <strong class="text-dark">Yokkuté</strong>, qui évoque l'effort, l'élan et la progression — parce que la transformation réelle se construit, elle ne s'achète pas.</p>
-                <p class="text-muted">Nous ne sommes pas une SSII qui vend des licences logicielles. Nous sommes des partenaires de terrain qui retroussent leurs manches à vos côtés — de la stratégie à l'exécution, du diagnostic à la formation de vos équipes.</p>
-                <p class="text-muted mb-0">Notre terrain de jeu : les PME, startups et structures qui veulent grandir intelligemment, sans se perdre dans des projets tech hors-sol.</p>
+
+            {{-- Colonne image --}}
+            <div class="col-lg-6">
+                <div style="position:relative;">
+
+                    {{-- Bloc décoratif derrière --}}
+                    <div style="
+                        position:absolute;
+                        top: -20px;
+                        right: -20px;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 20px;
+                        background: linear-gradient(135deg, #3ecf72 0%, #3b82f6 100%);
+                        opacity: .15;
+                        z-index: 0;
+                    "></div>
+
+                    {{-- Image principale --}}
+                    <img
+                        src="{{ asset('images/quisommesnous.jpg') }}"
+                        alt="L'équipe Yokkuté Labs"
+                        style="
+                            position: relative;
+                            z-index: 1;
+                            width: 100%;
+                            border-radius: 16px;
+                            object-fit: cover;
+                            max-height: 460px;
+                            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+                        " />                    
+                    </div>
+
+                </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -71,7 +128,7 @@
 
             <div class="col-md-6">
                 <div class="vm-card">
-                    <div class="vm-icon" style="background:rgba(26,155,220,.12); color:#1a9bdc;">
+                    <div class="vm-icon" style="background:rgba(62,207,114,.12); color:#3ecf72;">
                         <i class="bi bi-rocket-takeoff"></i>
                     </div>
                     <p class="section-tag-about">Notre mission</p>
@@ -107,7 +164,7 @@
 
             <div class="col-md-6">
                 <div class="perk-card">
-                    <div class="perk-ic blue-ic"><i class="bi bi-sliders"></i></div>
+                    <div class="perk-ic green-ic"><i class="bi bi-sliders"></i></div>
                     <div>
                         <h6>Approche sur-mesure, pas de template</h6>
                         <p>Chaque entreprise est différente. Nous construisons la réponse adaptée à votre situation, vos ressources et vos objectifs — pas une formule toute faite.</p>
@@ -127,7 +184,7 @@
 
             <div class="col-md-6">
                 <div class="perk-card">
-                    <div class="perk-ic blue-ic"><i class="bi bi-eye-fill"></i></div>
+                    <div class="perk-ic green-ic"><i class="bi bi-eye-fill"></i></div>
                     <div>
                         <h6>Transparence et pédagogie à chaque étape</h6>
                         <p>On vous explique ce qu'on fait et pourquoi. L'objectif n'est pas de vous rendre dépendant, mais de vous rendre autonome.</p>
@@ -147,7 +204,7 @@
 
             <div class="col-md-6">
                 <div class="perk-card">
-                    <div class="perk-ic blue-ic"><i class="bi bi-clock-history"></i></div>
+                    <div class="perk-ic green-ic"><i class="bi bi-clock-history"></i></div>
                     <div>
                         <h6>Réactivité garantie sous 24h</h6>
                         <p>Toujours un humain qui lit votre message et revient vers vous rapidement — pas de réponse automatique qui ne dit rien.</p>
@@ -170,39 +227,63 @@
 
         <div class="row g-4 justify-content-center">
 
+            <!-- Card 1 -->
             <div class="col-sm-6 col-lg-3">
-                <div class="team-card-about">
-                    <div class="team-av green-av">YL</div>
-                    <div class="team-role-ab">Fondateur & CEO</div>
-                    <div class="team-name-ab">[Prénom Nom]</div>
-                    <p>Stratège numérique avec plus de X ans d'expérience dans l'accompagnement de startups et PME en Afrique de l'Ouest.</p>
+                <div style="background:#fff; border-radius:16px; padding:2rem 1.5rem; box-shadow:0 4px 24px rgba(0,0,0,0.07); display:flex; flex-direction:column; align-items:center; text-align:center; height:100%; transition:transform .2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div class="team-av green-av" style="width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; margin-bottom:1rem;">YL</div>
+                    <span style="font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#3ecf72; margin-bottom:.3rem; display:block;">Fondateur & CEO</span>
+                    <h5 class="fw-bold mb-1" style="font-family:'Sora',sans-serif; font-size:1rem;">[Prénom Nom]</h5><br><br><br><br><br>
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" style="display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; background:#0077b5; color:#fff; font-size:.8rem; font-weight:600; padding:.45rem 1rem; border-radius:8px; transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.061-1.865-3.061-1.866 0-2.152 1.459-2.152 2.967v5.698h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.608v5.588z" />
+                        </svg>
+                        Voir le profil
+                    </a>
                 </div>
             </div>
 
+            <!-- Card 2 -->
             <div class="col-sm-6 col-lg-3">
-                <div class="team-card-about">
-                    <div class="team-av blue-av">DA</div>
-                    <div class="team-role-ab">Directeur Technique</div>
-                    <div class="team-name-ab">[Prénom Nom]</div>
-                    <p>Architecte de systèmes et spécialiste des intégrations numériques. Transforme les besoins métier en solutions robustes.</p>
+                <div style="background:#fff; border-radius:16px; padding:2rem 1.5rem; box-shadow:0 4px 24px rgba(0,0,0,0.07); display:flex; flex-direction:column; align-items:center; text-align:center; height:100%; transition:transform .2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div class="team-av blue-av" style="width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; margin-bottom:1rem;">DA</div>
+                    <span style="font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#3b82f6; margin-bottom:.3rem; display:block;">Directeur Technique</span>
+                    <h5 class="fw-bold mb-1" style="font-family:'Sora',sans-serif; font-size:1rem;">[Prénom Nom]</h5><br><br><br><br><br>
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" style="display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; background:#0077b5; color:#fff; font-size:.8rem; font-weight:600; padding:.45rem 1rem; border-radius:8px; transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.061-1.865-3.061-1.866 0-2.152 1.459-2.152 2.967v5.698h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.608v5.588z" />
+                        </svg>
+                        Voir le profil
+                    </a>
                 </div>
             </div>
 
+            <!-- Card 3 -->
             <div class="col-sm-6 col-lg-3">
-                <div class="team-card-about">
-                    <div class="team-av green-av">KN</div>
-                    <div class="team-role-ab">Experte Data & BI</div>
-                    <div class="team-name-ab">[Prénom Nom]</div>
-                    <p>Spécialiste en analyse de données et tableaux de bord décisionnels pour de meilleures décisions.</p>
+                <div style="background:#fff; border-radius:16px; padding:2rem 1.5rem; box-shadow:0 4px 24px rgba(0,0,0,0.07); display:flex; flex-direction:column; align-items:center; text-align:center; height:100%; transition:transform .2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div class="team-av green-av" style="width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; margin-bottom:1rem;">KN</div>
+                    <span style="font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#3ecf72; margin-bottom:.3rem; display:block;">Experte Data & BI</span>
+                    <h5 class="fw-bold mb-1" style="font-family:'Sora',sans-serif; font-size:1rem;">[Prénom Nom]</h5><br><br><br><br><br>
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" style="display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; background:#0077b5; color:#fff; font-size:.8rem; font-weight:600; padding:.45rem 1rem; border-radius:8px; transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.061-1.865-3.061-1.866 0-2.152 1.459-2.152 2.967v5.698h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.608v5.588z" />
+                        </svg>
+                        Voir le profil
+                    </a>
                 </div>
             </div>
 
+            <!-- Card 4 -->
             <div class="col-sm-6 col-lg-3">
-                <div class="team-card-about">
-                    <div class="team-av blue-av">AB</div>
-                    <div class="team-role-ab">Responsable Formation</div>
-                    <div class="team-name-ab">[Prénom Nom]</div>
-                    <p>Pédagogue et formateur certifié. Il rend le numérique accessible à tous les profils.</p>
+                <div style="background:#fff; border-radius:16px; padding:2rem 1.5rem; box-shadow:0 4px 24px rgba(0,0,0,0.07); display:flex; flex-direction:column; align-items:center; text-align:center; height:100%; transition:transform .2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div class="team-av blue-av" style="width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; margin-bottom:1rem;">AB</div>
+                    <span style="font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#3b82f6; margin-bottom:.3rem; display:block;">Responsable Formation</span>
+                    <h5 class="fw-bold mb-1" style="font-family:'Sora',sans-serif; font-size:1rem;">[Prénom Nom]</h5><br><br><br><br><br>
+                    <a href="https://linkedin.com/in/votre-profil" target="_blank" style="display:inline-flex; align-items:center; gap:.4rem; text-decoration:none; background:#0077b5; color:#fff; font-size:.8rem; font-weight:600; padding:.45rem 1rem; border-radius:8px; transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.061-1.865-3.061-1.866 0-2.152 1.459-2.152 2.967v5.698h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.844-1.563 3.042 0 3.604 2.003 3.604 4.608v5.588z" />
+                        </svg>
+                        Voir le profil
+                    </a>
                 </div>
             </div>
 
@@ -211,7 +292,7 @@
 </section>
 
 {{-- ═══ CTA FINAL ═══ --}}
-<section style="background:#1a1a2e; padding:4rem 0; text-align:center;">
+<section style="background:#6b7280; padding:4rem 0; text-align:center;">
     <div class="container" style="max-width:600px;">
         <h2 class="fw-bold mb-2" style="color:white; font-family:'Sora',sans-serif;">Envie de travailler avec nous ?</h2>
         <p style="color:#9ca3af; margin-bottom:1.75rem;">On commence toujours par un audit gratuit pour bien comprendre votre situation avant de vous proposer quoi que ce soit.</p>
@@ -220,72 +301,3 @@
 </section>
 
 @endsection
-
-@push('styles')
-<style>
-    /* ── Boutons ── */
-    .btn-green         { background:#3ecf72; color:#fff; border:none; font-weight:600; font-size:.875rem; padding:.7rem 1.5rem; display:inline-block; transition:background .2s; border-radius:4px; }
-    .btn-green:hover   { background:#2db85e; color:#fff; }
-
-    /* ── Section tag ── */
-    .section-tag-about {
-        display: inline-flex; align-items: center; gap: .5rem;
-        font-size: .72rem; font-weight: 700; letter-spacing: .12em;
-        text-transform: uppercase; color: #3ecf72; margin-bottom: .75rem;
-    }
-    .section-tag-about::before {
-        content: ''; display: inline-block;
-        width: 18px; height: 2px; background: #3ecf72;
-    }
-
-    /* ── Stat pills ── */
-    .stat-pill {
-        display: flex; flex-direction: column; align-items: center;
-        padding: .75rem 1.25rem; border-radius: 8px;
-    }
-    .green-pill { background: rgba(62,207,114,.1); }
-    .blue-pill  { background: rgba(26,155,220,.1); }
-    .pill-num   { font-family:'Sora',sans-serif; font-size: 1.5rem; font-weight: 800; }
-    .green-pill .pill-num { color: #3ecf72; }
-    .blue-pill  .pill-num { color: #1a9bdc; }
-    .pill-label { font-size: .72rem; color: #6b7280; }
-
-    /* ── Vision / Mission cards ── */
-    .vm-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 2rem; height: 100%; }
-    .vm-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1.25rem; }
-
-    /* ── Perk cards ── */
-    .perk-card {
-        display: flex; gap: 1rem; align-items: flex-start;
-        background: #fff; border: 1px solid #e5e7eb;
-        border-radius: 8px; padding: 1.25rem 1.5rem; height: 100%;
-    }
-    .perk-ic {
-        width: 42px; height: 42px; min-width: 42px; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.1rem; flex-shrink: 0;
-    }
-    .green-ic { background: rgba(62,207,114,.12); color: #3ecf72; }
-    .blue-ic  { background: rgba(26,155,220,.12);  color: #1a9bdc; }
-    .perk-card h6 { font-family:'Sora',sans-serif; font-size:.9rem; font-weight:700; margin-bottom:.3rem; color:#1a1a2e; }
-    .perk-card p  { font-size:.82rem; color:#6b7280; margin:0; line-height:1.6; }
-
-    /* ── Team ── */
-    .team-card-about {
-        background: #fff; border: 1px solid #e5e7eb;
-        border-radius: 8px; padding: 1.75rem 1.5rem;
-        text-align: center; height: 100%;
-    }
-    .team-av {
-        width: 60px; height: 60px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-family:'Sora',sans-serif; font-size:1rem; font-weight:800;
-        color: #fff; margin: 0 auto 1rem;
-    }
-    .green-av { background: #3ecf72; }
-    .blue-av  { background: #1a9bdc; }
-    .team-role-ab { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#3ecf72; margin-bottom:.25rem; }
-    .team-name-ab { font-family:'Sora',sans-serif; font-size:.95rem; font-weight:700; margin-bottom:.5rem; color:#1a1a2e; }
-    .team-card-about p { font-size:.8rem; color:#6b7280; margin:0; }
-</style>
-@endpush

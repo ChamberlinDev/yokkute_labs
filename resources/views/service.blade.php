@@ -1,139 +1,261 @@
 @extends('layouts.app')
 @section('title', 'Services — Yokkuté Labs')
+
 @section('content')
 
-{{-- HEADER --}}
-<section class="page-header-sm">
-    <div class="container">
-        <div class="section-tag">Services</div>
+<link href="{{ asset('css/service.css') }}" rel="stylesheet">
+
+{{-- ── HERO ── --}}
+<section class="svc-hero">
+    <div class="svc-hero-bg"></div>
+    <div class="svc-hero-grid"></div>
+    <img src="{{ asset('images/services-hero.jpg') }}" alt="" class="svc-hero-img" aria-hidden="true">
+    <div class="container py-5" style="position:relative; z-index:1;">
+        <div class="hero-tag">Services</div>
         <h1>Ce que nous faisons pour vous.</h1>
-        <p>Sept domaines d'expertise, un seul objectif : accélérer votre transformation numérique.</p>
+        <p class="mt-2 mb-0">Sept domaines d'expertise, un seul objectif : accélérer votre transformation numérique.</p>
     </div>
 </section>
 
-{{-- INTRO --}}
-<section class="py-5">
+{{-- ── STATS STRIP ── --}}
+<div class="stats-strip reveal">
     <div class="container">
-        <div class="section-tag">Que faisons-nous ?</div>
-        <h2 class="mb-3">De l'audit à l'intelligence artificielle —<br>un accompagnement complet.</h2>
-        <p class="text-muted" style="max-width:680px;">La transformation numérique d'une entreprise ne se résume pas à un site web ou à un logiciel. C'est un parcours. Et chaque entreprise en est à une étape différente. C'est pourquoi nos services couvrent l'ensemble du spectre — pour intervenir là où vous en avez vraiment besoin.</p>
-        <p class="text-muted"><strong class="text-dark">Nos services peuvent être activés séparément ou combinés</strong> selon votre maturité numérique et vos priorités stratégiques.</p>
+        <div class="row g-0 justify-content-center">
+
+            <div class="col-6 col-md-4 stat-box">
+                <div class="stat-inner">
+                    <div class="stat-icon">🎯</div>
+                    <div class="num">7<span>+</span></div>
+                    <div class="lbl">Expertises métier</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 stat-box">
+                <div class="stat-inner">
+                    <div class="stat-icon">✦</div>
+                    <div class="num">100<span>%</span></div>
+                    <div class="lbl">Sur-mesure</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 stat-box">
+                <div class="stat-inner">
+                    <div class="stat-icon">🚫</div>
+                    <div class="num">0</div>
+                    <div class="lbl">Jargon inutile</div>
+                </div>
+            </div>
+
+        </div>
     </div>
-</section>
+</div>
 
-<hr class="divider mx-4">
-
-{{-- SERVICES --}}
-<section class="py-4">
+{{-- ── INTRO ── --}}
+<section class="svc-intro reveal">
     <div class="container">
-        <div class="section-tag">Nos offres</div>
-
-        {{-- 01 --}}
-        <div class="service-item">
-            <span class="tag">Point de départ recommandé</span>
-            <h3>01 — Audit numérique</h3>
-            <p>Avant toute action, il faut savoir où on en est. Notre audit numérique passe au crible vos outils, vos processus, votre présence en ligne et votre maturité data. À l'issue, vous repartez avec un diagnostic clair et une feuille de route priorisée — sans langue de bois.</p>
-            <p><strong>Pour qui :</strong> Tout chef d'entreprise qui veut comprendre son niveau de maturité numérique avant d'investir.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Rapport de diagnostic</span><span>Feuille de route priorisée</span><span>Session de restitution</span><span>Plan d'action 90 jours</span>
-                </div>
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="highlight-pill mb-3 d-inline-block">Que faisons-nous ?</span>
+                <h2 class="mt-2">De l'audit à l'intelligence artificielle —<br>un accompagnement complet.</h2>
+            </div>
+            <div class="col-lg-6">
+                <p class="text-muted" style="font-size:.95rem; line-height:1.85;">La transformation numérique d'une entreprise ne se résume pas à un site web ou à un logiciel. C'est un parcours. Et chaque entreprise en est à une étape différente. C'est pourquoi nos services couvrent l'ensemble du spectre — pour intervenir là où vous en avez vraiment besoin.</p>
+                <p class="text-muted" style="font-size:.95rem; line-height:1.85; margin:0;"><strong class="text-dark">Nos services peuvent être activés séparément ou combinés</strong> selon votre maturité numérique et vos priorités stratégiques.</p>
             </div>
         </div>
-
-        {{-- 02 --}}
-        <div class="service-item">
-            <span class="tag">Vous avez un projet, pas encore de cap</span>
-            <h3>02 — Conseil stratégique</h3>
-            <p>Vous avez une idée, une intuition ou un problème à résoudre — mais vous ne savez pas par où commencer. Nos consultants vous aident à définir une stratégie numérique réaliste, adaptée à votre secteur, votre taille et vos ambitions. On cadre le projet avant de le lancer.</p>
-            <p><strong>Pour qui :</strong> Dirigeants qui veulent aller vite, mais dans la bonne direction.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Analyse de marché ciblée</span><span>Recommandations stratégiques</span><span>Roadmap numérique</span><span>Accompagnement à la décision</span>
-                </div>
-            </div>
-        </div>
-
-        {{-- 03 --}}
-        <div class="service-item">
-            <span class="tag">Vous n'êtes pas assez visible en ligne</span>
-            <h3>03 — Référencement & présence digitale</h3>
-            <p>Vos clients vous cherchent en ligne — mais ils ne vous trouvent pas. Nous construisons ou renforçons votre présence sur le web : site vitrine ou e-commerce, référencement naturel (SEO), réseaux sociaux professionnels, Google My Business, gestion de réputation.</p>
-            <p><strong>Pour qui :</strong> PME et commerçants qui veulent attirer des clients en ligne sans dépenser leur budget en publicité payante.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Audit de visibilité</span><span>Création / refonte de site</span><span>Stratégie SEO</span><span>Gestion réseaux sociaux</span><span>Rapport mensuel</span>
-                </div>
-            </div>
-        </div>
-
-        {{-- 04 --}}
-        <div class="service-item">
-            <span class="tag">Vos opérations sont encore manuelles</span>
-            <h3>04 — Intégration numérique</h3>
-            <p>Excel partout, papier encore là, outils qui ne se parlent pas... Nous intégrons des solutions numériques adaptées à votre métier — ERP, CRM, plateformes de gestion, outils collaboratifs — pour que vos équipes travaillent mieux, plus vite et avec moins d'erreurs.</p>
-            <p><strong>Pour qui :</strong> Entreprises en croissance qui buttent sur leurs outils et perdent du temps en tâches répétitives.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Cartographie des processus</span><span>Sélection & déploiement d'outils</span><span>Migration des données</span><span>Formation des équipes</span><span>Support post-déploiement</span>
-                </div>
-            </div>
-        </div>
-
-        {{-- 05 --}}
-        <div class="service-item">
-            <span class="tag">Vous voulez automatiser et aller plus loin</span>
-            <h3>05 — Intégration IA</h3>
-            <p>Vous êtes prêt à passer à la vitesse supérieure. Nous intégrons des solutions d'intelligence artificielle concrètes dans vos flux de travail : automatisation des tâches répétitives, chatbots métier, analyse prédictive, traitement automatisé de documents. Pas de l'IA pour faire beau — de l'IA qui fait gagner du temps et de l'argent.</p>
-            <p><strong>Pour qui :</strong> Structures qui ont déjà digitalisé leurs bases et veulent franchir le cap de l'automatisation intelligente.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Audit IA</span><span>Cadrage des cas d'usage</span><span>Développement & intégration</span><span>Pilote & mesure d'impact</span><span>Montée en charge</span>
-                </div>
-            </div>
-        </div>
-
-        {{-- 06 --}}
-        <div class="service-item">
-            <span class="tag">Vos équipes ont besoin de monter en compétences</span>
-            <h3>06 — Formation</h3>
-            <p>Les meilleurs outils ne servent à rien si personne ne sait les utiliser. Nous proposons des formations pratiques, sur-mesure et ancrées dans votre réalité professionnelle — du numérique de base à l'usage avancé de l'intelligence artificielle. L'objectif : rendre vos collaborateurs autonomes, pas dépendants.</p>
-            <p><strong>Pour qui :</strong> Managers et équipes opérationnelles qui ont besoin de montée en compétences rapide et applicable.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Bilan des compétences</span><span>Programme sur-mesure</span><span>Sessions présentiel / distanciel</span><span>Supports pédagogiques</span><span>Évaluation & certification</span>
-                </div>
-            </div>
-        </div>
-
-        {{-- 07 --}}
-        <div class="service-item">
-            <span class="tag">Vous avez des données, mais vous ne les exploitez pas</span>
-            <h3>07 — Big Data & Business Intelligence</h3>
-            <p>Votre entreprise génère des données chaque jour — ventes, clients, opérations, finances — mais elles dorment dans des tableurs ou des systèmes disparates. Nous mettons en place des pipelines de données et des tableaux de bord décisionnels pour transformer vos données brutes en décisions éclairées, prises en temps réel.</p>
-            <p><strong>Pour qui :</strong> Décideurs qui veulent piloter leur activité avec des données fiables plutôt qu'à l'instinct.</p>
-            <div class="service-deliverables">
-                <strong>Ce que vous recevez :</strong>
-                <div class="deliverable-tags">
-                    <span>Audit de vos données</span><span>Architecture data</span><span>Tableaux de bord sur-mesure</span><span>Formation aux KPIs</span><span>Maintenance & évolution</span>
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
 
-{{-- CTA --}}
-<section class="strip-cta">
-    <h2>Vous ne savez pas par où commencer ?</h2>
-    <p>C'est exactement pour ça qu'on propose un audit gratuit. En un échange, on identifie ensemble les leviers les plus impactants pour votre entreprise.</p>
-    <a href="{{ route('contact') }}" class="btn-green">Demander mon audit gratuit →</a>
+{{-- ── SERVICES GRID ── --}}
+<section class="svc-grid">
+    <div class="container">
+
+        <div class="row g-4">
+
+            {{-- 01 --}}
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">01</div>
+                    <div class="svc-icon icon-green">🔍</div>
+                    <span class="svc-badge badge-green">Point de départ recommandé</span>
+                    <h3>Audit numérique</h3>
+                    <p>Avant toute action, il faut savoir où on en est. Notre audit passe au crible vos outils, processus, présence en ligne et maturité data. Vous repartez avec un diagnostic clair et une feuille de route priorisée — sans langue de bois.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> Tout chef d'entreprise qui veut comprendre son niveau de maturité numérique avant d'investir.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Rapport de diagnostic</span>
+                            <span class="dtag">Feuille de route</span>
+                            <span class="dtag">Session de restitution</span>
+                            <span class="dtag">Plan 90 jours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- 02 --}}
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">02</div>
+                    <div class="svc-icon icon-blue">🧭</div>
+                    <span class="svc-badge badge-blue">Vous avez un projet, pas encore de cap</span>
+                    <h3>Conseil stratégique</h3>
+                    <p>Vous avez une idée, une intuition ou un problème — mais vous ne savez pas par où commencer. Nos consultants vous aident à définir une stratégie numérique réaliste, adaptée à votre secteur et vos ambitions.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> Dirigeants qui veulent aller vite, mais dans la bonne direction.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Analyse de marché</span>
+                            <span class="dtag">Recommandations</span>
+                            <span class="dtag">Roadmap numérique</span>
+                            <span class="dtag">Aide à la décision</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- 03 --}}
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">03</div>
+                    <div class="svc-icon icon-green">📡</div>
+                    <span class="svc-badge badge-gray">Vous n'êtes pas assez visible en ligne</span>
+                    <h3>Référencement & présence digitale</h3>
+                    <p>Vos clients vous cherchent en ligne — mais ils ne vous trouvent pas. Nous construisons ou renforçons votre présence : site vitrine, SEO, réseaux sociaux, Google My Business, réputation.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> PME et commerçants qui veulent attirer des clients en ligne sans tout miser sur la pub payante.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Audit visibilité</span>
+                            <span class="dtag">Création / refonte</span>
+                            <span class="dtag">Stratégie SEO</span>
+                            <span class="dtag">Rapport mensuel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- 04 --}}
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">04</div>
+                    <div class="svc-icon icon-blue">⚙️</div>
+                    <span class="svc-badge badge-gray">Vos opérations sont encore manuelles</span>
+                    <h3>Intégration numérique</h3>
+                    <p>Excel partout, papier encore là, outils qui ne se parlent pas... Nous intégrons des solutions adaptées à votre métier — ERP, CRM, outils collaboratifs — pour que vos équipes travaillent mieux et plus vite.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> Entreprises en croissance qui perdent du temps en tâches répétitives.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Cartographie processus</span>
+                            <span class="dtag">Déploiement outils</span>
+                            <span class="dtag">Migration données</span>
+                            <span class="dtag">Support post-déploiement</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- 05 --}}
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">05</div>
+                    <div class="svc-icon icon-green">🤖</div>
+                    <span class="svc-badge badge-green">Vous voulez automatiser et aller plus loin</span>
+                    <h3>Intégration IA</h3>
+                    <p>Nous intégrons des solutions d'intelligence artificielle concrètes dans vos flux : automatisation, chatbots métier, analyse prédictive, traitement de documents. Pas de l'IA pour faire beau — de l'IA qui fait gagner temps et argent.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> Structures qui ont digitalisé leurs bases et veulent franchir le cap de l'automatisation intelligente.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Audit IA</span>
+                            <span class="dtag">Cadrage cas d'usage</span>
+                            <span class="dtag">Développement</span>
+                            <span class="dtag">Pilote & mesure</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- 06 --}}
+            <div class="col-md-6 col-lg-4 reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">06</div>
+                    <div class="svc-icon icon-blue">🎓</div>
+                    <span class="svc-badge badge-blue">Vos équipes ont besoin de monter en compétences</span>
+                    <h3>Formation</h3>
+                    <p>Les meilleurs outils ne servent à rien si personne ne sait les utiliser. Formations pratiques, sur-mesure, ancrées dans votre réalité — du numérique de base à l'IA avancée. L'objectif : rendre vos collaborateurs autonomes.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> Managers et équipes opérationnelles qui ont besoin d'une montée en compétences rapide.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Bilan compétences</span>
+                            <span class="dtag">Programme sur-mesure</span>
+                            <span class="dtag">Présentiel / distanciel</span>
+                            <span class="dtag">Certification</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- 07 --}}
+            <div class="col-md-6 col-lg-4  reveal">
+                <div class="svc-card d-flex flex-column">
+                    <div class="svc-num">07</div>
+                    <div class="svc-icon icon-green">📊</div>
+                    <span class="svc-badge badge-green">Vous avez des données, mais vous ne les exploitez pas</span>
+                    <h3>Big Data & Business Intelligence</h3>
+                    <p>Votre entreprise génère des données chaque jour — ventes, clients, opérations, finances — mais elles dorment dans des tableurs ou des systèmes disparates. Nous mettons en place des pipelines et tableaux de bord pour transformer vos données brutes en décisions éclairées, prises en temps réel.</p>
+                    <div class="svc-for"><strong>Pour qui :</strong> Décideurs qui veulent piloter leur activité avec des données fiables plutôt qu'à l'instinct.</div>
+                    <div class="deliverables-wrap mt-auto">
+                        <strong>Ce que vous recevez :</strong>
+                        <div>
+                            <span class="dtag">Audit données</span>
+                            <span class="dtag">Architecture data</span>
+                            <span class="dtag">Tableaux de bord</span>
+                            <span class="dtag">Formation KPIs</span>
+                            <span class="dtag">Maintenance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
+
+{{-- ── CTA ── --}}
+<section class="strip-cta-custom">
+    <div class="floating-orb" style="width:300px;height:300px;background:rgba(62,207,114,.06);top:-80px;left:-60px;"></div>
+    <div class="floating-orb" style="width:200px;height:200px;background:rgba(59,130,246,.07);bottom:-40px;right:80px;"></div>
+    <div class="container reveal">
+        <h2>Vous ne savez pas par où commencer ?</h2>
+        <p>C'est exactement pour ça qu'on propose un audit gratuit. En un échange, on identifie ensemble les leviers les plus impactants pour votre entreprise.</p>
+        <a href="{{ route('contact') }}" class="btn-cta-primary">Demander mon audit gratuit →</a>
+    </div>
+</section>
+
+@push('scripts')
+<script>
+    // Intersection Observer pour les animations au scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, entry.target.dataset.delay || 0);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12
+    });
+
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+        el.dataset.delay = (i % 3) * 120; // stagger par colonne
+        observer.observe(el);
+    });
+</script>
+@endpush
 
 @endsection
