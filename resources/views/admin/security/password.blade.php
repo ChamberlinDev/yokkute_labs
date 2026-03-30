@@ -1,0 +1,53 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Securite mot de passe')
+@section('page-title', 'Securite mot de passe')
+
+@section('content')
+<div class="card card-soft p-4 mb-4">
+    <h2 class="h5 mb-3">Politique mot de passe admin</h2>
+    <ul class="mb-0">
+        <li>12 caracteres minimum, avec majuscule, minuscule, chiffre et symbole.</li>
+        <li>Rotation obligatoire tous les {{ $passwordMaxAgeDays }} jours.</li>
+        <li>Le mot de passe ne doit pas etre compromis ni identique a l'ancien.</li>
+    </ul>
+</div>
+
+<div class="card card-soft p-4">
+    <div class="mb-3 text-muted">
+        @if($passwordAgeDays !== null)
+            Age du mot de passe actuel: {{ $passwordAgeDays }} jour(s).
+        @else
+            Aucun historique de rotation enregistre pour ce compte.
+        @endif
+        @if($mustRotate)
+            <div class="text-danger mt-2">Rotation forcee active: changez le mot de passe maintenant.</div>
+        @endif
+    </div>
+
+    <form method="POST" action="{{ route('admin.security.password.update') }}" class="d-grid gap-3">
+        @csrf
+        @method('PUT')
+
+        <div>
+            <label class="form-label">Mot de passe actuel</label>
+            <input type="password" name="current_password" class="form-control" autocomplete="current-password" required>
+        </div>
+
+        <div>
+            <label class="form-label">Nouveau mot de passe</label>
+            <input type="password" name="password" class="form-control" autocomplete="new-password" required>
+        </div>
+
+        <div>
+            <label class="form-label">Confirmer le nouveau mot de passe</label>
+            <input type="password" name="password_confirmation" class="form-control" autocomplete="new-password" required>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-success" type="submit">Mettre a jour</button>
+            <a class="btn btn-outline-secondary" href="{{ route('admin.dashboard') }}">Retour</a>
+        </div>
+    </form>
+</div>
+@endsection

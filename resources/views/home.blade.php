@@ -1,13 +1,28 @@
+@php
+  $homeMetaTitle = $siteSettings['home_meta_title'] ?? 'Yokkute Labs — Agence de transformation numerique';
+  $homeBadgeText = $siteSettings['home_badge_text'] ?? 'Yokkute Labs — Agence de transformation numerique';
+  $homeHeroTitle = $siteSettings['home_hero_title'] ?? "Transformez votre entreprise\na l'ere du numerique\net de l'IA";
+  $homeHeroSub = $siteSettings['home_hero_sub'] ?? "Nous accompagnons les entreprises africaines — de l'audit initial a l'integration de l'intelligence artificielle — avec des solutions concretes, adaptees a votre realite terrain.";
+  $homePrimaryCtaLabel = $siteSettings['home_primary_cta_label'] ?? 'Demarrer avec un audit gratuit';
+  $homePrimaryCtaUrl = $siteSettings['home_primary_cta_url'] ?? '/contact';
+  $homeSecondaryCtaLabel = $siteSettings['home_secondary_cta_label'] ?? 'Voir notre approche';
+  $homeSecondaryCtaUrl = $siteSettings['home_secondary_cta_url'] ?? '#approche';
+@endphp
+
 @extends('layouts.app')
-@section('title', 'Yokkuté Labs — Agence de transformation numérique')
+@section('title', $homeMetaTitle)
 @section('content')
 
 <link href="{{ asset('css/home.css') }}" rel="stylesheet">
 <link href="{{ asset('css/hero.css') }}" rel="stylesheet">
 <script src="{{ asset('js/hero.js') }}"></script>
 
-{{-- ═══ HERO ═══ --}}
+{{-- ... HERO ... --}}
 <section class="hero">
+
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+    <source src="{{ asset('images/id1.mp4') }}" type="video/mp4">
+  </video>
  
   <canvas id="bgCanvas"></canvas>
   <div class="hero-grid"></div>
@@ -16,35 +31,28 @@
   <div class="hero-deco"></div>
   <div class="hero-deco2"></div>
  
-  <!-- Remplace le div ci-dessous par ta vraie balise <video> -->
-  <!-- <video class="hero-video" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.2;"><source src="votre-video.mp4" type="video/mp4"></video> -->
- 
   <div class="hero-inner">
  
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      Yokkuté Labs — Agence de transformation numérique
+      {{ $homeBadgeText }}
     </div>
  
     <h1 class="hero-title">
-      Transformez votre entreprise<br>
-      à l'ère du <em>numérique</em><br>
-      et de l'<em>IA</em>
+      {!! nl2br(e($homeHeroTitle)) !!}
     </h1>
  
     <p class="hero-sub">
-      Nous accompagnons les entreprises africaines — de l'<strong>audit initial</strong>
-      à l'<strong>intégration de l'intelligence artificielle</strong> — avec des solutions
-      concrètes, adaptées à votre réalité terrain.
+      {{ $homeHeroSub }}
     </p>
  
     <div class="hero-btns">
-      <a href="/contact" class="btn-primary-hero">
-        Démarrer avec un audit gratuit
+      <a href="{{ $homePrimaryCtaUrl }}" class="btn-primary-hero">
+        {{ $homePrimaryCtaLabel }}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="#approche" class="btn-ghost-hero">
-        Voir notre approche
+      <a href="{{ $homeSecondaryCtaUrl }}" class="btn-ghost-hero">
+        {{ $homeSecondaryCtaLabel }}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </a>
     </div>
@@ -75,7 +83,7 @@
  
  
 
-{{-- ═══ QUALITÉS ═══ --}}
+{{-- ... QUALIT — S ... --}}
 <section class="nd-section">
   <div class="nd-container">
  
@@ -203,7 +211,7 @@
 <style>
   .nd-section,
   .nd-section * { color: revert; }
-  .nd-section { background: #fff !important; }
+  .nd-section { background: #eef7f2 !important; }
 </style>
 
 <script>
@@ -222,8 +230,8 @@
     setTimeout(() => els.forEach(el => el.classList.add('visible')), 500);
 </script>
 
-<!-- ═══ APPROCHE ═══ -->
-<section id="approche" class="approche">
+<!-- ... APPROCHE ... -->
+<section id="approche" class="approche sec-ink">
   <div class="approche-inner">
  
     <div class="approche-header">
@@ -262,7 +270,7 @@
   </div>
 </section>
 
-{{-- ═══ ROADMAP ═══ --}}
+{{-- ... ROADMAP ... --}}
 <section class="py-5" style="background:#f5f7fa;">
     <div class="container">
         <div class="text-center mb-5">
@@ -274,14 +282,14 @@
         <div class="roadmap">
 
             <div class="roadmap-step">
-                <div class="rm-icon-wrap" style="background:#3ecf72; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #3ecf72;">
+                <div class="rm-icon-wrap" style="background:#1a7a4a; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #1a7a4a;">
                     <i class="bi bi-clipboard2-check"></i>
                 </div>
                 <div class="rm-card">
-                    <div class="rm-num" style="color:#3ecf72;">01</div>
+                    <div class="rm-num" style="color:#1a7a4a;">01</div>
                     <h5>Audit numérique</h5>
                     <p>Diagnostic complet de vos outils, processus et données pour identifier ce qui freine votre croissance.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#3ecf72;">Demander mon audit →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a7a4a;">Demander mon audit  — '</a>
                 </div>
             </div>
 
@@ -293,19 +301,19 @@
                     <div class="rm-num" style="color:#1a9bdc;">02</div>
                     <h5>Conseil stratégique</h5>
                     <p>Nos experts définissent avec vous la meilleure stratégie numérique adaptée à votre secteur et vos ambitions.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a9bdc;">Prendre rendez-vous →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a9bdc;">Prendre rendez-vous  — '</a>
                 </div>
             </div>
 
             <div class="roadmap-step">
-                <div class="rm-icon-wrap" style="background:#3ecf72; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #3ecf72;">
+                <div class="rm-icon-wrap" style="background:#1a7a4a; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #1a7a4a;">
                     <i class="bi bi-globe2"></i>
                 </div>
                 <div class="rm-card">
-                    <div class="rm-num" style="color:#3ecf72;">03</div>
+                    <div class="rm-num" style="color:#1a7a4a;">03</div>
                     <h5>Référencement & présence digitale</h5>
                     <p>Site, SEO, réseaux sociaux, Google My Business — soyez visible là où vos clients vous cherchent.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#3ecf72;">Booster ma visibilité →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a7a4a;">Booster ma visibilité  — '</a>
                 </div>
             </div>
 
@@ -317,19 +325,19 @@
                     <div class="rm-num" style="color:#1a9bdc;">04</div>
                     <h5>Intégration numérique</h5>
                     <p>ERP, CRM, outils collaboratifs — vos équipes travaillent mieux, plus vite et avec moins d'erreurs.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a9bdc;">Digitaliser mes opérations →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a9bdc;">Digitaliser mes opérations  — '</a>
                 </div>
             </div>
 
             <div class="roadmap-step">
-                <div class="rm-icon-wrap" style="background:#3ecf72; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #3ecf72;">
+                <div class="rm-icon-wrap" style="background:#1a7a4a; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #1a7a4a;">
                     <i class="bi bi-robot"></i>
                 </div>
                 <div class="rm-card">
-                    <div class="rm-num" style="color:#3ecf72;">05</div>
+                    <div class="rm-num" style="color:#1a7a4a;">05</div>
                     <h5>Intégration IA</h5>
                     <p>Chatbots, automatisation, analyse prédictive, traitement de documents — de l'IA concrète qui fait gagner du temps.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#3ecf72;">Explorer les solutions IA →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a7a4a;">Explorer les solutions IA  — '</a>
                 </div>
             </div>
 
@@ -341,39 +349,39 @@
                     <div class="rm-num" style="color:#1a9bdc;">06</div>
                     <h5>Formation</h5>
                     <p>Formations pratiques sur-mesure — du numérique de base à l'usage avancé de l'IA — pour des équipes autonomes.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a9bdc;">Voir les formations →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a9bdc;">Voir les formations  — '</a>
                 </div>
             </div>
 
             <div class="roadmap-step">
-                <div class="rm-icon-wrap" style="background:#3ecf72; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #3ecf72;">
+                <div class="rm-icon-wrap" style="background:#1a7a4a; box-shadow:0 0 0 5px #f5f7fa,0 0 0 7px #1a7a4a;">
                     <i class="bi bi-bar-chart-line"></i>
                 </div>
                 <div class="rm-card">
-                    <div class="rm-num" style="color:#3ecf72;">07</div>
+                    <div class="rm-num" style="color:#1a7a4a;">07</div>
                     <h5>Big Data & Business Intelligence</h5>
                     <p>Tableaux de bord décisionnels pour transformer vos données brutes en décisions éclairées, en temps réel.</p>
-                    <a href="{{ route('contact') }}" class="rm-link" style="color:#3ecf72;">Transformer mes données →</a>
+                    <a href="{{ route('contact') }}" class="rm-link" style="color:#1a7a4a;">Transformer mes données  — '</a>
                 </div>
             </div>
 
         </div>
 
         <div class="text-center mt-5">
-            <a href="{{ route('services') }}" class="btn-green me-3">Voir tous nos services →</a>
+            <a href="{{ route('services') }}" class="btn-green me-3">Voir tous nos services  — '</a>
             <a href="{{ route('contact') }}" class="btn-outline-green">Démarrer mon audit gratuit</a>
         </div>
     </div>
 </section>
 
-{{-- ═══ CTA FINAL ═══ --}}
+{{-- ... CTA FINAL ... --}}
 <section style="background:#1a1a2e; padding:5rem 0; text-align:center;">
     <div class="container" style="max-width:600px;">
         <p class="section-tag-home" style="justify-content:center; margin:0 auto 1rem;">Prêt à démarrer ?</p>
         <h2 class="fw-bold mb-3" style="color:white; font-family:'Sora',sans-serif;">Faisons le point sur votre situation.</h2>
         <p style="color:#9ca3af; margin-bottom:2rem;">L'audit est gratuit. La conversation ne vous engage à rien. Ce que vous en tirerez, par contre, peut changer beaucoup.</p>
         <div class="d-flex flex-wrap gap-3 justify-content-center">
-            <a href="{{ route('contact') }}" class="btn-green">Prendre rendez-vous gratuitement →</a>
+            <a href="{{ route('contact') }}" class="btn-green">Prendre rendez-vous gratuitement  — '</a>
             <a href="{{ route('services') }}" class="btn-outline-white">Découvrir nos services</a>
         </div>
     </div>

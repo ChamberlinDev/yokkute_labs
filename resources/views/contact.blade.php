@@ -4,7 +4,7 @@
 @section('content')
 <link href="{{ asset('css/contact.css') }}" rel="stylesheet">
 
-{{-- ── HERO ── --}}
+{{-- HERO --}}
 <section class="contact-hero">
     <div class="contact-hero-bg"></div>
     <div class="contact-hero-grid"></div>
@@ -29,7 +29,7 @@
     </div>
 </section>
 
-{{-- ── MAIN ── --}}
+{{-- MAIN --}}
 <section class="contact-main">
     <div class="container">
         <div class="row g-5 align-items-start">
@@ -47,7 +47,7 @@
                     <span class="icon">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     </span>
-                    <span><strong>Engagement :</strong> on s'engage à vous répondre dans les <strong>24h ouvrées</strong>, avec un humain qui a lu votre message.</span>
+                    <span><strong>Engagement :</strong> nous nous engageons à vous répondre sous <strong>24 heures ouvrées</strong>, avec un humain qui lit votre message.</span>
                 </div>
 
                 {{-- Info cards --}}
@@ -62,7 +62,7 @@
                         </div>
                         <div>
                             <div class="info-card-type">Adresse</div>
-                            <div class="info-card-value">Dakar, Sénégal</div>
+                            <div class="info-card-value">{{ $siteSettings['contact_address'] ?? 'Dakar, Senegal' }}</div>
                         </div>
                     </div>
 
@@ -76,7 +76,7 @@
                         <div>
                             <div class="info-card-type">Email</div>
                             <div class="info-card-value">
-                                <a href="mailto:contact@yokkute.com">contact@yokkute.com</a>
+                                <a href="mailto:{{ $siteSettings['contact_email'] ?? 'contact@yokkute.com' }}">{{ $siteSettings['contact_email'] ?? 'contact@yokkute.com' }}</a>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                         <div>
                             <div class="info-card-type">WhatsApp</div>
                             <div class="info-card-value">
-                                +221 XX XXX XX XX
+                                {{ $siteSettings['contact_phone'] ?? '+221 77 000 00 00' }}
                                 <span style="display:block;font-size:.75rem;color:#9ca3af;font-weight:400;">Réponse rapide</span>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                         </div>
                     @endif
 
-                    <form action="#" method="POST">
+                    <form action="{{ route('contact.store') }}" method="POST">
                         @csrf
 
                         <div class="row g-3 mb-3">
@@ -182,15 +182,18 @@
                                     'audit'         => 'Audit numérique',
                                     'conseil'       => 'Conseil stratégique',
                                     'referencement' => 'Référencement & présence digitale',
-                                    'integration'   => 'Intégration numérique (ERP, CRM…)',
+                                    'integration'   => 'Intégration numérique (ERP, CRM — )',
                                     'ia'            => 'Intégration IA',
                                     'formation'     => 'Formation',
                                     'bigdata'       => 'Big Data & Business Intelligence',
-                                    'autre'         => 'Je ne sais pas encore — j\'ai besoin d\'orientation',
+                                    'orientation'   => 'J\'ai besoin d\'être orienté par un conseiller',
                                 ] as $val => $label)
                                     <option value="{{ $val }}" {{ old('besoin') == $val ? 'selected' : '' }}>{{ $label }}</option>
                                 @endforeach
                             </select>
+                            <div class="orientation-helper mt-2">
+                                Si vous hésitez, un conseiller peut vous aider a identifier l'option la plus adaptee.
+                            </div>
                         </div>
 
                         <div class="mb-4">
@@ -215,7 +218,35 @@
     </div>
 </section>
 
-{{-- ── CTA ── --}}
+<div class="modal fade orientation-modal" id="orientationModal" tabindex="-1" aria-labelledby="orientationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-body p-4 p-md-5">
+                <button type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Fermer"></button>
+
+                <div class="orientation-modal-badge mb-3">Besoin d'orientation</div>
+                <h3 id="orientationModalLabel" class="orientation-modal-title mb-3">Parlons avec un conseiller avant de choisir.</h3>
+                <p class="orientation-modal-text mb-4">
+                    Si votre besoin n'est pas encore clair, inutile de deviner. Un court echange avec un professionnel Yokkute Labs peut vous aider a identifier la meilleure option selon votre situation.
+                </p>
+
+                <div class="orientation-modal-actions d-flex flex-column gap-3">
+                    <a href="https://wa.me/{{ $siteSettings['whatsapp_number'] ?? '221770000000' }}?text=Bonjour%20Yokkute%20Labs%2C%20j%27aimerais%20etre%20oriente%20sur%20le%20service%20le%20plus%20adapte%20a%20mon%20besoin." target="_blank" rel="noopener noreferrer" class="orientation-action-primary">
+                        Discuter sur WhatsApp avec un conseiller
+                    </a>
+                    <a href="mailto:{{ $siteSettings['contact_email'] ?? 'contact@yokkute.com' }}?subject=Demande%20d%27orientation&body=Bonjour%2C%20j%27aimerais%20etre%20oriente%20vers%20le%20service%20le%20plus%20adapte%20a%20mon%20besoin." class="orientation-action-secondary">
+                        Demander une orientation par email
+                    </a>
+                    <button type="button" class="orientation-action-link" data-bs-dismiss="modal">
+                        Continuer avec le formulaire
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- CTA --}}
 <section class="cta-contact">
     <div class="container reveal">
         <h2>Pas encore prêt à écrire ?</h2>
@@ -229,16 +260,23 @@
 
 @push('scripts')
 <script>
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
+    const besoinSelect = document.querySelector('select[name="besoin"]');
+    const orientationModalEl = document.getElementById('orientationModal');
+    const orientationModal = orientationModalEl && window.bootstrap?.Modal
+        ? new window.bootstrap.Modal(orientationModalEl)
+        : null;
+
+    if (besoinSelect && orientationModal) {
+        besoinSelect.addEventListener('change', () => {
+            if (besoinSelect.value === 'orientation') {
+                orientationModal.show();
             }
         });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        if (besoinSelect.value === 'orientation') {
+            orientationModal.show();
+        }
+    }
 </script>
 @endpush
 

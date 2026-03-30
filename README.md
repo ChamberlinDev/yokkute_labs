@@ -57,3 +57,112 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Deployment (Production)
+
+### Prerequisites
+
+- PHP 8.2+
+- Composer 2+
+- Node.js 18+
+- MySQL/PostgreSQL
+- Web server (Nginx or Apache)
+
+### 1. Install dependencies
+
+```bash
+composer install --no-dev --optimize-autoloader
+npm install
+npm run build
+```
+
+### 2. Configure environment
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Set at least these values in `.env`:
+
+- `APP_ENV=production`
+- `APP_DEBUG=false`
+- `APP_URL=https://your-domain.com`
+- Database credentials
+- Mail credentials
+
+### 3. Prepare database and storage
+
+```bash
+php artisan migrate --force
+php artisan storage:link
+```
+
+### 4. Optimize Laravel for production
+
+```bash
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### 5. Queue and scheduler
+
+Run a queue worker with a process manager (Supervisor/systemd):
+
+```bash
+php artisan queue:work --tries=3 --timeout=120
+```
+
+Run scheduler every minute (cron):
+
+```bash
+* * * * * php /path/to/project/artisan schedule:run >> /dev/null 2>&1
+```
+
+### 6. File permissions
+
+Ensure write permissions for:
+
+- `storage/`
+- `bootstrap/cache/`
+
+### 7. Post-deploy verification
+
+- Home page renders correctly (no broken characters)
+- Admin login works
+- Contact form submits successfully
+- Candidature upload accepts PDF only
+- CSV exports and dashboard load
+- Assets are served from `public/build`
+
+### 8. Security baseline
+
+Set these values in production:
+
+- `APP_DEBUG=false`
+- `APP_URL=https://your-domain.com`
+- `SESSION_DRIVER=database`
+- `SESSION_HTTP_ONLY=true`
+- `SESSION_SAME_SITE=lax`
+- `SESSION_SECURE_COOKIE=true`
+- `SESSION_ENCRYPT=true`
+- `ADMIN_IDLE_TIMEOUT=900`
+- `ADMIN_PASSWORD_MAX_AGE_DAYS=90`
+- `ADMIN_LOGIN_MAX_FAILED_ATTEMPTS=5`
+- `ADMIN_LOGIN_LOCK_MINUTES=15`
+- `ADMIN_AUDIT_RETENTION_DAYS=180`
+
+The application also includes:
+
+- Security headers on all web responses (CSP, HSTS on HTTPS, frame blocking, no-sniff)
+- Rate limiting on admin login, admin actions, contact form, candidature form, and chatbot endpoint
+- Private storage for newly uploaded CV files, with admin-only download access
+- Hardened image upload validation for back-office media
+- Persistent admin audit log for logins, logouts, data exports, downloads, and write operations
+- Automatic admin session expiration after inactivity, with no-store headers on back-office responses
+- Dedicated back-office security page to inspect audit events
+- Admin password policy and mandatory rotation support
+- Alert/lock behavior after repeated failed admin logins
+- Daily automated pruning for old audit logs (`admin:audit-prune`)

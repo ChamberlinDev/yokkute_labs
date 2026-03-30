@@ -19,7 +19,7 @@
     <li><a href="{{ route('services') }}" class="{{ request()->routeIs('services') ? 'active' : '' }}">Services</a></li>
     <li><a href="{{ route('contact') }}"  class="{{ request()->routeIs('contact')  ? 'active' : '' }}">Contact</a></li>
     <li>
-      <a href="{{ route('contact') }}" class="nav-cta">Nous rejoindre</a>
+      <a href="{{ route('rejoindre') }}" class="nav-cta {{ request()->routeIs('rejoindre') ? 'active' : '' }}">Nous rejoindre</a>
     </li>
   </ul>
 

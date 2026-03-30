@@ -22,6 +22,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
+        'password_changed_at',
+        'force_password_reset',
+        'failed_admin_logins',
+        'admin_locked_until',
+        'last_admin_login_at',
     ];
 
     /**
@@ -44,6 +50,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
+            'password_changed_at' => 'datetime',
+            'force_password_reset' => 'boolean',
+            'failed_admin_logins' => 'integer',
+            'admin_locked_until' => 'datetime',
+            'last_admin_login_at' => 'datetime',
         ];
     }
 }

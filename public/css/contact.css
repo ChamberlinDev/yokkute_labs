@@ -1,7 +1,7 @@
-    
-    /* ── Ajouts CSS pour icônes SVG — contact.css ── */
+﻿    
+    /* â”€â”€ Ajouts CSS pour icÃ´nes SVG â€” contact.css â”€â”€ */
 
-/* Labels avec icône inline */
+/* Labels avec icÃ´ne inline */
 label {
     display: flex;
     align-items: center;
@@ -12,11 +12,11 @@ label {
     margin-bottom: 6px;
 }
 label svg {
-    color: #2ECC71;
+    color: #1a7a4a;
     flex-shrink: 0;
 }
 
-/* En-tête du form-card */
+/* En-tÃªte du form-card */
 .form-card-header {
     display: flex;
     align-items: center;
@@ -34,30 +34,30 @@ label svg {
 .form-card-icon {
     width: 40px; height: 40px;
     border-radius: 10px;
-    background: rgba(46,204,113,0.1);
-    border: 0.5px solid rgba(46,204,113,0.25);
+    background: rgba(26,122,74,0.1);
+    border: 0.5px solid rgba(26,122,74,0.25);
     display: flex; align-items: center; justify-content: center;
-    color: #2ECC71;
+    color: #1a7a4a;
     flex-shrink: 0;
 }
 
-/* Info-card icône */
+/* Info-card icÃ´ne */
 .info-card-icon {
     width: 38px; height: 38px;
     border-radius: 10px;
-    background: rgba(46,204,113,0.08);
-    border: 0.5px solid rgba(46,204,113,0.2);
+    background: rgba(26,122,74,0.08);
+    border: 0.5px solid rgba(26,122,74,0.2);
     display: flex; align-items: center; justify-content: center;
-    color: #2ECC71;
+    color: #1a7a4a;
     flex-shrink: 0;
 }
 
-/* Response banner icône */
+/* Response banner icÃ´ne */
 .response-banner .icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #2ECC71;
+    color: #1a7a4a;
     flex-shrink: 0;
 }
 
@@ -85,7 +85,7 @@ label svg {
     gap: 8px;
 }
     
-    /* ── ANIMATIONS ───────────────────────────── */
+    /* â”€â”€ ANIMATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     @keyframes fadeUp {
         from { opacity:0; transform:translateY(28px); }
         to   { opacity:1; transform:translateY(0); }
@@ -97,22 +97,24 @@ label svg {
 
     .reveal {
         opacity: 0;
-        transform: translateY(24px);
-        transition: opacity .6s ease, transform .6s ease;
+        transform: translate3d(0, 34px, 0) scale(.985);
+        transition: opacity .95s cubic-bezier(.22, 1, .36, 1), transform .95s cubic-bezier(.22, 1, .36, 1);
+        will-change: opacity, transform;
     }
-    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal.visible { opacity:1; transform:translate3d(0,0,0) scale(1); }
 
-    /* ── HERO ─────────────────────────────────── */
+    /* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .contact-hero {
         position: relative;
-        background: #0d0d1a;
+        background: url('/images/ttt.jpeg') center/cover no-repeat;
         padding: 5rem 0 4rem;
         overflow: hidden;
     }
     .contact-hero-bg {
         position: absolute; inset: 0;
         background:
-            radial-gradient(ellipse 60% 70% at 80% 50%, rgba(62,207,114,.10) 0%, transparent 70%),
+            linear-gradient(120deg, rgba(10, 17, 14, 0.78) 0%, rgba(10, 17, 14, 0.62) 45%, rgba(10, 17, 14, 0.55) 100%),
+            radial-gradient(ellipse 60% 70% at 80% 50%, rgba(26,122,74,.10) 0%, transparent 70%),
             radial-gradient(ellipse 50% 60% at 10% 80%, rgba(59,130,246,.09) 0%, transparent 70%);
     }
     .contact-hero-grid {
@@ -124,7 +126,7 @@ label svg {
     }
     .contact-hero .hero-tag {
         font-size: .7rem; font-weight:700; letter-spacing:.14em;
-        text-transform:uppercase; color:#3ecf72;
+        text-transform:uppercase; color:#1a7a4a;
         animation: fadeUp .6s ease both;
     }
     .contact-hero h1 {
@@ -138,7 +140,7 @@ label svg {
         animation: fadeUp .7s .2s ease both;
     }
 
-    /* ── PROMISE BADGES ───────────────────────── */
+    /* â”€â”€ PROMISE BADGES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .promise-badges {
         display: flex; flex-wrap:wrap; gap:.6rem;
         margin-top: 1.5rem;
@@ -154,18 +156,18 @@ label svg {
     }
     .pbadge .dot {
         width:7px; height:7px; border-radius:50%;
-        background:#3ecf72;
+        background:#1a7a4a;
         animation: pulse-dot 2s infinite;
     }
     @keyframes pulse-dot {
-        0%,100% { box-shadow:0 0 0 0 rgba(62,207,114,.5); }
-        50%      { box-shadow:0 0 0 6px rgba(62,207,114,0); }
+        0%,100% { box-shadow:0 0 0 0 rgba(26,122,74,.5); }
+        50%      { box-shadow:0 0 0 6px rgba(26,122,74,0); }
     }
 
-    /* ── MAIN SECTION ─────────────────────────── */
+    /* â”€â”€ MAIN SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .contact-main { padding: 4rem 0; background:#f8f9fb; }
 
-    /* ── INFO SIDE ────────────────────────────── */
+    /* â”€â”€ INFO SIDE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .info-heading {
         font-family:'Sora',sans-serif;
         font-size: clamp(1.4rem,2.5vw,1.85rem);
@@ -175,7 +177,7 @@ label svg {
         display:flex; align-items:center; gap:1rem;
         background:#fff; border-radius:14px;
         padding:1rem 1.2rem;
-        border-left: 4px solid #3ecf72;
+        border-left: 4px solid #1a7a4a;
         box-shadow: 0 2px 16px rgba(0,0,0,.05);
         transition: transform .25s, box-shadow .25s;
     }
@@ -198,12 +200,12 @@ label svg {
         font-size:.92rem; font-weight:600; color:#111; margin-top:.1rem;
     }
     .info-card-value a { color:inherit; text-decoration:none; }
-    .info-card-value a:hover { color:#3ecf72; }
+    .info-card-value a:hover { color:#1a7a4a; }
 
-    /* ── RESPONSE TIME BANNER ─────────────────── */
+    /* â”€â”€ RESPONSE TIME BANNER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .response-banner {
-        background: linear-gradient(135deg, rgba(62,207,114,.1), rgba(59,130,246,.08));
-        border: 1px solid rgba(62,207,114,.2);
+        background: linear-gradient(135deg, rgba(26,122,74,.1), rgba(59,130,246,.08));
+        border: 1px solid rgba(26,122,74,.2);
         border-radius: 12px;
         padding: .9rem 1.2rem;
         display: flex; align-items: center; gap: .75rem;
@@ -212,7 +214,7 @@ label svg {
     .response-banner strong { color:#111; }
     .response-banner .icon { font-size:1.2rem; flex-shrink:0; }
 
-    /* ── FORM CARD ────────────────────────────── */
+    /* â”€â”€ FORM CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .form-card {
         background:#fff;
         border-radius:20px;
@@ -246,33 +248,39 @@ label svg {
     .form-card input:focus,
     .form-card select:focus,
     .form-card textarea:focus {
-        border-color:#3ecf72;
-        box-shadow: 0 0 0 3px rgba(62,207,114,.12);
+        border-color:#1a7a4a;
+        box-shadow: 0 0 0 3px rgba(26,122,74,.12);
         background:#fff;
     }
     .form-card textarea { min-height:130px; resize:vertical; }
     .form-card select { cursor:pointer; }
 
+    .orientation-helper {
+        font-size: .76rem;
+        color: #6b7280;
+        line-height: 1.55;
+    }
+
     .btn-submit {
         display:block; width:100%;
-        background: linear-gradient(135deg,#3ecf72,#2bb85e);
+        background: linear-gradient(135deg,#1a7a4a,#1a7a4a);
         color:#fff; font-weight:700; font-size:1rem;
         padding:.9rem; border-radius:12px;
         border:none; cursor:pointer;
-        box-shadow: 0 4px 20px rgba(62,207,114,.3);
+        box-shadow: 0 4px 20px rgba(26,122,74,.3);
         transition: transform .2s, box-shadow .2s;
         letter-spacing:.02em;
     }
     .btn-submit:hover {
         transform:translateY(-3px);
-        box-shadow: 0 8px 32px rgba(62,207,114,.45);
+        box-shadow: 0 8px 32px rgba(26,122,74,.45);
     }
     .form-note {
         font-size:.75rem; color:#9ca3af;
         text-align:center; margin-top:1rem; line-height:1.6;
     }
 
-    /* ── CTA STRIP ────────────────────────────── */
+    /* â”€â”€ CTA STRIP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .cta-contact {
         background: #0d0d1a;
         padding: 4.5rem 0;
@@ -282,7 +290,7 @@ label svg {
     .cta-contact::before {
         content:'';
         position:absolute; inset:0;
-        background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(62,207,114,.07) 0%, transparent 70%);
+        background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(26,122,74,.07) 0%, transparent 70%);
     }
     .cta-contact h2 {
         font-family:'Sora',sans-serif;
@@ -296,14 +304,196 @@ label svg {
     }
     .btn-cta-outline {
         display:inline-block;
-        border: 2px solid #3ecf72;
-        color:#3ecf72; font-weight:700;
+        border: 2px solid #1a7a4a;
+        color:#1a7a4a; font-weight:700;
         padding:.75rem 1.75rem; border-radius:12px;
         text-decoration:none; font-size:.95rem;
         position:relative; z-index:1;
         transition: background .2s, color .2s, transform .2s;
     }
     .btn-cta-outline:hover {
-        background:#3ecf72; color:#fff;
+        background:#1a7a4a; color:#fff;
         transform:translateY(-3px);
     }
+
+    .orientation-modal .modal-content {
+        border-radius: 24px;
+        overflow: hidden;
+    }
+
+    .modal-close-btn {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        z-index: 2;
+    }
+
+    .orientation-modal-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        background: rgba(26,122,74,.12);
+        color: #1a7a4a;
+        border-radius: 999px;
+        padding: .4rem .85rem;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .orientation-modal-title {
+        font-family: 'Sora', sans-serif;
+        font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+        font-weight: 800;
+        color: #111827;
+        line-height: 1.25;
+    }
+
+    .orientation-modal-text {
+        font-size: .95rem;
+        color: #4b5563;
+        line-height: 1.7;
+    }
+
+    .orientation-action-primary,
+    .orientation-action-secondary,
+    .orientation-action-link {
+        width: 100%;
+        border-radius: 14px;
+        padding: .95rem 1rem;
+        text-align: center;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .orientation-action-primary {
+        background: linear-gradient(135deg, #1a7a4a, #1a7a4a);
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(26,122,74,.22);
+    }
+
+    .orientation-action-primary:hover {
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .orientation-action-secondary {
+        background: #f8fafc;
+        color: #111827;
+        border: 1px solid #dbe3ea;
+    }
+
+    .orientation-action-secondary:hover {
+        color: #111827;
+        background: #f1f5f9;
+    }
+
+    .orientation-action-link {
+        border: none;
+        background: transparent;
+        color: #1a7a4a;
+    }
+
+    .orientation-action-link:hover {
+        color: #1a7a4a;
+    }
+
+        @media (max-width: 991.98px) {
+            .contact-hero {
+                padding: 4.2rem 0 3.2rem;
+            }
+
+            .contact-main {
+                padding: 3.25rem 0;
+            }
+
+            .form-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .contact-hero {
+                padding: 3.4rem 0 2.8rem;
+            }
+
+            .contact-hero .hero-tag {
+                font-size: .64rem;
+                letter-spacing: .11em;
+            }
+
+            .contact-hero p {
+                font-size: .9rem;
+            }
+
+            .promise-badges {
+                gap: .45rem;
+            }
+
+            .pbadge {
+                font-size: .74rem;
+                padding: .3rem .7rem;
+            }
+
+            .contact-main {
+                padding: 2.6rem 0;
+            }
+
+            .response-banner {
+                align-items: flex-start;
+                font-size: .8rem;
+                line-height: 1.55;
+            }
+
+            .info-card {
+                align-items: flex-start;
+            }
+
+            .info-card-value {
+                font-size: .86rem;
+                word-break: break-word;
+            }
+
+            .form-card {
+                border-radius: 14px;
+                padding: 1.25rem;
+            }
+
+            .form-card h2 {
+                font-size: 1.1rem;
+            }
+
+            .cta-contact {
+                padding: 3.4rem 0;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .contact-hero {
+                padding: 3rem 0 2.4rem;
+            }
+
+            .promise-badges {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .pbadge {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .info-card {
+                padding: .85rem .95rem;
+            }
+
+            .btn-submit,
+            .btn-cta-outline {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
