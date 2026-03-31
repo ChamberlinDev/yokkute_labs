@@ -315,6 +315,29 @@
 
         document.addEventListener('keydown', window.__yokkuteChatbotEscapeHandler);
 
+        if (window.__yokkuteChatbotOutsideClickHandler) {
+            document.removeEventListener('click', window.__yokkuteChatbotOutsideClickHandler);
+        }
+
+        window.__yokkuteChatbotOutsideClickHandler = function (event) {
+            if (!panel.classList.contains('is-open')) {
+                return;
+            }
+
+            var target = event.target;
+            if (!(target instanceof Element)) {
+                return;
+            }
+
+            if (panel.contains(target) || launcher.contains(target)) {
+                return;
+            }
+
+            closeChat();
+        };
+
+        document.addEventListener('click', window.__yokkuteChatbotOutsideClickHandler);
+
         renderQuickActions();
         initializeConversation();
     }

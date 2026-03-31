@@ -220,6 +220,11 @@ class ChatbotController extends Controller
 
         $text = $this->normalize($message);
 
+        // Prioritize clear French markers to avoid false English matches on shared words like "services".
+        if (preg_match('/\b(bonjour|bonsoir|salut|merci|s il vous plait|svp|quel|quelle|quels|quelles|comment|pourquoi|qui est|vous|votre|vos|proposez|besoin|devis|rejoindre|candidature)\b/', $text)) {
+            return 'fr';
+        }
+
         if (preg_match('/\b(hola|buenos|servicios|contacto|equipo|precio|candidatura|trabajo|quienes|linkedin)\b/', $text)) {
             return 'es';
         }
@@ -228,7 +233,7 @@ class ChatbotController extends Controller
             return 'it';
         }
 
-        if (preg_match('/\b(hello|hi|services|contact|team|price|career|apply|linkedin|who\s+are\s+you)\b/', $text)) {
+        if (preg_match('/\b(hello|hi|hey|thanks|thank you|please|team|price|pricing|career|apply|linkedin|what|how|can you|tell me|show me|need|help|more|about|your|do you|are you)\b|who\s+are\s+you|what\s+services|how\s+to\s+contact/', $text)) {
             return 'en';
         }
 
@@ -239,25 +244,14 @@ class ChatbotController extends Controller
     {
         $current = $this->detectLanguage($userMessage);
 
-        if ($current !== 'fr') {
-            return $current;
-        }
+        // 'de' and any other detected non-fr language are passed through as-is.
+        // Unknown input defaults to 'fr'.
+        return $current;
+    }
 
-        for ($i = count($history) - 1; $i >= 0; $i--) {
-            $item = $history[$i] ?? null;
-
-            if (!is_array($item) || ($item['role'] ?? '') !== 'user') {
-                continue;
-            }
-
-            $candidate = $this->detectLanguage((string) ($item['content'] ?? ''));
-
-            if ($candidate !== 'fr') {
-                return $candidate;
-            }
-        }
-
-        return 'fr';
+    private function hasExplicitFrenchSignal(string $normalizedText): bool
+    {
+        return preg_match('/\b(bonjour|bonsoir|salut|merci|s il vous plait|svp|quel|quelle|quels|quelles|comment|pourquoi|qui est|vous|votre|vos|proposez|besoin|devis|rejoindre|candidature)\b/', $normalizedText) === 1;
     }
 
     private function getMultilingualReply(
