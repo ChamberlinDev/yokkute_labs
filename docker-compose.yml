@@ -24,6 +24,25 @@ services:
     ports:
       - "9000:9000"   # PHP-FPM accessible sur la VM
 
+  # ── Nginx web server (reverse proxied by host Nginx) ──────
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    image: yokkute_labs-nginx:latest
+    container_name: yokkute_nginx
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_started
+    networks:
+      - yokkute_net
+    ports:
+      - "127.0.0.1:8088:80"
+    volumes:
+      - public_uploads:/var/www/html/public/uploads:ro
+      - app_storage:/var/www/html/storage/app:ro
+
   # ── PostgreSQL ───────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
