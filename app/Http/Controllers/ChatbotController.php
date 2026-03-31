@@ -79,6 +79,11 @@ class ChatbotController extends Controller
             return "Bonjour. Je peux vous aider a clarifier votre besoin, identifier le bon service et definir la prochaine etape la plus utile. Quel resultat cherchez-vous a obtenir en priorite ?";
         }
 
+        $matchedTeamMember = $this->bestTeamMemberMatch($text, $team->all());
+        if ($matchedTeamMember !== null && preg_match('/qui est|qui c est|parle moi de|profil de|membre|linkedin/', $text)) {
+            return $this->formatTeamMemberReplyFr($matchedTeamMember);
+        }
+
         if (preg_match('/rejoindre|recrut|emploi|poste|carriere|candidature|cv/', $text)) {
             return "Vous pouvez candidater directement via /rejoindre. Le formulaire demande surtout: prenom, nom, email, domaine, experience et message. Le CV est optionnel, en PDF, avec une limite de 30 Mo. " .
                 "Domaines principaux: developpement, data/BI, conseil, gestion de projet, formation, commercial, marketing ou profil transversal. Contact RH: {$rhEmail}.";
@@ -289,7 +294,13 @@ class ChatbotController extends Controller
             })
             ->implode(' ; ');
 
+        $matchedTeamMember = $this->bestTeamMemberMatch($normalizedMessage, $team);
+
         if ($language === 'en') {
+            if ($matchedTeamMember !== null && preg_match('/\b(who is|tell me about|profile|linkedin|member)\b/', $normalizedMessage)) {
+                return $this->formatTeamMemberReplyEn($matchedTeamMember);
+            }
+
             if (preg_match('/\b(hello|hi|hey|good morning|good evening)\b/', $normalizedMessage)) {
                 return 'Hello, I am Edouard. I can help you choose the right service and next step. What result do you want to achieve first?';
             }
@@ -315,6 +326,10 @@ class ChatbotController extends Controller
         }
 
         if ($language === 'es') {
+            if ($matchedTeamMember !== null && preg_match('/\b(quien es|hablame de|perfil|linkedin|miembro)\b/', $normalizedMessage)) {
+                return $this->formatTeamMemberReplyEs($matchedTeamMember);
+            }
+
             if (preg_match('/\b(hola|buenos dias|buenas tardes|buenas noches)\b/', $normalizedMessage)) {
                 return 'Hola, soy Edouard. Puedo ayudarte a elegir el servicio adecuado y el siguiente paso. ?Cual es tu objetivo principal?';
             }
@@ -337,6 +352,10 @@ class ChatbotController extends Controller
         }
 
         if ($language === 'it') {
+            if ($matchedTeamMember !== null && preg_match('/\b(chi e|parlami di|profilo|linkedin|membro)\b/', $normalizedMessage)) {
+                return $this->formatTeamMemberReplyIt($matchedTeamMember);
+            }
+
             if (preg_match('/\b(ciao|buongiorno|buonasera)\b/', $normalizedMessage)) {
                 return 'Ciao, sono Edouard. Posso aiutarti a scegliere il servizio giusto e il prossimo passo. Qual e il tuo obiettivo principale?';
             }
@@ -359,6 +378,10 @@ class ChatbotController extends Controller
         }
 
         if ($language === 'ar') {
+            if ($matchedTeamMember !== null && preg_match('/من هو|حدثني عن|ملف|لينكد.?ان/u', $rawMessage)) {
+                return $this->formatTeamMemberReplyAr($matchedTeamMember);
+            }
+
             if (preg_match('/مرحبا|اهلا|السلام/', $rawMessage)) {
                 return 'مرحبا، انا Edouard. يمكنني مساعدتك في اختيار الخدمة المناسبة والخطوة التالية.';
             }
@@ -608,5 +631,119 @@ class ChatbotController extends Controller
         }
 
         return $normalized;
+    }
+
+    private function bestTeamMemberMatch(string $normalizedMessage, array $team): ?object
+    {
+        if (empty($team)) {
+            return null;
+        }
+
+        $messageTokens = array_values(array_filter(
+            $this->tokenize($normalizedMessage),
+            static fn (string $token): bool => strlen($token) >= 3
+        ));
+
+        if (empty($messageTokens)) {
+            return null;
+        }
+
+        $bestMember = null;
+        $bestScore = 0;
+
+        foreach ($team as $member) {
+            $normalizedName = $this->normalize(trim((string) ($member->name ?? '')));
+
+            if ($normalizedName === '') {
+                continue;
+            }
+
+            $score = 0;
+            if (str_contains($normalizedMessage, $normalizedName)) {
+                $score += 8;
+            }
+
+            foreach ($this->tokenize($normalizedName) as $nameToken) {
+                if (strlen($nameToken) < 3) {
+                    continue;
+                }
+
+                if (in_array($nameToken, $messageTokens, true)) {
+                    $score += 2;
+                }
+            }
+
+            if ($score > $bestScore) {
+                $bestScore = $score;
+                $bestMember = $member;
+            }
+        }
+
+        return $bestScore >= 2 ? $bestMember : null;
+    }
+
+    private function formatTeamMemberReplyFr(object $member): string
+    {
+        $name = trim((string) ($member->name ?? ''));
+        $role = trim((string) ($member->role ?? ''));
+        $linkedin = trim((string) ($member->linkedin_url ?? ''));
+
+        if ($linkedin !== '' && $linkedin !== '#') {
+            return "{$name} fait partie de l'equipe Yokkute Labs en tant que {$role}. Vous pouvez consulter son profil LinkedIn ici: {$linkedin}.";
+        }
+
+        return "{$name} fait partie de l'equipe Yokkute Labs en tant que {$role}.";
+    }
+
+    private function formatTeamMemberReplyEn(object $member): string
+    {
+        $name = trim((string) ($member->name ?? ''));
+        $role = trim((string) ($member->role ?? ''));
+        $linkedin = trim((string) ($member->linkedin_url ?? ''));
+
+        if ($linkedin !== '' && $linkedin !== '#') {
+            return "{$name} is part of Yokkute Labs as {$role}. LinkedIn: {$linkedin}.";
+        }
+
+        return "{$name} is part of Yokkute Labs as {$role}.";
+    }
+
+    private function formatTeamMemberReplyEs(object $member): string
+    {
+        $name = trim((string) ($member->name ?? ''));
+        $role = trim((string) ($member->role ?? ''));
+        $linkedin = trim((string) ($member->linkedin_url ?? ''));
+
+        if ($linkedin !== '' && $linkedin !== '#') {
+            return "{$name} forma parte de Yokkute Labs como {$role}. LinkedIn: {$linkedin}.";
+        }
+
+        return "{$name} forma parte de Yokkute Labs como {$role}.";
+    }
+
+    private function formatTeamMemberReplyIt(object $member): string
+    {
+        $name = trim((string) ($member->name ?? ''));
+        $role = trim((string) ($member->role ?? ''));
+        $linkedin = trim((string) ($member->linkedin_url ?? ''));
+
+        if ($linkedin !== '' && $linkedin !== '#') {
+            return "{$name} fa parte di Yokkute Labs come {$role}. LinkedIn: {$linkedin}.";
+        }
+
+        return "{$name} fa parte di Yokkute Labs come {$role}.";
+    }
+
+    private function formatTeamMemberReplyAr(object $member): string
+    {
+        $name = trim((string) ($member->name ?? ''));
+        $role = trim((string) ($member->role ?? ''));
+        $linkedin = trim((string) ($member->linkedin_url ?? ''));
+
+        if ($linkedin !== '' && $linkedin !== '#') {
+            return "{$name} عضو في فريق Yokkute Labs بصفة {$role}. لينكدان: {$linkedin}.";
+        }
+
+        return "{$name} عضو في فريق Yokkute Labs بصفة {$role}.";
     }
 }
