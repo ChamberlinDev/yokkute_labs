@@ -1,76 +1,144 @@
 #!/bin/bash
 # =============================================================
-# deploy.sh — Déploiement Yokkute Labs sur VPS Contabo
-# Usage : bash deploy.sh
+# deploy.sh - Production deployment for Yokkute Labs
+# Usage: bash deploy.sh
 # =============================================================
-set -e
+set -Eeuo pipefail
 
 APP_DIR="/opt/yokkute_labs"
 REPO_URL="https://github.com/ChamberlinDev/yokkute_labs.git"
 BRANCH="roland"
 COMPOSE_FILE="docker-compose.yml"
 
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  🚀  Déploiement Yokkute Labs"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+dc() {
+    docker compose -f "$COMPOSE_FILE" "$@"
+}
 
-# ── 1. Pull du code ──────────────────────────────────────
+print_banner() {
+    echo "============================================================"
+    echo "  Yokkute Labs deployment"
+    echo "============================================================"
+}
+
+print_step() {
+    echo "[$1/7] $2"
+}
+
+on_error() {
+    echo ""
+    echo "Deployment failed. Current container state:"
+    dc ps || true
+
+    for container in yokkute_postgres yokkute_app yokkute_queue yokkute_scheduler; do
+        if docker inspect "$container" >/dev/null 2>&1; then
+            echo ""
+            echo "--- Recent logs: $container ---"
+            docker logs --tail 80 "$container" || true
+        fi
+    done
+}
+
+wait_for_container() {
+    local container="$1"
+    local retries="${2:-30}"
+    local attempt=1
+    local status=""
+
+    while [ "$attempt" -le "$retries" ]; do
+        status="$(docker inspect --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$container" 2>/dev/null || true)"
+
+        case "$status" in
+            healthy|running)
+                return 0
+                ;;
+            unhealthy|exited|dead)
+                echo "Container $container is in unexpected state: $status"
+                return 1
+                ;;
+        esac
+
+        sleep 2
+        attempt=$((attempt + 1))
+    done
+
+    echo "Timed out while waiting for $container."
+    return 1
+}
+
+ensure_running() {
+    local container="$1"
+    local status=""
+
+    status="$(docker inspect --format='{{.State.Status}}' "$container" 2>/dev/null || true)"
+    if [ "$status" != "running" ]; then
+        echo "Container $container is not running (status: ${status:-missing})."
+        docker logs --tail 80 "$container" || true
+        return 1
+    fi
+}
+
+artisan() {
+    dc exec -T app php artisan "$@"
+}
+
+trap on_error ERR
+
+print_banner
+
 if [ -d "$APP_DIR/.git" ]; then
-    echo "[1/7] 🔄  Git pull..."
+    print_step 1 "Updating code from Git..."
     cd "$APP_DIR"
     git fetch origin
-    git reset --hard origin/$BRANCH
+    git reset --hard "origin/$BRANCH"
 else
-    echo "[1/7] 📥  Clonage initial..."
+    print_step 1 "Cloning repository..."
     git clone -b "$BRANCH" "$REPO_URL" "$APP_DIR"
     cd "$APP_DIR"
 fi
 
-# ── 2. Vérifier .env.production ──────────────────────────
-echo "[2/7] 🔑  Vérification .env.production..."
+print_step 2 "Checking .env.production..."
 if [ ! -f ".env.production" ]; then
-    echo "ERREUR : .env.production manquant !"
-    echo "Crée /opt/yokkute_labs/.env.production avec les vraies valeurs."
+    echo "ERROR: .env.production is missing in $APP_DIR"
     exit 1
 fi
 
-# Copier comme .env actif pour le build Docker
 cp .env.production .env
 
-# ── 3. Build de l'image Docker ───────────────────────────
-echo "[3/7] 🐳  Build Docker..."
-docker compose -f "$COMPOSE_FILE" build --no-cache app
+print_step 3 "Building production image..."
+dc build --no-cache app
 
-# ── 4. Démarrage des services ────────────────────────────
-echo "[4/7] ▶️   Démarrage des containers..."
-docker compose -f "$COMPOSE_FILE" up -d postgres
+print_step 4 "Starting database and application..."
+dc up -d postgres
+echo "Waiting for PostgreSQL healthcheck..."
+wait_for_container "yokkute_postgres" 45
 
-echo "       Attente PostgreSQL (healthcheck)..."
-sleep 8
+dc up -d --force-recreate --no-build app
+echo "Waiting for application container..."
+wait_for_container "yokkute_app" 30
 
-docker compose -f "$COMPOSE_FILE" up -d
+print_step 5 "Running migrations and production seed..."
+artisan migrate --force
+artisan db:seed --class=SiteSettingSeeder --force
 
-# ── 5. Migrations ────────────────────────────────────────
-echo "[5/7] 🗄️   Migrations base de données..."
-docker compose exec -T app php artisan migrate --force
+print_step 6 "Ensuring storage symlink..."
+dc exec -T app sh -lc 'if [ -L public/storage ]; then echo "Storage link already present."; elif [ ! -e public/storage ]; then php artisan storage:link; else echo "public/storage exists but is not a symlink."; exit 1; fi'
 
-# Seeder initial (silencieux si déjà fait)
-docker compose exec -T app php artisan db:seed --class=SiteSettingSeeder --force 2>/dev/null || true
+print_step 7 "Caching Laravel and starting workers..."
+artisan config:cache
+artisan route:cache
+artisan view:cache
 
-# ── 6. Storage link ──────────────────────────────────────
-echo "[6/7] 🔗  Storage link..."
-docker compose exec -T app php artisan storage:link 2>/dev/null || true
+dc up -d --force-recreate --no-build --remove-orphans queue scheduler
+sleep 5
 
-# ── 7. Optimisations finales ─────────────────────────────
-echo "[7/7] ⚡  Optimisations Laravel..."
-docker compose exec -T app php artisan config:cache
-docker compose exec -T app php artisan route:cache
-docker compose exec -T app php artisan view:cache
+ensure_running "yokkute_postgres"
+ensure_running "yokkute_app"
+ensure_running "yokkute_queue"
+ensure_running "yokkute_scheduler"
 
 echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✅  Déploiement terminé !"
-echo "  🌐  PHP-FPM sur 127.0.0.1:9000 — Nginx hôte s'en charge"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "============================================================"
+echo "  Deployment completed successfully"
+echo "============================================================"
 
-docker compose ps
+dc ps

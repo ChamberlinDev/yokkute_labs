@@ -1,24 +1,28 @@
+x-laravel-service: &laravel-service
+  image: yokkute_labs-app:latest
+  restart: unless-stopped
+  env_file: .env.production
+  depends_on:
+    postgres:
+      condition: service_healthy
+  networks:
+    - yokkute_net
+  volumes:
+    - app_storage:/var/www/html/storage/app
+    - app_logs:/var/www/html/storage/logs
+    - public_uploads:/var/www/html/public/uploads
+
 services:
 
   # ── Application PHP-FPM ──────────────────────────────────
   app:
+    <<: *laravel-service
     build:
       context: .
       dockerfile: Dockerfile
     container_name: yokkute_app
-    restart: unless-stopped
-    env_file: .env.production
     ports:
       - "9000:9000"   # PHP-FPM accessible sur la VM
-    volumes:
-      - /opt/yokkute_labs:/var/www/html:ro   # Montre tout le code Laravel
-      - app_storage:/var/www/html/storage/app
-      - app_logs:/var/www/html/storage/logs
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - yokkute_net
 
   # ── PostgreSQL ───────────────────────────────────────────
   postgres:
@@ -42,47 +46,22 @@ services:
 
   # ── Queue Worker ─────────────────────────────────────────
   queue:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *laravel-service
     container_name: yokkute_queue
-    restart: unless-stopped
     command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
-    env_file: .env.production
-    volumes:
-      - /opt/yokkute_labs:/var/www/html:ro
-      - app_storage:/var/www/html/storage/app
-      - app_logs:/var/www/html/storage/logs
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - yokkute_net
 
   # ── Scheduler (cron Laravel) ─────────────────────────────
   scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *laravel-service
     container_name: yokkute_scheduler
-    restart: unless-stopped
     command: >
       sh -c "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"
-    env_file: .env.production
-    volumes:
-      - /opt/yokkute_labs:/var/www/html:ro
-      - app_storage:/var/www/html/storage/app
-      - app_logs:/var/www/html/storage/logs
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - yokkute_net
 
 volumes:
   postgres_data:
   app_storage:
   app_logs:
+  public_uploads:
 
 networks:
   yokkute_net:

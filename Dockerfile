@@ -82,14 +82,19 @@ COPY --from=node_builder /app/public/build ./public/build
 
 # Permissions
 RUN mkdir -p storage/framework/{sessions,views,cache} \
+    storage/app/public \
+    storage/app/private \
     storage/logs \
     bootstrap/cache \
+    public/uploads \
     && chown -R www-data:www-data storage bootstrap/cache \
+    && chown -R www-data:www-data public/uploads \
     && chmod -R 775 storage bootstrap/cache
 
 # Optimisations Laravel prod
 RUN rm -f bootstrap/cache/*.php \
     && php artisan package:discover --ansi \
+    && [ -L public/storage ] || php artisan storage:link \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
