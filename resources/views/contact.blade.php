@@ -126,7 +126,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('contact.store') }}" method="POST">
+                    <form action="{{ route('contact.store') }}" method="POST" data-turbo="false">
                         @csrf
 
                         <div class="row g-3 mb-3">
@@ -260,23 +260,36 @@
 
 @push('scripts')
 <script>
-    const besoinSelect = document.querySelector('select[name="besoin"]');
-    const orientationModalEl = document.getElementById('orientationModal');
-    const orientationModal = orientationModalEl && window.bootstrap?.Modal
-        ? new window.bootstrap.Modal(orientationModalEl)
-        : null;
+    (() => {
+        const initContactPage = () => {
+            const besoinSelect = document.querySelector('select[name="besoin"]');
+            const orientationModalEl = document.getElementById('orientationModal');
+            const orientationModal = orientationModalEl && window.bootstrap?.Modal
+                ? window.bootstrap.Modal.getOrCreateInstance(orientationModalEl)
+                : null;
 
-    if (besoinSelect && orientationModal) {
-        besoinSelect.addEventListener('change', () => {
-            if (besoinSelect.value === 'orientation') {
-                orientationModal.show();
+            if (!besoinSelect || !orientationModal || besoinSelect.dataset.orientationBound === '1') {
+                return;
             }
-        });
 
-        if (besoinSelect.value === 'orientation') {
-            orientationModal.show();
+            const maybeShowOrientationModal = () => {
+                if (besoinSelect.value === 'orientation') {
+                    orientationModal.show();
+                }
+            };
+
+            besoinSelect.addEventListener('change', maybeShowOrientationModal);
+            besoinSelect.dataset.orientationBound = '1';
+            maybeShowOrientationModal();
+        };
+
+        document.addEventListener('DOMContentLoaded', initContactPage, { once: true });
+        document.addEventListener('turbo:load', initContactPage);
+
+        if (document.readyState !== 'loading') {
+            initContactPage();
         }
-    }
+    })();
 </script>
 @endpush
 

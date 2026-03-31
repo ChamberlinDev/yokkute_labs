@@ -7,6 +7,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         view()->composer('*', function ($view): void {
             static $settings = null;

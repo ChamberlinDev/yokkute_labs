@@ -1,4 +1,32 @@
 (function () {
+    function createMemoryStorage() {
+        var store = {};
+
+        return {
+            getItem: function (key) {
+                return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null;
+            },
+            setItem: function (key, value) {
+                store[key] = String(value);
+            },
+            removeItem: function (key) {
+                delete store[key];
+            }
+        };
+    }
+
+    function resolveSessionStorage() {
+        try {
+            var storage = window.sessionStorage;
+            var probeKey = '__yokkute_storage_probe__';
+            storage.setItem(probeKey, '1');
+            storage.removeItem(probeKey);
+            return storage;
+        } catch (error) {
+            return createMemoryStorage();
+        }
+    }
+
     function removeExistingChatbot() {
         var existingPanel = document.querySelector('.chatbot-panel');
         var existingLauncher = document.querySelector('.chatbot-launcher');
@@ -55,7 +83,7 @@
 
         var storageKey = 'yokkute_chatbot_history_v1';
         var storageTimestampKey = 'yokkute_chatbot_history_updated_at_v1';
-        var storage = window.sessionStorage;
+        var storage = resolveSessionStorage();
         var lifetimeMeta = document.querySelector('meta[name="chatbot-session-lifetime-minutes"]');
         var sessionLifetimeMinutes = lifetimeMeta ? parseInt(lifetimeMeta.getAttribute('content') || '120', 10) : 120;
         var sessionLifetimeMs = Math.max(isNaN(sessionLifetimeMinutes) ? 120 : sessionLifetimeMinutes, 1) * 60 * 1000;

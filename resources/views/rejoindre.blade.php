@@ -337,39 +337,53 @@
 
 @push('scripts')
 <script>
-    // Reveal on scroll
-    const rejoindreRevealEls = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window) {
-        const rejoindreRevealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    rejoindreRevealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    (() => {
+        const initRejoindrePage = () => {
+            const rejoindreRevealEls = document.querySelectorAll('.reveal');
 
-        rejoindreRevealEls.forEach(el => rejoindreRevealObserver.observe(el));
-    } else {
-        rejoindreRevealEls.forEach(el => el.classList.add('visible'));
-    }
+            if ('IntersectionObserver' in window) {
+                const rejoindreRevealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            rejoindreRevealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 
-    // File upload label
-    const cvInput = document.getElementById('cv-upload');
-    const cvLabelText = document.getElementById('cv-label-text');
-    if (cvInput) {
-        cvInput.addEventListener('change', () => {
-            cvLabelText.textContent = cvInput.files[0]
-                ? cvInput.files[0].name
-                : 'Choisir un fichier';
-        });
-    }
+                rejoindreRevealEls.forEach((el) => rejoindreRevealObserver.observe(el));
+            } else {
+                rejoindreRevealEls.forEach((el) => el.classList.add('visible'));
+            }
 
-    const successToastEl = document.getElementById('candidatureSuccessToast');
-    if (successToastEl && window.bootstrap?.Toast) {
-        const successToast = new window.bootstrap.Toast(successToastEl);
-        successToast.show();
-    }
+            const cvInput = document.getElementById('cv-upload');
+            const cvLabelText = document.getElementById('cv-label-text');
+
+            if (cvInput && cvLabelText && cvInput.dataset.bound !== '1') {
+                cvInput.addEventListener('change', () => {
+                    cvLabelText.textContent = cvInput.files[0]
+                        ? cvInput.files[0].name
+                        : 'Choisir un fichier';
+                });
+
+                cvInput.dataset.bound = '1';
+            }
+
+            const successToastEl = document.getElementById('candidatureSuccessToast');
+            if (successToastEl && window.bootstrap?.Toast && successToastEl.dataset.shown !== '1') {
+                const successToast = window.bootstrap.Toast.getOrCreateInstance(successToastEl);
+                successToast.show();
+                successToastEl.dataset.shown = '1';
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', initRejoindrePage, { once: true });
+        document.addEventListener('turbo:load', initRejoindrePage);
+
+        if (document.readyState !== 'loading') {
+            initRejoindrePage();
+        }
+    })();
 </script>
 @endpush
 

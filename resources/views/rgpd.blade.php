@@ -87,24 +87,30 @@
 
 @push('scripts')
 <script>
-    function onback() {
-        if (window.history.length > 1) {
-            window.history.back();
-        } else {
-            window.location.href = "{{ route('home') }}";
-        }
-    }
+    (() => {
+        window.onback = function () {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "{{ route('home') }}";
+            }
+        };
 
-    // Au survol du bouton retour, ajouter un effet visuel
-    const backBtn = document.querySelector('.back-btn');
-    if (backBtn) {
-        backBtn.addEventListener('mouseenter', function() {
+        const backBtn = document.querySelector('.back-btn');
+        if (!backBtn || backBtn.dataset.bound === '1') {
+            return;
+        }
+
+        backBtn.addEventListener('mouseenter', function () {
             this.style.backgroundColor = 'rgba(26, 122, 74, 0.1)';
         });
-        backBtn.addEventListener('mouseleave', function() {
+
+        backBtn.addEventListener('mouseleave', function () {
             this.style.backgroundColor = 'transparent';
         });
-    }
+
+        backBtn.dataset.bound = '1';
+    })();
 </script>
 @endpush
 

@@ -15,7 +15,6 @@
 
 <link href="{{ asset('css/home.css') }}" rel="stylesheet">
 <link href="{{ asset('css/hero.css') }}" rel="stylesheet">
-<script src="{{ asset('js/hero.js') }}"></script>
 
 {{-- ... HERO ... --}}
 <section class="hero">
@@ -215,19 +214,22 @@
 </style>
 
 <script>
-    const els = document.querySelectorAll('[data-reveal]');
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('visible');
-                io.unobserve(e.target);
-            }
+    (() => {
+        const els = document.querySelectorAll('[data-reveal]');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    io.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
         });
-    }, {
-        threshold: 0.1
-    });
-    els.forEach(el => io.observe(el));
-    setTimeout(() => els.forEach(el => el.classList.add('visible')), 500);
+
+        els.forEach((el) => io.observe(el));
+        setTimeout(() => els.forEach((el) => el.classList.add('visible')), 500);
+    })();
 </script>
 
 <!-- ... APPROCHE ... -->
@@ -389,3 +391,7 @@
  
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/hero.js') }}"></script>
+@endpush

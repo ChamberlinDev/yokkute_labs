@@ -262,15 +262,19 @@
 
 @push('scripts')
 <script>
-    const showcase = document.getElementById('teamShowcase');
-    const nextBtn = document.querySelector('[data-dir="next"]');
-    const prevBtn = document.querySelector('[data-dir="prev"]');
+    (() => {
+        const showcase = document.getElementById('teamShowcase');
+        const nextBtn = document.querySelector('[data-dir="next"]');
+        const prevBtn = document.querySelector('[data-dir="prev"]');
 
-    if (showcase && nextBtn && prevBtn) {
+        if (!showcase || !nextBtn || !prevBtn || showcase.dataset.bound === '1') {
+            return;
+        }
+
         const getScrollStep = () => {
             const card = showcase.querySelector('.team-photo-card');
-            const gap = parseInt(window.getComputedStyle(showcase).gap);
-            return card.offsetWidth + gap;
+            const gap = parseInt(window.getComputedStyle(showcase).gap, 10) || 0;
+            return card ? card.offsetWidth + gap : showcase.clientWidth;
         };
 
         nextBtn.addEventListener('click', () => {
@@ -290,7 +294,9 @@
                 showcase.scrollBy({ left: -step, behavior: 'smooth' });
             }
         });
-    }
+
+        showcase.dataset.bound = '1';
+    })();
 </script>
 @endpush
 
@@ -304,4 +310,3 @@
 </section>
 
 @endsection
-
