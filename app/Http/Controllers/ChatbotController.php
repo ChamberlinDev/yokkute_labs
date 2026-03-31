@@ -79,9 +79,28 @@ class ChatbotController extends Controller
             return "Bonjour. Je peux vous aider a clarifier votre besoin, identifier le bon service et definir la prochaine etape la plus utile. Quel resultat cherchez-vous a obtenir en priorite ?";
         }
 
+        if ($this->isShortAffirmative($text) && $this->lastAssistantMessageContains($history, [
+            'formuler un brief',
+            'brief court et utile',
+            'avant envoi',
+        ])) {
+            return "Voici un brief simple que vous pouvez nous envoyer via /contact :\n"
+                . "1) Secteur : votre activite et votre marche.\n"
+                . "2) Besoin : ce que vous voulez resoudre ou lancer.\n"
+                . "3) Contexte actuel : outils, blocages, urgence, equipe concernee.\n"
+                . "4) Objectif a 90 jours : resultat concret attendu.\n"
+                . "5) Budget ou niveau de priorite : si vous en avez deja un.\n\n"
+                . "Vous pouvez aussi nous contacter directement par email a {$contactEmail} ou par telephone/WhatsApp au {$contactPhone}.";
+        }
+
         $matchedTeamMember = $this->bestTeamMemberMatch($text, $team->all());
-        if ($matchedTeamMember !== null && preg_match('/qui est|qui c est|parle moi de|profil de|membre|linkedin/', $text)) {
+        if ($matchedTeamMember !== null && preg_match('/qui est|qui c est|c.?est qui|parle moi de|profil de|membre|linkedin/', $text)) {
             return $this->formatTeamMemberReplyFr($matchedTeamMember);
+        }
+
+        $matchedTeamRole = $this->bestTeamRoleMatch($text, $team->all());
+        if ($matchedTeamRole !== null && preg_match('/qui est|qui c est|c.?est qui|cto|ceo|co founder|co-founder|fondateur|directeur/', $text)) {
+            return $this->formatTeamMemberReplyFr($matchedTeamRole);
         }
 
         if (preg_match('/rejoindre|recrut|emploi|poste|carriere|candidature|cv/', $text)) {
@@ -101,7 +120,12 @@ class ChatbotController extends Controller
             return "Si votre besoin n'est pas encore parfaitement defini, le plus simple est de passer par /contact pour un echange exploratoire. Nous vous repondons sous 24h ouvrrees pour vous orienter vers l'audit, le conseil, l'integration numerique, l'IA, la formation ou la data/BI selon votre contexte et votre priorite business.";
         }
 
-        if (preg_match('/qui sommes|\ba propos\b|\bpropos\b|membre|membres|notre equipe|agent|agents|linkedin/', $text)) {
+        if (preg_match('/mail|email|contacter|contact|telephone|telphone|numero de telephone|numero de tel|\bnumero\b|\btel\b|portable|whatsapp|rdv|rendez|joindre|appeler/', $text)) {
+            return "Vous pouvez nous joindre via /contact, par email a {$contactEmail}, ou par telephone au {$contactPhone}. " .
+                "Si vous le souhaitez, je peux aussi vous aider a formuler un brief court et utile avant envoi.";
+        }
+
+        if (preg_match('/qui sommes|\ba propos\b|\bpropos\b|membre|membres|\bequipe\b|notre equipe|\bteam\b|\bprofil\b|\bprofils\b|agent|agents|linkedin/', $text)) {
             $roles = $team->pluck('role')->filter()->unique()->take(3)->implode(', ');
 
             $profiles = $team
@@ -192,11 +216,6 @@ class ChatbotController extends Controller
                 "Pour obtenir un chiffrage fiable, passez par /contact: nous revenons rapidement avec un cadrage adapte a votre contexte.";
         }
 
-        if (preg_match('/mail|email|contacter|contact|telephone|whatsapp|rdv|rendez/', $text)) {
-            return "Vous pouvez nous joindre via /contact, par email a {$contactEmail}, ou par telephone au {$contactPhone}. " .
-                "Si vous le souhaitez, je peux aussi vous aider a formuler un brief court et utile avant envoi.";
-        }
-
         if (preg_match('/ou|adresse|ville|dakar|senegal/', $text)) {
             return "Nous sommes bases a {$contactAddress} et nous accompagnons aussi des clients a distance.";
         }
@@ -205,11 +224,7 @@ class ChatbotController extends Controller
             return "Avec plaisir. Si vous voulez avancer vite, je peux vous proposer un plan d'action simple en 3 etapes selon votre objectif.";
         }
 
-        if (!empty($history)) {
-            return "Je peux vous aider a transformer votre besoin en plan concret. Dites-moi simplement: 1) votre secteur, 2) votre principal blocage, 3) votre objectif sur 90 jours.";
-        }
-
-        return "Je peux vous aider sur l'audit numerique, l'integration IA, les services, le budget, le recrutement et le contact. Quel resultat voulez-vous obtenir en priorite ?";
+        return "Je n'ai pas encore assez d'informations pour repondre precisement a cette question. Vous pouvez nous contacter via /contact, par email a {$contactEmail}, ou par telephone/WhatsApp au {$contactPhone}.";
     }
 
     private function detectLanguage(string $message): string
@@ -316,7 +331,7 @@ class ChatbotController extends Controller
                 return 'Pricing depends on scope and complexity. The fastest way is to send your context via /contact for a reliable estimate.';
             }
 
-            return 'I can answer about services, team, contact details, recruitment, pricing, and data privacy. Ask me in English and I will help.';
+            return "I do not have enough information to answer that precisely yet. You can contact us via /contact, by email at {$contactEmail}, or by phone/WhatsApp at {$contactPhone}.";
         }
 
         if ($language === 'es') {
@@ -342,7 +357,7 @@ class ChatbotController extends Controller
                 return "Puedes postular en /rejoindre. Campos principales: nombre, apellido, email, area, experiencia y mensaje. CV opcional en PDF (max 30 MB). Contacto RRHH: {$rhEmail}.";
             }
 
-            return 'Puedo ayudarte con servicios, equipo, contacto, reclutamiento y presupuesto. Escribeme tu pregunta en espanol.';
+            return "Todavia no tengo suficiente informacion para responder con precision. Puedes contactarnos por /contact, por correo en {$contactEmail}, o por telefono/WhatsApp en {$contactPhone}.";
         }
 
         if ($language === 'it') {
@@ -368,7 +383,7 @@ class ChatbotController extends Controller
                 return "Puoi candidarti su /rejoindre. Campi principali: nome, cognome, email, area, esperienza e messaggio. CV opzionale in PDF (max 30 MB). Contatto HR: {$rhEmail}.";
             }
 
-            return 'Posso aiutarti su servizi, team, contatti, candidatura e budget. Scrivimi in italiano.';
+            return "Non ho ancora abbastanza informazioni per rispondere con precisione. Puoi contattarci da /contact, via email a {$contactEmail}, o via telefono/WhatsApp al {$contactPhone}.";
         }
 
         if ($language === 'ar') {
@@ -394,7 +409,7 @@ class ChatbotController extends Controller
                 return "يمكنك التقديم عبر /rejoindre. السيرة الذاتية اختيارية بصيغة PDF (حد اقصى 30 MB). للتواصل مع الموارد البشرية: {$rhEmail}.";
             }
 
-            return 'يمكنني مساعدتك في الخدمات، الفريق، وسائل التواصل، التوظيف، والتكلفة. اكتب سؤالك بالعربية.';
+            return "لا املك بعد معلومات كافية للاجابة بدقة. يمكنك التواصل معنا عبر /contact او البريد {$contactEmail} او الهاتف/واتساب {$contactPhone}.";
         }
 
         return "Je peux vous aider en francais, english, espanol, italiano ou arabe. Posez votre question.";
@@ -618,13 +633,50 @@ class ChatbotController extends Controller
 
     private function normalize(string $text): string
     {
-        $normalized = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', mb_strtolower($text));
+        $normalized = Str::of($text)
+            ->lower()
+            ->ascii()
+            ->replaceMatches('/[^a-z0-9]+/u', ' ')
+            ->squish()
+            ->value();
 
-        if ($normalized === false) {
-            return mb_strtolower($text);
+        if ($normalized !== '') {
+            return $normalized;
         }
 
-        return $normalized;
+        return mb_strtolower($text);
+    }
+
+    private function isShortAffirmative(string $normalizedText): bool
+    {
+        return preg_match('/^(oui|ok|okay|dac|d accord|vas y|go|allons y)$/', $normalizedText) === 1;
+    }
+
+    private function lastAssistantMessageContains(array $history, array $needles): bool
+    {
+        for ($i = count($history) - 1; $i >= 0; $i--) {
+            $item = $history[$i] ?? null;
+
+            if (!is_array($item) || ($item['role'] ?? '') !== 'assistant') {
+                continue;
+            }
+
+            $content = $this->normalize((string) ($item['content'] ?? ''));
+            if ($content === '') {
+                return false;
+            }
+
+            foreach ($needles as $needle) {
+                $normalizedNeedle = $this->normalize((string) $needle);
+                if ($normalizedNeedle !== '' && str_contains($content, $normalizedNeedle)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return false;
     }
 
     private function bestTeamMemberMatch(string $normalizedMessage, array $team): ?object
@@ -664,6 +716,51 @@ class ChatbotController extends Controller
 
                 if (in_array($nameToken, $messageTokens, true)) {
                     $score += 2;
+                }
+            }
+
+            if ($score > $bestScore) {
+                $bestScore = $score;
+                $bestMember = $member;
+            }
+        }
+
+        return $bestScore >= 2 ? $bestMember : null;
+    }
+
+    private function bestTeamRoleMatch(string $normalizedMessage, array $team): ?object
+    {
+        if (empty($team)) {
+            return null;
+        }
+
+        $messageTokens = array_values(array_filter(
+            $this->tokenize($normalizedMessage),
+            static fn (string $token): bool => strlen($token) >= 3
+        ));
+
+        if (empty($messageTokens)) {
+            return null;
+        }
+
+        $bestMember = null;
+        $bestScore = 0;
+
+        foreach ($team as $member) {
+            $normalizedRole = $this->normalize(trim((string) ($member->role ?? '')));
+
+            if ($normalizedRole === '') {
+                continue;
+            }
+
+            $score = 0;
+            foreach ($this->tokenize($normalizedRole) as $roleToken) {
+                if (strlen($roleToken) < 3) {
+                    continue;
+                }
+
+                if (in_array($roleToken, $messageTokens, true)) {
+                    $score += in_array($roleToken, ['ceo', 'cto', 'founder'], true) ? 3 : 2;
                 }
             }
 
