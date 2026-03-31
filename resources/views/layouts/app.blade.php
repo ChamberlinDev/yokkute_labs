@@ -25,6 +25,49 @@
     <script src="{{ asset('js/chatbot.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        const initializeMobileNav = () => {
+            const burger = document.getElementById('navBurger');
+            const links = document.getElementById('navLinks');
+            const overlay = document.getElementById('navOverlay');
+
+            if (!burger || !links || !overlay || burger.dataset.bound === '1') {
+                return;
+            }
+
+            const setOpenState = (isOpen) => {
+                burger.classList.toggle('open', isOpen);
+                links.classList.toggle('open', isOpen);
+                overlay.classList.toggle('visible', isOpen);
+                burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                document.body.classList.toggle('nav-open', isOpen);
+            };
+
+            const toggleMenu = () => setOpenState(!links.classList.contains('open'));
+            const closeMenu = () => setOpenState(false);
+
+            burger.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            links.querySelectorAll('a').forEach((anchor) => {
+                anchor.addEventListener('click', closeMenu);
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 820) {
+                    closeMenu();
+                }
+            });
+
+            burger.dataset.bound = '1';
+            setOpenState(false);
+        };
+
         const initializePageEffects = () => {
             const excludedScope = '.navbar-yokkute, .footer-yokkute, script, style, form, .form-card';
             const cinematicSlowSelector = 'h1, h2, h3, .section-title, .nd-title, .hero-title, .approche-title, .info-heading, .hero-tag, .section-label';
@@ -89,6 +132,8 @@
             }
         };
 
+        document.addEventListener('DOMContentLoaded', initializeMobileNav, { once: true });
+        document.addEventListener('turbo:load', initializeMobileNav);
         document.addEventListener('DOMContentLoaded', initializePageEffects, { once: true });
         document.addEventListener('turbo:load', initializePageEffects);
     </script>

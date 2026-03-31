@@ -189,6 +189,10 @@ a { text-decoration: none; color: inherit; }
 
 .nav-overlay.visible { opacity: 1; }
 
+body.nav-open {
+    overflow: hidden;
+}
+
 /* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 820px) {
 
@@ -566,7 +570,7 @@ a { text-decoration: none; color: inherit; }
 /* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 768px) {
     .navbar-yokkute { padding: 0 1rem; }
-    .nav-links { display: none; }
+    .nav-links { display: flex; }
     .page-hero  { padding: 3.5rem 1.25rem; }
     .page-header-sm { padding: 2.5rem 1.25rem; }
     .strip-cta  { padding: 3rem 1.25rem; }
