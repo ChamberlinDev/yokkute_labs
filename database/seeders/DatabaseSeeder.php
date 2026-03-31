@@ -5,10 +5,8 @@ namespace Database\Seeders;
 use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\TeamMember;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -20,14 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->updateOrCreate(
-            ['email' => 'admin@yokkute.com'],
-            [
-                'name' => 'Admin Yokkute',
-                'password' => Hash::make('Admin12345!'),
-                'is_admin' => true,
-            ]
-        );
+        $this->call(AdminUserSeeder::class);
 
         $services = [
             [

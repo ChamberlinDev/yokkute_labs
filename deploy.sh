@@ -118,6 +118,7 @@ wait_for_container "yokkute_app" 30
 
 print_step 5 "Running migrations and production seed..."
 artisan migrate --force
+artisan db:seed --class=AdminUserSeeder --force
 artisan db:seed --class=SiteSettingSeeder --force
 
 print_step 6 "Ensuring storage symlink..."
