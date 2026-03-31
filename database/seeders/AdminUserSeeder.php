@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
 use RuntimeException;
 
 class AdminUserSeeder extends Seeder
@@ -14,25 +12,7 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         $admin = $this->adminConfig();
-
-        Validator::make($admin, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'password' => [
-                'required',
-                'string',
-                Password::min(12)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols(),
-            ],
-            'force_password_reset' => ['required', 'boolean'],
-        ], [
-            'name.required' => 'ADMIN_DEFAULT_NAME doit etre defini dans .env.production.',
-            'email.required' => 'ADMIN_DEFAULT_EMAIL doit etre defini dans .env.production.',
-            'password.required' => 'ADMIN_DEFAULT_PASSWORD doit etre defini dans .env.production.',
-        ])->validate();
+        $this->assertValidAdminConfig($admin);
 
         $user = User::query()
             ->whereRaw('LOWER(email) = ?', [$admin['email']])
@@ -88,5 +68,57 @@ class AdminUserSeeder extends Seeder
             'password' => $password,
             'force_password_reset' => $forcePasswordReset,
         ];
+    }
+
+    /**
+     * @param array{name: string, email: string, password: string, force_password_reset: bool} $admin
+     */
+    private function assertValidAdminConfig(array $admin): void
+    {
+        $errors = [];
+
+        if ($admin['name'] === '') {
+            $errors[] = 'ADMIN_DEFAULT_NAME doit etre defini dans .env.production.';
+        } elseif (mb_strlen($admin['name']) > 255) {
+            $errors[] = 'ADMIN_DEFAULT_NAME ne doit pas depasser 255 caracteres.';
+        }
+
+        if ($admin['email'] === '') {
+            $errors[] = 'ADMIN_DEFAULT_EMAIL doit etre defini dans .env.production.';
+        } elseif (!filter_var($admin['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'ADMIN_DEFAULT_EMAIL doit contenir une adresse e-mail valide.';
+        } elseif (mb_strlen($admin['email']) > 255) {
+            $errors[] = 'ADMIN_DEFAULT_EMAIL ne doit pas depasser 255 caracteres.';
+        }
+
+        $password = $admin['password'];
+
+        if ($password === '') {
+            $errors[] = 'ADMIN_DEFAULT_PASSWORD doit etre defini dans .env.production.';
+        } else {
+            if (mb_strlen($password) < 12) {
+                $errors[] = 'ADMIN_DEFAULT_PASSWORD doit contenir au moins 12 caracteres.';
+            }
+
+            if (!preg_match('/[a-z]/', $password)) {
+                $errors[] = 'ADMIN_DEFAULT_PASSWORD doit contenir au moins une lettre minuscule.';
+            }
+
+            if (!preg_match('/[A-Z]/', $password)) {
+                $errors[] = 'ADMIN_DEFAULT_PASSWORD doit contenir au moins une lettre majuscule.';
+            }
+
+            if (!preg_match('/\d/', $password)) {
+                $errors[] = 'ADMIN_DEFAULT_PASSWORD doit contenir au moins un chiffre.';
+            }
+
+            if (!preg_match('/[^A-Za-z0-9]/', $password)) {
+                $errors[] = 'ADMIN_DEFAULT_PASSWORD doit contenir au moins un symbole.';
+            }
+        }
+
+        if ($errors !== []) {
+            throw new RuntimeException(implode(' ', $errors));
+        }
     }
 }

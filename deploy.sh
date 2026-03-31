@@ -9,6 +9,9 @@ APP_DIR="/opt/yokkute_labs"
 REPO_URL="https://github.com/ChamberlinDev/yokkute_labs.git"
 BRANCH="roland"
 COMPOSE_FILE="docker-compose.yml"
+SELF_REEXEC_GUARD="${DEPLOY_SELF_REEXEC:-0}"
+SCRIPT_PATH="$(readlink -f "$0" 2>/dev/null || printf '%s' "$0")"
+ORIGINAL_ARGS=("$@")
 
 dc() {
     docker compose -f "$COMPOSE_FILE" "$@"
@@ -87,9 +90,17 @@ print_banner
 
 if [ -d "$APP_DIR/.git" ]; then
     print_step 1 "Updating code from Git..."
+    BEFORE_SCRIPT_HASH="$(sha256sum "$SCRIPT_PATH" | awk '{print $1}')"
     cd "$APP_DIR"
     git fetch origin
     git reset --hard "origin/$BRANCH"
+
+    AFTER_SCRIPT_HASH="$(sha256sum "$SCRIPT_PATH" | awk '{print $1}')"
+
+    if [ "$SELF_REEXEC_GUARD" != "1" ] && [ "$BEFORE_SCRIPT_HASH" != "$AFTER_SCRIPT_HASH" ]; then
+        echo "deploy.sh was updated from Git. Restarting with the latest version..."
+        exec env DEPLOY_SELF_REEXEC=1 bash "$SCRIPT_PATH" "${ORIGINAL_ARGS[@]}"
+    fi
 else
     print_step 1 "Cloning repository..."
     git clone -b "$BRANCH" "$REPO_URL" "$APP_DIR"
