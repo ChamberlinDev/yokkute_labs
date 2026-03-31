@@ -6,7 +6,7 @@
 set -e
 
 APP_DIR="/opt/yokkute_labs"
-REPO_URL=" https://github.com/ChamberlinDev/yokkute_labs.git"
+REPO_URL="https://github.com/ChamberlinDev/yokkute_labs.git"
 BRANCH="roland"
 COMPOSE_FILE="docker-compose.yml"
 
