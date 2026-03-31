@@ -88,7 +88,9 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && chmod -R 775 storage bootstrap/cache
 
 # Optimisations Laravel prod
-RUN php artisan config:cache \
+RUN rm -f bootstrap/cache/*.php \
+    && php artisan package:discover --ansi \
+    && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
 
