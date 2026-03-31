@@ -1,0 +1,87 @@
+services:
+
+  # ── Application PHP-FPM ──────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yokkute_app
+    restart: unless-stopped
+    env_file: .env.production
+    ports:
+      - "127.0.0.1:9000:9000"   # PHP-FPM — local uniquement, Nginx hôte s'y connecte
+    volumes:
+      - app_storage:/var/www/html/storage/app
+      - app_logs:/var/www/html/storage/logs
+      - /opt/yokkute_labs/public:/var/www/html/public:ro   # Nginx hôte lit depuis /opt
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - yokkute_net
+
+  # ── PostgreSQL ───────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: yokkute_postgres
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yokkute_net
+
+  # ── Queue Worker ─────────────────────────────────────────
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yokkute_queue
+    restart: unless-stopped
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    env_file: .env.production
+    volumes:
+      - app_storage:/var/www/html/storage/app
+      - app_logs:/var/www/html/storage/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - yokkute_net
+
+  # ── Scheduler (cron Laravel) ─────────────────────────────
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yokkute_scheduler
+    restart: unless-stopped
+    command: >
+      sh -c "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"
+    env_file: .env.production
+    volumes:
+      - app_storage:/var/www/html/storage/app
+      - app_logs:/var/www/html/storage/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - yokkute_net
+
+volumes:
+  postgres_data:
+  app_storage:
+  app_logs:
+
+networks:
+  yokkute_net:
+    driver: bridge
