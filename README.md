@@ -90,6 +90,10 @@ Set at least these values in `.env`:
 - `APP_URL=https://your-domain.com`
 - Database credentials
 - Mail credentials
+- `ADMIN_DEFAULT_NAME`
+- `ADMIN_DEFAULT_EMAIL`
+- `ADMIN_DEFAULT_PASSWORD`
+- `ADMIN_FORCE_PASSWORD_RESET=false`
 
 ### 3. Prepare database and storage
 
