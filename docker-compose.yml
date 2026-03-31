@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     env_file: .env.production
     ports:
-      - "127.0.0.1:9000:9000"   # PHP-FPM — local uniquement, Nginx hôte s'y connecte
+      - "9000:9000"   # PHP-FPM — local uniquement, Nginx hôte s'y connecte
     volumes:
       - app_storage:/var/www/html/storage/app
       - app_logs:/var/www/html/storage/logs
