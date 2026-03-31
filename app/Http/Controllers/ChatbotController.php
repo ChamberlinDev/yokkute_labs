@@ -101,7 +101,7 @@ class ChatbotController extends Controller
             return "Si votre besoin n'est pas encore parfaitement defini, le plus simple est de passer par /contact pour un echange exploratoire. Nous vous repondons sous 24h ouvrrees pour vous orienter vers l'audit, le conseil, l'integration numerique, l'IA, la formation ou la data/BI selon votre contexte et votre priorite business.";
         }
 
-        if (preg_match('/qui sommes|a propos|propos|membre|membres|notre equipe|agent|agents|linkedin/', $text)) {
+        if (preg_match('/qui sommes|\ba propos\b|\bpropos\b|membre|membres|notre equipe|agent|agents|linkedin/', $text)) {
             $roles = $team->pluck('role')->filter()->unique()->take(3)->implode(', ');
 
             $profiles = $team
