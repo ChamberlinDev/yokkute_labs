@@ -51,7 +51,7 @@
         var quickActions = panel.querySelector('#chatbotQuickActions');
         var form = panel.querySelector('#chatbotForm');
         var input = panel.querySelector('#chatbotInput');
-        var csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        var submitButton = panel.querySelector('.chatbot-submit');
 
         var storageKey = 'yokkute_chatbot_history_v1';
         var storageTimestampKey = 'yokkute_chatbot_history_updated_at_v1';
@@ -80,6 +80,17 @@
         }
 
         var chatHistory = [];
+        var requestInFlight = false;
+
+        function getCsrfToken() {
+            var tokenMeta = document.querySelector('meta[name="csrf-token"]');
+            return tokenMeta ? tokenMeta.getAttribute('content') || '' : '';
+        }
+
+        function setInputEnabled(isEnabled) {
+            input.disabled = !isEnabled;
+            submitButton.disabled = !isEnabled;
+        }
 
         function touchHistoryTimestamp() {
             try {
@@ -189,23 +200,61 @@
             updateQuickActionsVisibility();
         }
 
-        async function fetchBotReply(userMessage) {
-            var csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+        async function requestBotReply(userMessage) {
+            var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            var timeoutId = null;
 
-            var response = await fetch('/chatbot/message', {
+            if (controller) {
+                timeoutId = window.setTimeout(function () {
+                    controller.abort();
+                }, 12000);
+            }
+
+            var response;
+            try {
+                response = await fetch('/chatbot/message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': getCsrfToken()
                 },
+                signal: controller ? controller.signal : undefined,
                 body: JSON.stringify({
                     message: userMessage,
                     history: chatHistory.slice(-8)
                 })
             });
 
+            } catch (error) {
+                if (timeoutId) {
+                    window.clearTimeout(timeoutId);
+                }
+
+                if (error && error.name === 'AbortError') {
+                    throw new Error('chatbot_timeout');
+                }
+
+                throw new Error('chatbot_network_error');
+            }
+
+            if (timeoutId) {
+                window.clearTimeout(timeoutId);
+            }
+
             if (!response.ok) {
+                if (response.status === 429) {
+                    throw new Error('chatbot_rate_limited');
+                }
+
+                if (response.status === 419) {
+                    throw new Error('chatbot_session_expired');
+                }
+
+                if (response.status >= 500) {
+                    throw new Error('chatbot_server_error');
+                }
+
                 throw new Error('chatbot_request_failed');
             }
 
@@ -217,11 +266,33 @@
             return payload.reply.trim();
         }
 
+        async function fetchBotReply(userMessage) {
+            try {
+                return await requestBotReply(userMessage);
+            } catch (error) {
+                var transientCodes = ['chatbot_network_error', 'chatbot_timeout', 'chatbot_server_error', 'chatbot_session_expired'];
+                var shouldRetry = error && transientCodes.indexOf(error.message) !== -1;
+
+                if (!shouldRetry) {
+                    throw error;
+                }
+
+                await new Promise(function (resolve) {
+                    window.setTimeout(resolve, 500);
+                });
+
+                return requestBotReply(userMessage);
+            }
+        }
+
         async function handleUserMessage(text) {
             var message = (text || '').trim();
-            if (!message) {
+            if (!message || requestInFlight) {
                 return;
             }
+
+            requestInFlight = true;
+            setInputEnabled(false);
 
             addMessage(message, 'user');
             input.value = '';
@@ -235,7 +306,16 @@
                 addMessage(botReply, 'bot');
             } catch (error) {
                 typingBubble.remove();
-                addMessage('Je rencontre un souci technique temporaire. Merci de reessayer, ou contactez-nous via /contact.', 'bot');
+                if (error && error.message === 'chatbot_rate_limited') {
+                    addMessage('Vous envoyez des messages tres rapidement. Merci d\'attendre quelques secondes puis de reessayer.', 'bot');
+                } else if (error && error.message === 'chatbot_session_expired') {
+                    addMessage('Votre session a expire. Rechargez la page puis reessayez.', 'bot');
+                } else {
+                    addMessage('Je rencontre un souci technique temporaire. Merci de reessayer, ou contactez-nous via /contact.', 'bot');
+                }
+            } finally {
+                requestInFlight = false;
+                setInputEnabled(true);
             }
         }
 
@@ -280,12 +360,38 @@
         function openChat() {
             panel.classList.add('is-open');
             launcher.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('chatbot-open');
+            launcher.style.opacity = '0';
+            launcher.style.pointerEvents = 'none';
+            updatePanelHeightForViewport();
             input.focus();
         }
 
         function closeChat() {
             panel.classList.remove('is-open');
             launcher.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('chatbot-open');
+            launcher.style.opacity = '';
+            launcher.style.pointerEvents = '';
+            panel.style.height = '';
+            panel.style.maxHeight = '';
+        }
+
+        function isMobileViewport() {
+            return window.matchMedia('(max-width: 640px)').matches;
+        }
+
+        function updatePanelHeightForViewport() {
+            if (!isMobileViewport() || !panel.classList.contains('is-open')) {
+                return;
+            }
+
+            var viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+            var computedHeight = Math.floor(viewportHeight * 0.62);
+            computedHeight = Math.max(260, Math.min(500, computedHeight));
+            panel.style.height = computedHeight + 'px';
+            panel.style.maxHeight = computedHeight + 'px';
+            messages.scrollTop = messages.scrollHeight;
         }
 
         launcher.addEventListener('click', function () {
@@ -338,14 +444,26 @@
 
         document.addEventListener('click', window.__yokkuteChatbotOutsideClickHandler);
 
+        if (window.__yokkuteChatbotResizeHandler) {
+            window.removeEventListener('resize', window.__yokkuteChatbotResizeHandler);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', window.__yokkuteChatbotResizeHandler);
+            }
+        }
+
+        window.__yokkuteChatbotResizeHandler = function () {
+            updatePanelHeightForViewport();
+        };
+
+        window.addEventListener('resize', window.__yokkuteChatbotResizeHandler);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', window.__yokkuteChatbotResizeHandler);
+        }
+
         renderQuickActions();
         initializeConversation();
     }
 
     document.addEventListener('DOMContentLoaded', createChatbot, { once: true });
     document.addEventListener('turbo:load', createChatbot);
-
-    if (document.readyState !== 'loading') {
-        createChatbot();
-    }
 })();

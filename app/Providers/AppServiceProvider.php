@@ -67,8 +67,8 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         RateLimiter::for('chatbot', fn (Request $request): array => [
-            Limit::perMinute(20)->by($request->ip()),
-            Limit::perHour(240)->by($request->ip()),
+            Limit::perMinute(40)->by($request->ip()),
+            Limit::perHour(600)->by($request->ip()),
         ]);
     }
 }

@@ -570,7 +570,7 @@ body.nav-open {
 /* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 768px) {
     .navbar-yokkute { padding: 0 1rem; }
-    .nav-links { display: none; }
+    .nav-links { display: flex; }
     .page-hero  { padding: 3.5rem 1.25rem; }
     .page-header-sm { padding: 2.5rem 1.25rem; }
     .strip-cta  { padding: 3rem 1.25rem; }

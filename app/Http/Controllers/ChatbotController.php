@@ -103,6 +103,14 @@ class ChatbotController extends Controller
             return $this->formatTeamMemberReplyFr($matchedTeamRole);
         }
 
+        if (preg_match('/(?:qui est|qui c est|c.?est qui|parle moi de|profil de)\s+(.+)/', $text, $matches) === 1) {
+            $candidateName = trim((string) ($matches[1] ?? ''));
+
+            if ($candidateName !== '' && !preg_match('/\b(vous|yokkute|equipe|team|service|contact)\b/', $candidateName)) {
+                return "Je n'ai pas de profil interne pour \"{$candidateName}\" dans l'equipe Yokkute Labs. Vous pouvez consulter l'equipe actuelle sur /a-propos, ou nous ecrire via /contact pour une demande specifique.";
+            }
+        }
+
         if (preg_match('/rejoindre|recrut|emploi|poste|carriere|candidature|cv/', $text)) {
             return "Vous pouvez candidater directement via /rejoindre. Le formulaire demande surtout: prenom, nom, email, domaine, experience et message. Le CV est optionnel, en PDF, avec une limite de 30 Mo. " .
                 "Domaines principaux: developpement, data/BI, conseil, gestion de projet, formation, commercial, marketing ou profil transversal. Contact RH: {$rhEmail}.";
