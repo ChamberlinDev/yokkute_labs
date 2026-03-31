@@ -189,6 +189,10 @@ a { text-decoration: none; color: inherit; }
 
 .nav-overlay.visible { opacity: 1; }
 
+body.nav-open {
+    overflow: hidden;
+}
+
 /* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 820px) {
 
