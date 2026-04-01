@@ -3,11 +3,11 @@
     $contactNeeds = trans('site.contact.form.needs');
     $orientationWhatsappText = app()->getLocale() === 'en'
         ? "Hello Yokkute Labs, I would like guidance on the service that best fits my needs."
-        : "Bonjour Yokkute Labs, j'aimerais etre oriente sur le service le plus adapte a mon besoin.";
-    $orientationEmailSubject = app()->getLocale() === 'en' ? 'Guidance request' : "Demande d'orientation";
+        : "Bonjour Yokkute Labs, j'aimerais être orienté vers le service le plus adapté à mon besoin.";
+    $orientationEmailSubject = app()->getLocale() === 'en' ? 'Guidance request' : "Demande d’orientation";
     $orientationEmailBody = app()->getLocale() === 'en'
         ? 'Hello, I would like guidance toward the service that best fits my needs.'
-        : "Bonjour, j'aimerais etre oriente vers le service le plus adapte a mon besoin.";
+        : "Bonjour, j'aimerais être orienté vers le service le plus adapté à mon besoin.";
 @endphp
 
 @extends('layouts.app')

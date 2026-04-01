@@ -66,7 +66,7 @@
         <div class="text-center mb-4">
             <p class="login-pill mb-3"><i class="bi bi-shield-lock"></i>Administration</p>
             <h1 class="h3 mb-2">Connexion au back-office</h1>
-            <p class="text-muted mb-0">Utilisez votre compte administrateur pour gerer le contenu du site.</p>
+            <p class="text-muted mb-0">Utilisez votre compte administrateur pour gérer le contenu du site.</p>
         </div>
 
         @if($errors->any())
@@ -91,7 +91,7 @@
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                <label class="form-check-label" for="remember">Rester connecte</label>
+                <label class="form-check-label" for="remember">Rester connecté</label>
             </div>
             <button type="submit" class="btn btn-success btn-lg">Se connecter</button>
             <a href="{{ route('home') }}" class="btn btn-link text-decoration-none">Retour au site</a>

@@ -314,7 +314,7 @@ return [
             'text' => 'Seven areas of expertise, one goal: accelerate your digital transformation.',
         ],
         'stats' => [
-            'expertise' => 'Business expertises',
+            'expertise' => 'Business expertise',
             'custom' => 'Tailored',
             'jargon' => 'No jargon',
         ],

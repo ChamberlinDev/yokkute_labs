@@ -43,7 +43,7 @@
                 <option value="created_at" @selected(($filters['sort'] ?? 'created_at') === 'created_at')>Trier par date</option>
                 <option value="nom" @selected(($filters['sort'] ?? '') === 'nom')>Trier par nom</option>
                 <option value="domaine" @selected(($filters['sort'] ?? '') === 'domaine')>Trier par domaine</option>
-                <option value="experience" @selected(($filters['sort'] ?? '') === 'experience')>Trier par experience</option>
+                <option value="experience" @selected(($filters['sort'] ?? '') === 'experience')>Trier par expérience</option>
                 <option value="status" @selected(($filters['sort'] ?? '') === 'status')>Trier par statut</option>
             </select>
         </div>
@@ -55,7 +55,7 @@
         </div>
         <div class="col-md-9 col-lg-3 d-flex gap-2">
             <button type="submit" class="btn btn-success w-100">Filtrer</button>
-            <a href="{{ route('admin.candidatures.index') }}" class="btn btn-outline-secondary">Reset</a>
+            <a href="{{ route('admin.candidatures.index') }}" class="btn btn-outline-secondary">Réinitialiser</a>
             <a href="{{ route('admin.candidatures.export.csv', request()->query()) }}" class="btn btn-outline-success">Exporter CSV</a>
         </div>
     </form>
@@ -66,7 +66,7 @@
                 <tr>
                     <th><a href="{{ $sortUrl('nom') }}" class="text-decoration-none text-body">{{ $sortLabel('Candidat', 'nom') }}</a></th>
                     <th><a href="{{ $sortUrl('domaine') }}" class="text-decoration-none text-body">{{ $sortLabel('Domaine', 'domaine') }}</a></th>
-                    <th><a href="{{ $sortUrl('experience') }}" class="text-decoration-none text-body">{{ $sortLabel('Experience', 'experience') }}</a></th>
+                    <th><a href="{{ $sortUrl('experience') }}" class="text-decoration-none text-body">{{ $sortLabel('Expérience', 'experience') }}</a></th>
                     <th><a href="{{ $sortUrl('status') }}" class="text-decoration-none text-body">{{ $sortLabel('Statut', 'status') }}</a></th>
                     <th><a href="{{ $sortUrl('created_at') }}" class="text-decoration-none text-body">{{ $sortLabel('Date', 'created_at') }}</a></th>
                     <th class="text-end">Action</th>
@@ -107,7 +107,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6" class="text-muted">Aucune candidature recue.</td></tr>
+                    <tr><td colspan="6" class="text-muted">Aucune candidature reçue.</td></tr>
                 @endforelse
             </tbody>
         </table>

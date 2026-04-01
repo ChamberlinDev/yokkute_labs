@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Alertes securite')
-@section('page-title', 'Alertes securite actives')
+@section('title', 'Alertes de sécurité')
+@section('page-title', 'Alertes de sécurité actives')
 
 @section('content')
 <div class="d-flex flex-wrap gap-2 mb-4">
@@ -13,10 +13,10 @@
 <div class="row g-4 mb-4">
     <div class="col-lg-6">
         <div class="card card-soft p-4 h-100 border-danger-subtle">
-            <h2 class="h5 mb-3">Comptes admin verrouilles</h2>
+            <h2 class="h5 mb-3">Comptes admin verrouillés</h2>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
-                    <thead><tr><th>Compte</th><th>Echecs</th><th>Verrouille jusqu'a</th></tr></thead>
+                    <thead><tr><th>Compte</th><th>Échecs</th><th>Verrouillé jusqu'à</th></tr></thead>
                     <tbody>
                         @forelse($lockedAdmins as $admin)
                             <tr>
@@ -25,7 +25,7 @@
                                 <td>{{ optional($admin->admin_locked_until)->format('d/m/Y H:i:s') }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="3" class="text-muted">Aucun compte verrouille actuellement.</td></tr>
+                            <tr><td colspan="3" class="text-muted">Aucun compte verrouillé actuellement.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -36,7 +36,7 @@
     <div class="col-lg-6">
         <div class="card card-soft p-4 h-100 border-warning-subtle">
             <h2 class="h5 mb-3">Rotation mot de passe requise</h2>
-            <p class="text-muted small mb-3">Politique actuelle: rotation tous les {{ $passwordMaxAgeDays }} jours.</p>
+            <p class="text-muted small mb-3">Politique actuelle : rotation tous les {{ $passwordMaxAgeDays }} jours.</p>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead><tr><th>Compte</th><th>Rotation forcee</th><th>Dernier changement</th></tr></thead>
@@ -60,7 +60,7 @@
 <div class="row g-4">
     <div class="col-lg-6">
         <div class="card card-soft p-4 h-100">
-            <h2 class="h5 mb-3">Echecs login (24h) par compte</h2>
+            <h2 class="h5 mb-3">Échecs de connexion (24 h) par compte</h2>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead><tr><th>Compte</th><th>Tentatives</th></tr></thead>
@@ -71,7 +71,7 @@
                                 <td><span class="badge text-bg-secondary">{{ $item->attempts }}</span></td>
                             </tr>
                         @empty
-                            <tr><td colspan="2" class="text-muted">Aucun echec enregistre sur les 24 dernieres heures.</td></tr>
+                            <tr><td colspan="2" class="text-muted">Aucun échec enregistré sur les 24 dernières heures.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -81,7 +81,7 @@
 
     <div class="col-lg-6">
         <div class="card card-soft p-4 h-100">
-            <h2 class="h5 mb-3">Echecs login (24h) par IP</h2>
+            <h2 class="h5 mb-3">Échecs de connexion (24 h) par IP</h2>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead><tr><th>IP</th><th>Tentatives</th></tr></thead>
@@ -92,7 +92,7 @@
                                 <td><span class="badge text-bg-secondary">{{ $item->attempts }}</span></td>
                             </tr>
                         @empty
-                            <tr><td colspan="2" class="text-muted">Aucun echec enregistre sur les 24 dernieres heures.</td></tr>
+                            <tr><td colspan="2" class="text-muted">Aucun échec enregistré sur les 24 dernières heures.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

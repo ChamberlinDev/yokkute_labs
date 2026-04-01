@@ -42,7 +42,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="text-muted">Aucun service enregistre.</td></tr>
+                    <tr><td colspan="5" class="text-muted">Aucun service enregistré.</td></tr>
                 @endforelse
             </tbody>
         </table>

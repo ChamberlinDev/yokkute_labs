@@ -28,7 +28,7 @@ class TeamMemberController extends Controller
         $member = new TeamMember();
         $this->fillAndSave($request, $member);
 
-        return redirect()->route('admin.team.index')->with('success', 'Membre ajoute avec succes.');
+        return redirect()->route('admin.team.index')->with('success', 'Membre ajouté avec succès.');
     }
 
     public function edit(TeamMember $team): View
@@ -40,7 +40,7 @@ class TeamMemberController extends Controller
     {
         $this->fillAndSave($request, $team);
 
-        return redirect()->route('admin.team.index')->with('success', 'Membre mis a jour avec succes.');
+        return redirect()->route('admin.team.index')->with('success', 'Membre mis à jour avec succès.');
     }
 
     public function destroy(TeamMember $team): RedirectResponse
@@ -48,7 +48,7 @@ class TeamMemberController extends Controller
         PublicUploads::delete($team->image_path);
         $team->delete();
 
-        return redirect()->route('admin.team.index')->with('success', 'Membre supprime.');
+        return redirect()->route('admin.team.index')->with('success', 'Membre supprimé.');
     }
 
     private function fillAndSave(Request $request, TeamMember $member): void

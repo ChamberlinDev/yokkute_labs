@@ -29,7 +29,7 @@ class ServiceController extends Controller
         $service = new Service();
         $this->fillAndSave($request, $service);
 
-        return redirect()->route('admin.services.index')->with('success', 'Service cree avec succes.');
+        return redirect()->route('admin.services.index')->with('success', 'Service créé avec succès.');
     }
 
     public function edit(Service $service): View
@@ -41,7 +41,7 @@ class ServiceController extends Controller
     {
         $this->fillAndSave($request, $service);
 
-        return redirect()->route('admin.services.index')->with('success', 'Service mis a jour avec succes.');
+        return redirect()->route('admin.services.index')->with('success', 'Service mis à jour avec succès.');
     }
 
     public function destroy(Service $service): RedirectResponse
@@ -49,7 +49,7 @@ class ServiceController extends Controller
         PublicUploads::delete($service->image_path);
         $service->delete();
 
-        return redirect()->route('admin.services.index')->with('success', 'Service supprime.');
+        return redirect()->route('admin.services.index')->with('success', 'Service supprimé.');
     }
 
     private function fillAndSave(Request $request, Service $service): void

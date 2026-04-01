@@ -172,12 +172,12 @@
                 <nav class="nav flex-column gap-2">
                     <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="bi bi-grid me-2"></i>Tableau de bord</a>
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}"><i class="bi bi-box-seam me-2"></i>Services</a>
-                    <a href="{{ route('admin.team.index') }}" class="nav-link {{ request()->routeIs('admin.team.*') ? 'active' : '' }}"><i class="bi bi-people me-2"></i>Equipe</a>
+                    <a href="{{ route('admin.team.index') }}" class="nav-link {{ request()->routeIs('admin.team.*') ? 'active' : '' }}"><i class="bi bi-people me-2"></i>Équipe</a>
                     <a href="{{ route('admin.contact-messages.index') }}" class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}"><i class="bi bi-envelope me-2"></i>Messages</a>
                     <a href="{{ route('admin.candidatures.index') }}" class="nav-link {{ request()->routeIs('admin.candidatures.*') ? 'active' : '' }}"><i class="bi bi-person-workspace me-2"></i>Candidatures</a>
-                    <a href="{{ route('admin.security.logs') }}" class="nav-link {{ request()->routeIs('admin.security.*') ? 'active' : '' }}"><i class="bi bi-shield-check me-2"></i>Securite</a>
+                    <a href="{{ route('admin.security.logs') }}" class="nav-link {{ request()->routeIs('admin.security.*') ? 'active' : '' }}"><i class="bi bi-shield-check me-2"></i>Sécurité</a>
                     <a href="{{ route('admin.security.alerts') }}" class="nav-link {{ request()->routeIs('admin.security.alerts') ? 'active' : '' }}"><i class="bi bi-exclamation-triangle me-2"></i>Alertes actives</a>
-                    <a href="{{ route('admin.settings.edit') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}"><i class="bi bi-sliders me-2"></i>Reglages</a>
+                    <a href="{{ route('admin.settings.edit') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}"><i class="bi bi-sliders me-2"></i>Réglages</a>
                 </nav>
             </aside>
 
@@ -202,7 +202,7 @@
                         <a href="{{ route('home') }}" class="btn btn-outline-secondary" target="_blank" rel="noopener noreferrer">Voir le site</a>
                         <form action="{{ route('admin.logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-dark">Deconnexion</button>
+                            <button type="submit" class="btn btn-dark">Déconnexion</button>
                         </form>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Reglages')
-@section('page-title', 'Reglages du site')
+@section('title', 'Réglages')
+@section('page-title', 'Réglages du site')
 
 @section('content')
 <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" class="d-grid gap-4">
@@ -110,12 +110,12 @@
 
                     <div class="col-12">
                         <div class="alert alert-light border small mb-0">
-                            Pour les champs EN, tu peux laisser vide si tu veux conserver le fallback existant, mais pour un vrai rendu bilingue propre il vaut mieux les remplir.
+                            Pour les champs EN, vous pouvez laisser vide si vous souhaitez conserver le fallback existant, mais pour un vrai rendu bilingue propre, il vaut mieux les renseigner.
                         </div>
                     </div>
 
                     <div class="col-12"><hr class="my-2"></div>
-                    <div class="col-12"><p class="text-muted mb-0 fw-semibold">Coordonnees et reseaux</p></div>
+                    <div class="col-12"><p class="text-muted mb-0 fw-semibold">Coordonnées et réseaux</p></div>
 
                     <div class="col-md-6">
                         <label class="form-label">Email contact</label>
@@ -145,15 +145,15 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Telephone</label>
+                        <label class="form-label">Téléphone</label>
                         <input type="text" name="contact_phone" class="form-control" value="{{ old('contact_phone', $settings['contact_phone'] ?? '') }}" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Telephone href</label>
+                        <label class="form-label">Téléphone href</label>
                         <input type="text" name="contact_phone_href" class="form-control" value="{{ old('contact_phone_href', $settings['contact_phone_href'] ?? '') }}" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Numero WhatsApp</label>
+                        <label class="form-label">Numéro WhatsApp</label>
                         <input type="text" name="whatsapp_number" class="form-control" value="{{ old('whatsapp_number', $settings['whatsapp_number'] ?? '') }}" required>
                     </div>
                     <div class="col-md-6">
@@ -189,7 +189,7 @@
                 @if(!empty($settings['logo_path']))
                     <img src="{{ asset($settings['logo_path']) }}" alt="Logo" class="img-fluid rounded-4 border p-3 bg-white">
                 @endif
-                <button type="submit" class="btn btn-success">Enregistrer les reglages</button>
+                <button type="submit" class="btn btn-success">Enregistrer les réglages</button>
             </div>
         </div>
     </div>

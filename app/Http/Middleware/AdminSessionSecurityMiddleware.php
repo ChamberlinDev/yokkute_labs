@@ -34,7 +34,7 @@ class AdminSessionSecurityMiddleware
 
             return redirect()
                 ->route('admin.login')
-                ->withErrors(['email' => 'Session admin expiree apres inactivite.']);
+                ->withErrors(['email' => 'Session admin expirée après inactivité.']);
         }
 
         $session->put('admin_last_activity_at', time());
@@ -59,7 +59,7 @@ class AdminSessionSecurityMiddleware
 
             return redirect()
                 ->route('admin.password.edit')
-                ->withErrors(['password' => 'Rotation de mot de passe requise pour continuer.']);
+                ->withErrors(['password' => 'Rotation du mot de passe requise pour continuer.']);
         }
 
         $response = $next($request);

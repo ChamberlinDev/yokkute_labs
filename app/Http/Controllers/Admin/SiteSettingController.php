@@ -79,7 +79,7 @@ class SiteSettingController extends Controller
             SiteSetting::query()->updateOrCreate(['key' => $key], ['value' => $value]);
         }
 
-        return back()->with('success', 'Reglages mis a jour avec succes.');
+        return back()->with('success', 'Réglages mis à jour avec succès.');
     }
 
     private function normalizeOptionalUrl(?string $value): ?string

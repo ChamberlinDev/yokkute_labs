@@ -14,7 +14,7 @@
                 <div class="col-md-8">
                     <label class="form-label">Title EN</label>
                     <input type="text" name="title_en" class="form-control" value="{{ old('title_en', $service->title_en) }}">
-                    <div class="form-text">Laisser vide pour conserver le fallback actuel cote site.</div>
+                    <div class="form-text">Laisser vide pour conserver le fallback actuel côté site.</div>
                 </div>
 
                 <div class="col-md-6">
@@ -35,11 +35,11 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Icone Bootstrap</label>
+                    <label class="form-label">Icône Bootstrap</label>
                     <input type="text" name="icon" class="form-control" value="{{ old('icon', $service->icon ?? 'bi-star') }}" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Couleur accent</label>
+                    <label class="form-label">Couleur d'accent</label>
                     <input type="text" name="accent_color" class="form-control" value="{{ old('accent_color', $service->accent_color ?? '#1a7a4a') }}" required>
                 </div>
 
@@ -80,7 +80,7 @@
                 <input type="file" name="image" class="form-control" accept="image/*">
             </div>
             @if($service->image_path)
-                <img src="{{ asset($service->image_path) }}" alt="Apercu" class="img-fluid rounded-4 border">
+                <img src="{{ asset($service->image_path) }}" alt="Aperçu" class="img-fluid rounded-4 border">
             @endif
             <div>
                 <label class="form-label">Texte bouton FR</label>
@@ -101,7 +101,7 @@
             <div class="form-check form-switch">
                 <input type="hidden" name="is_published" value="0">
                 <input class="form-check-input" type="checkbox" name="is_published" value="1" id="is_published" @checked(old('is_published', $service->is_published ?? true))>
-                <label class="form-check-label" for="is_published">Publie sur le site</label>
+                <label class="form-check-label" for="is_published">Publié sur le site</label>
             </div>
         </div>
     </div>

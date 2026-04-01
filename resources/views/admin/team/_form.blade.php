@@ -16,7 +16,7 @@
                     <input type="text" name="role" class="form-control" value="{{ old('role', $member->role) }}" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Role EN</label>
+                    <label class="form-label">Rôle EN</label>
                     <input type="text" name="role_en" class="form-control" value="{{ old('role_en', $member->role_en) }}">
                 </div>
 
@@ -32,7 +32,7 @@
                 <div class="col-12">
                     <label class="form-label">Bio EN</label>
                     <textarea name="bio_en" class="form-control" rows="5">{{ old('bio_en', $member->bio_en) }}</textarea>
-                    <div class="form-text">Laisser vide pour reutiliser temporairement le contenu FR cote site.</div>
+                    <div class="form-text">Laisser vide pour réutiliser temporairement le contenu FR côté site.</div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <input type="file" name="image" class="form-control" accept="image/*">
             </div>
             @if($member->image_path)
-                <img src="{{ asset($member->image_path) }}" alt="Apercu" class="img-fluid rounded-4 border">
+                <img src="{{ asset($member->image_path) }}" alt="Aperçu" class="img-fluid rounded-4 border">
             @endif
             <div class="form-check form-switch">
                 <input type="hidden" name="is_active" value="0">

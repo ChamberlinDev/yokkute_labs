@@ -9,7 +9,7 @@
     @include('admin.services._form')
     <div class="d-flex justify-content-end gap-2">
         <a href="{{ route('admin.services.index') }}" class="btn btn-outline-secondary">Annuler</a>
-        <button type="submit" class="btn btn-success">Creer le service</button>
+        <button type="submit" class="btn btn-success">Créer le service</button>
     </div>
 </form>
 @endsection

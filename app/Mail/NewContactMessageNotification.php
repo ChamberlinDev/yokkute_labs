@@ -21,7 +21,7 @@ class NewContactMessageNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Nouveau message contact - ' . $this->contactMessage->prenom . ' ' . $this->contactMessage->nom,
+            subject: 'Nouveau message de contact - ' . $this->contactMessage->prenom . ' ' . $this->contactMessage->nom,
         );
     }
 
