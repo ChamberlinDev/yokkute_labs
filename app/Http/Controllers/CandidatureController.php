@@ -87,7 +87,7 @@ class CandidatureController extends Controller
 
         return redirect()
             ->route('rejoindre')
-            ->with('success', 'Merci, votre candidature a ete envoyee avec succes.');
+            ->with('success', __('site.flash.join_success'));
     }
 
     private function normalizeOptionalUrl(?string $value): ?string

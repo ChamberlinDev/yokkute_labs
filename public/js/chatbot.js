@@ -219,8 +219,10 @@
 
         async function fetchBotReply(userMessage) {
             var csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+            var locale = (document.documentElement.getAttribute('lang') || 'fr').slice(0, 2);
+            var endpoint = '/' + (locale === 'en' ? 'en' : 'fr') + '/chatbot/message';
 
-            var response = await fetch('/chatbot/message', {
+            var response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

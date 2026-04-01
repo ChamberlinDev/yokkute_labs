@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="chatbot-session-lifetime-minutes" content="{{ (int) config('session.lifetime', 120) }}">
-    <title>@yield('title', 'Yokkuté Labs')</title>
+    <title>@yield('title', $localizedSetting($siteSettings ?? [], 'home_meta_title', 'site.settings.home_meta_title'))</title>
     <link rel="icon" type="image/png" href="{{ $versionedAsset('images/logo-yokkute.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">

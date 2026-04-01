@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\Service;
 use App\Models\SiteSetting;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,11 +34,105 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        URL::defaults(['locale' => app()->getLocale()]);
+
         view()->share('versionedAsset', static function (string $path): string {
             $fullPath = public_path($path);
             $version = is_file($fullPath) ? filemtime($fullPath) : null;
 
             return asset($path).($version ? '?v='.$version : '');
+        });
+
+        view()->share('supportedLocales', [
+            'fr' => 'FR',
+            'en' => 'EN',
+        ]);
+
+        view()->share('switchLocaleUrl', static function (string $targetLocale): string {
+            $targetLocale = in_array($targetLocale, ['fr', 'en'], true) ? $targetLocale : 'fr';
+            $route = request()->route();
+            $routeName = $route?->getName();
+
+            if ($routeName === null || str_starts_with($routeName, 'admin.')) {
+                return route('home', ['locale' => $targetLocale]);
+            }
+
+            $parameters = $route->parameters();
+            $parameters['locale'] = $targetLocale;
+
+            return route($routeName, $parameters + request()->query());
+        });
+
+        view()->share('localizedSetting', static function (array $settings, string $key, ?string $translationKey = null): string {
+            $locale = app()->getLocale();
+            $baseValue = trim((string) ($settings[$key] ?? ''));
+            $localizedValue = trim((string) ($settings[$key.'_'.$locale] ?? ''));
+
+            if ($locale !== 'fr' && $localizedValue !== '') {
+                return $localizedValue;
+            }
+
+            if ($locale !== 'fr' && $translationKey !== null && Lang::hasForLocale($translationKey, $locale)) {
+                return (string) trans($translationKey, [], $locale);
+            }
+
+            if ($baseValue !== '') {
+                return $baseValue;
+            }
+
+            if ($translationKey !== null && Lang::hasForLocale($translationKey, $locale)) {
+                return (string) trans($translationKey, [], $locale);
+            }
+
+            return '';
+        });
+
+        view()->share('localizedUrl', static function (string $url): string {
+            $url = trim($url);
+
+            if ($url === '' || str_starts_with($url, '#')) {
+                return $url;
+            }
+
+            if (preg_match('~^(?:https?:|mailto:|tel:)~i', $url) === 1) {
+                return $url;
+            }
+
+            if (!str_starts_with($url, '/')) {
+                return $url;
+            }
+
+            if (preg_match('~^/(fr|en)(?:/|$)~', $url) === 1 || str_starts_with($url, '/admin')) {
+                return $url;
+            }
+
+            return '/'.app()->getLocale().$url;
+        });
+
+        view()->share('localizedServiceField', static function (Service $service, string $field) {
+            $locale = app()->getLocale();
+            $translationKey = 'site.services.items.'.$service->slug.'.'.$field;
+
+            if ($locale !== 'fr' && Lang::hasForLocale($translationKey, $locale)) {
+                return trans($translationKey, [], $locale);
+            }
+
+            return $service->{$field};
+        });
+
+        view()->share('localizedServiceDeliverables', static function (Service $service): array {
+            $locale = app()->getLocale();
+            $translationKey = 'site.services.items.'.$service->slug.'.deliverables';
+
+            if ($locale !== 'fr') {
+                $translated = trans($translationKey, [], $locale);
+
+                if (is_array($translated)) {
+                    return $translated;
+                }
+            }
+
+            return is_array($service->deliverables) ? $service->deliverables : [];
         });
 
         view()->composer('*', function ($view): void {
