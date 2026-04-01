@@ -110,8 +110,6 @@
             var h = canvas.height;
 
             ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = '#050e08';
-            ctx.fillRect(0, 0, w, h);
             drawAurora();
 
             orbs.forEach(function (orb) {
