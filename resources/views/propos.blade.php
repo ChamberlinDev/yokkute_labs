@@ -191,7 +191,7 @@
                             <div class="team-photo-meta">
                                 <div class="team-photo-text">
                                     <h5>{{ $member->name }}</h5>
-                                    <p>{{ $member->role }}</p>
+                                    <p>{{ $localizedTeamField($member, 'role') }}</p>
                                 </div>
                                 <a href="{{ $member->linkedin_url ?: '#' }}" target="_blank" rel="noopener noreferrer" class="team-li-btn" aria-label="{{ __('site.about.team.linkedin', ['name' => $member->name]) }}">
                                     <i class="bi bi-linkedin"></i>

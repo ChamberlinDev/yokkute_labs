@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Service;
 use App\Models\SiteSetting;
+use App\Models\TeamMember;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
@@ -113,8 +114,21 @@ class AppServiceProvider extends ServiceProvider
             $locale = app()->getLocale();
             $translationKey = 'site.services.items.'.$service->slug.'.'.$field;
 
-            if ($locale !== 'fr' && Lang::hasForLocale($translationKey, $locale)) {
-                return trans($translationKey, [], $locale);
+            if ($locale !== 'fr') {
+                $localizedField = $field.'_'.$locale;
+                $localizedValue = $service->{$localizedField} ?? null;
+
+                if (is_string($localizedValue) && trim($localizedValue) !== '') {
+                    return $localizedValue;
+                }
+
+                if ($localizedValue !== null && $localizedValue !== '') {
+                    return $localizedValue;
+                }
+
+                if (Lang::hasForLocale($translationKey, $locale)) {
+                    return trans($translationKey, [], $locale);
+                }
             }
 
             return $service->{$field};
@@ -125,6 +139,13 @@ class AppServiceProvider extends ServiceProvider
             $translationKey = 'site.services.items.'.$service->slug.'.deliverables';
 
             if ($locale !== 'fr') {
+                $localizedField = 'deliverables_'.$locale;
+                $localizedDeliverables = $service->{$localizedField} ?? null;
+
+                if (is_array($localizedDeliverables) && !empty($localizedDeliverables)) {
+                    return $localizedDeliverables;
+                }
+
                 $translated = trans($translationKey, [], $locale);
 
                 if (is_array($translated)) {
@@ -133,6 +154,25 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return is_array($service->deliverables) ? $service->deliverables : [];
+        });
+
+        view()->share('localizedTeamField', static function (TeamMember $member, string $field) {
+            $locale = app()->getLocale();
+
+            if ($locale !== 'fr') {
+                $localizedField = $field.'_'.$locale;
+                $localizedValue = $member->{$localizedField} ?? null;
+
+                if (is_string($localizedValue) && trim($localizedValue) !== '') {
+                    return $localizedValue;
+                }
+
+                if ($localizedValue !== null && $localizedValue !== '') {
+                    return $localizedValue;
+                }
+            }
+
+            return $member->{$field};
         });
 
         view()->composer('*', function ($view): void {

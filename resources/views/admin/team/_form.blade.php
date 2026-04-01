@@ -10,17 +10,29 @@
                     <label class="form-label">Ordre</label>
                     <input type="number" name="order_column" class="form-control" value="{{ old('order_column', $member->order_column ?? 1) }}" min="0" required>
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label">Poste</label>
+                    <label class="form-label">Poste FR</label>
                     <input type="text" name="role" class="form-control" value="{{ old('role', $member->role) }}" required>
                 </div>
+                <div class="col-md-6">
+                    <label class="form-label">Role EN</label>
+                    <input type="text" name="role_en" class="form-control" value="{{ old('role_en', $member->role_en) }}">
+                </div>
+
                 <div class="col-md-6">
                     <label class="form-label">LinkedIn</label>
                     <input type="text" name="linkedin_url" class="form-control" value="{{ old('linkedin_url', $member->linkedin_url) }}" placeholder="linkedin.com/in/nom ou https://linkedin.com/in/nom">
                 </div>
+
                 <div class="col-12">
-                    <label class="form-label">Bio</label>
-                    <textarea name="bio" class="form-control" rows="6">{{ old('bio', $member->bio) }}</textarea>
+                    <label class="form-label">Bio FR</label>
+                    <textarea name="bio" class="form-control" rows="5">{{ old('bio', $member->bio) }}</textarea>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Bio EN</label>
+                    <textarea name="bio_en" class="form-control" rows="5">{{ old('bio_en', $member->bio_en) }}</textarea>
+                    <div class="form-text">Laisser vide pour reutiliser temporairement le contenu FR cote site.</div>
                 </div>
             </div>
         </div>
