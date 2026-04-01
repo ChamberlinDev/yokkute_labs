@@ -2,7 +2,7 @@
 
   <!-- Brand -->
   <a href="{{ route('home') }}" class="nav-brand">
-    <img src="{{ asset('images/logo-yokkute.png') }}" alt="Yokkuté Labs" style="height:52px; width:auto;">
+    <img src="{{ $versionedAsset('images/logo-yokkute.png') }}" alt="Yokkuté Labs" style="height:52px; width:auto;">
   </a>
 
   <!-- Hamburger -->

@@ -2,7 +2,7 @@
 @section('title', 'Contact — Yokkuté Labs')
 
 @section('content')
-<link href="{{ asset('css/contact.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/contact.css') }}" rel="stylesheet">
 
 {{-- HERO --}}
 <section class="contact-hero">

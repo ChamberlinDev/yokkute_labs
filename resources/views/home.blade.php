@@ -13,14 +13,14 @@
 @section('title', $homeMetaTitle)
 @section('content')
 
-<link href="{{ asset('css/home.css') }}" rel="stylesheet">
-<link href="{{ asset('css/hero.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/home.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/hero.css') }}" rel="stylesheet">
 
 {{-- ... HERO ... --}}
 <section class="hero">
 
   <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="{{ asset('images/id1.mp4') }}" type="video/mp4">
+    <source src="{{ $versionedAsset('images/id1.mp4') }}" type="video/mp4">
   </video>
  
   <canvas id="bgCanvas"></canvas>
@@ -393,5 +393,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/hero.js') }}"></script>
+<script src="{{ $versionedAsset('js/hero.js') }}"></script>
 @endpush

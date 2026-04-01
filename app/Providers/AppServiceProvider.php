@@ -32,6 +32,13 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        view()->share('versionedAsset', static function (string $path): string {
+            $fullPath = public_path($path);
+            $version = is_file($fullPath) ? filemtime($fullPath) : null;
+
+            return asset($path).($version ? '?v='.$version : '');
+        });
+
         view()->composer('*', function ($view): void {
             static $settings = null;
 

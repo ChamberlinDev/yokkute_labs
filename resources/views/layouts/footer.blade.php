@@ -1,4 +1,4 @@
-<link href="{{ asset('css/footer.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/footer.css') }}" rel="stylesheet">
 
 <footer class="footer-yokkute text-light pt-5 pb-3 mt-5">
     <div class="container">

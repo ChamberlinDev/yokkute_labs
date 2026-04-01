@@ -2,7 +2,7 @@
 @section('title', 'Nous rejoindre — Yokkuté Labs')
 
 @section('content')
-<link href="{{ asset('css/rejoindre.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/rejoindre.css') }}" rel="stylesheet">
 
 {{-- HERO --}}
 <section class="rejoindre-hero">

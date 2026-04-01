@@ -3,7 +3,7 @@
 
 @section('content')
 
-<link href="{{ asset('css/service.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/service.css') }}" rel="stylesheet">
 
 {{-- HERO --}}
 <section class="svc-hero">

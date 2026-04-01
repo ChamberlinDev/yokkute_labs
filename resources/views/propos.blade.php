@@ -3,11 +3,11 @@
 @section('content')
 
 
-<link href="{{ asset('css/propos.css') }}" rel="stylesheet">
+<link href="{{ $versionedAsset('css/propos.css') }}" rel="stylesheet">
 
 {{-- """ HEADER """ --}}
 <section style="
-    background: url('{{ asset('images/img3.jpeg') }}') center/cover no-repeat;
+    background: url('{{ $versionedAsset('images/img3.jpeg') }}') center/cover no-repeat;
     padding: 4rem 0;
     position: relative;">
     {{-- Overlay sombre pour lisibilité --}}
@@ -80,7 +80,7 @@
 
                     {{-- Image principale --}}
                     <img
-                        src="{{ asset('images/quisommesnous.jpg') }}"
+                        src="{{ $versionedAsset('images/quisommesnous.jpg') }}"
                         alt="L'équipe Yokkuté Labs"
                         style="
                             position: relative;

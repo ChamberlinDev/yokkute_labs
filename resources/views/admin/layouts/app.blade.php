@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Administration') - {{ $siteSettings['site_name'] ?? 'Yokkute Labs' }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logo-yokkute.png') }}">
+    <link rel="icon" type="image/png" href="{{ $versionedAsset('images/logo-yokkute.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -165,7 +165,7 @@
         <div class="row g-0">
             <aside class="col-lg-2 admin-sidebar p-3 p-lg-4">
                 <a href="{{ route('admin.dashboard') }}" class="admin-brand d-flex align-items-center gap-2 mb-4">
-                    <img src="{{ asset($siteSettings['logo_path'] ?? 'images/logo-yokkute.png') }}" alt="Logo" style="width:42px;height:42px;object-fit:contain;background:#fff;border-radius:.75rem;padding:.35rem;">
+                    <img src="{{ $versionedAsset($siteSettings['logo_path'] ?? 'images/logo-yokkute.png') }}" alt="Logo" style="width:42px;height:42px;object-fit:contain;background:#fff;border-radius:.75rem;padding:.35rem;">
                     <span>Admin</span>
                 </a>
 
