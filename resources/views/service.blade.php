@@ -45,6 +45,9 @@
     </div>
 </div>
 
+<br>
+<br>
+<section>
 <section class="svc-intro reveal">
     <div class="container">
         <div class="row align-items-center g-5">
@@ -58,6 +61,7 @@
             </div>
         </div>
     </div>
+</section>
 </section>
 
 <section class="svc-grid">
