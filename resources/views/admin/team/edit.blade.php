@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Modifier membre')
-@section('page-title', 'Modifier membre')
+@section('title', 'Modifier le membre')
+@section('page-title', 'Modifier le membre')
 
 @section('content')
 <form action="{{ route('admin.team.update', $member) }}" method="POST" enctype="multipart/form-data" class="d-grid gap-4">

@@ -39,7 +39,7 @@ class CandidatureController extends Controller
         return response()->streamDownload(function () use ($query): void {
             $handle = fopen('php://output', 'wb');
 
-            fputcsv($handle, ['Date', 'Prenom', 'Nom', 'Email', 'Telephone', 'Domaine', 'Experience', 'Statut', 'Portfolio']);
+            fputcsv($handle, ['Date', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Domaine', 'Expérience', 'Statut', 'Portfolio']);
 
             foreach ($query->cursor() as $candidature) {
                 fputcsv($handle, [
@@ -81,7 +81,7 @@ class CandidatureController extends Controller
 
         $candidature->update($data + ['reviewed_at' => $candidature->reviewed_at ?? now()]);
 
-        return back()->with('success', 'Statut de la candidature mis a jour.');
+        return back()->with('success', 'Statut de la candidature mis à jour.');
     }
 
     public function downloadCv(Candidature $candidature): StreamedResponse|RedirectResponse
@@ -112,7 +112,7 @@ class CandidatureController extends Controller
 
         $candidature->delete();
 
-        return redirect()->route('admin.candidatures.index')->with('success', 'Candidature supprimee.');
+        return redirect()->route('admin.candidatures.index')->with('success', 'Candidature supprimée.');
     }
 
     private function extractFilters(Request $request): array

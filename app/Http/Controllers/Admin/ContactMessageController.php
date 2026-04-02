@@ -37,7 +37,7 @@ class ContactMessageController extends Controller
         return response()->streamDownload(function () use ($query): void {
             $handle = fopen('php://output', 'wb');
 
-            fputcsv($handle, ['Date', 'Prenom', 'Nom', 'Email', 'WhatsApp', 'Entreprise', 'Besoin', 'Statut', 'Message']);
+            fputcsv($handle, ['Date', 'Prénom', 'Nom', 'Email', 'WhatsApp', 'Entreprise', 'Besoin', 'Statut', 'Message']);
 
             foreach ($query->cursor() as $message) {
                 fputcsv($handle, [
@@ -76,14 +76,14 @@ class ContactMessageController extends Controller
 
         $message->update($data + ['read_at' => $message->read_at ?? now()]);
 
-        return back()->with('success', 'Statut du message mis a jour.');
+        return back()->with('success', 'Statut du message mis à jour.');
     }
 
     public function destroy(ContactMessage $message): RedirectResponse
     {
         $message->delete();
 
-        return redirect()->route('admin.contact-messages.index')->with('success', 'Message supprime.');
+        return redirect()->route('admin.contact-messages.index')->with('success', 'Message supprimé.');
     }
 
     private function extractFilters(Request $request): array

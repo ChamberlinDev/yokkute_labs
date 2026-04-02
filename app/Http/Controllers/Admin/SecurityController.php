@@ -140,7 +140,7 @@ class SecurityController extends Controller
 
         if (Hash::check($validated['password'], (string) $user->password)) {
             return back()->withErrors([
-                'password' => 'Le nouveau mot de passe doit etre different de l\'ancien.',
+                'password' => 'Le nouveau mot de passe doit être différent de l\'ancien.',
             ]);
         }
 
@@ -159,6 +159,6 @@ class SecurityController extends Controller
             'status_code' => 302,
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Mot de passe admin mis a jour avec succes.');
+        return redirect()->route('admin.dashboard')->with('success', 'Mot de passe admin mis à jour avec succès.');
     }
 }

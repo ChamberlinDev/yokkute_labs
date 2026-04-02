@@ -1,21 +1,21 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Equipe')
-@section('page-title', 'Equipe')
+@section('title', 'Équipe')
+@section('page-title', 'Équipe')
 
 @section('content')
 <div class="card card-soft p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="h5 mb-1">Membres de l'equipe</h2>
-            <p class="text-muted mb-0">Gerez les profils affiches dans la section equipe.</p>
+            <h2 class="h5 mb-1">Membres de l'équipe</h2>
+            <p class="text-muted mb-0">Gérez les profils affichés dans la section équipe.</p>
         </div>
         <a href="{{ route('admin.team.create') }}" class="btn btn-success">Ajouter un membre</a>
     </div>
 
     <div class="table-responsive">
         <table class="table align-middle mb-0">
-            <thead><tr><th>#</th><th>Membre</th><th>Role</th><th>Statut</th><th class="text-end">Actions</th></tr></thead>
+            <thead><tr><th>#</th><th>Membre</th><th>Rôle</th><th>Statut</th><th class="text-end">Actions</th></tr></thead>
             <tbody>
                 @forelse($members as $member)
                     <tr>
@@ -30,7 +30,7 @@
                             </div>
                         </td>
                         <td>{{ $member->role }}</td>
-                        <td><span class="badge {{ $member->is_active ? 'text-bg-success' : 'text-bg-secondary' }}">{{ $member->is_active ? 'Visible' : 'Masque' }}</span></td>
+                        <td><span class="badge {{ $member->is_active ? 'text-bg-success' : 'text-bg-secondary' }}">{{ $member->is_active ? 'Visible' : 'Masqué' }}</span></td>
                         <td class="text-end">
                             <a href="{{ route('admin.team.edit', $member) }}" class="btn btn-sm btn-outline-primary" title="Modifier" aria-label="Modifier">
                                 <i class="bi bi-pencil-square"></i>
@@ -45,7 +45,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="text-muted">Aucun membre enregistre.</td></tr>
+                    <tr><td colspan="5" class="text-muted">Aucun membre enregistré.</td></tr>
                 @endforelse
             </tbody>
         </table>

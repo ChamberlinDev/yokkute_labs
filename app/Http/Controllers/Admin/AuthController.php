@@ -47,7 +47,7 @@ class AuthController extends Controller
             ]);
 
             return back()->withErrors([
-                'email' => 'Compte admin temporairement verrouille. Reessayez plus tard.',
+                'email' => 'Compte admin temporairement verrouillé. Réessayez plus tard.',
             ])->onlyInput('email');
         }
 
@@ -93,7 +93,7 @@ class AuthController extends Controller
             $request->session()->regenerateToken();
 
             return back()->withErrors([
-                'email' => 'Acces admin refuse.',
+                'email' => 'Accès admin refusé.',
             ])->onlyInput('email');
         }
 

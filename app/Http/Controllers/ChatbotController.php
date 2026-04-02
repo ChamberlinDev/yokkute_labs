@@ -76,7 +76,7 @@ class ChatbotController extends Controller
         }
 
         if (preg_match('/bonjour|salut|hello|bonsoir/', $text)) {
-            return "Bonjour. Je peux vous aider a clarifier votre besoin, identifier le bon service et definir la prochaine etape la plus utile. Quel resultat cherchez-vous a obtenir en priorite ?";
+            return "Bonjour. Je peux vous aider à clarifier votre besoin, identifier le bon service et définir la prochaine étape la plus utile. Quel résultat cherchez-vous à obtenir en priorité ?";
         }
 
         if ($this->isShortAffirmative($text) && $this->lastAssistantMessageContains($history, [
@@ -85,12 +85,12 @@ class ChatbotController extends Controller
             'avant envoi',
         ])) {
             return "Voici un brief simple que vous pouvez nous envoyer via /contact :\n"
-                . "1) Secteur : votre activite et votre marche.\n"
-                . "2) Besoin : ce que vous voulez resoudre ou lancer.\n"
-                . "3) Contexte actuel : outils, blocages, urgence, equipe concernee.\n"
-                . "4) Objectif a 90 jours : resultat concret attendu.\n"
-                . "5) Budget ou niveau de priorite : si vous en avez deja un.\n\n"
-                . "Vous pouvez aussi nous contacter directement par email a {$contactEmail} ou par telephone/WhatsApp au {$contactPhone}.";
+                . "1) Secteur : votre activité et votre marché.\n"
+                . "2) Besoin : ce que vous voulez résoudre ou lancer.\n"
+                . "3) Contexte actuel : outils, blocages, urgence, équipe concernée.\n"
+                . "4) Objectif à 90 jours : résultat concret attendu.\n"
+                . "5) Budget ou niveau de priorité : si vous en avez déjà un.\n\n"
+                . "Vous pouvez aussi nous contacter directement par email à {$contactEmail} ou par téléphone/WhatsApp au {$contactPhone}.";
         }
 
         $matchedTeamMember = $this->bestTeamMemberMatch($text, $team->all());
@@ -107,30 +107,30 @@ class ChatbotController extends Controller
             $candidateName = trim((string) ($matches[1] ?? ''));
 
             if ($candidateName !== '' && !preg_match('/\b(vous|yokkute|equipe|team|service|contact)\b/', $candidateName)) {
-                return "Je n'ai pas de profil interne pour \"{$candidateName}\" dans l'equipe Yokkute Labs. Vous pouvez consulter l'equipe actuelle sur /a-propos, ou nous ecrire via /contact pour une demande specifique.";
+                return "Je n'ai pas de profil interne pour \"{$candidateName}\" dans l'équipe Yokkute Labs. Vous pouvez consulter l'équipe actuelle sur /a-propos, ou nous écrire via /contact pour une demande spécifique.";
             }
         }
 
         if (preg_match('/rejoindre|recrut|emploi|poste|carriere|candidature|cv/', $text)) {
-            return "Vous pouvez candidater directement via /rejoindre. Le formulaire demande surtout: prenom, nom, email, domaine, experience et message. Le CV est optionnel, en PDF, avec une limite de 30 Mo. " .
-                "Domaines principaux: developpement, data/BI, conseil, gestion de projet, formation, commercial, marketing ou profil transversal. Contact RH: {$rhEmail}.";
+            return "Vous pouvez candidater directement via /rejoindre. Le formulaire demande surtout : prénom, nom, email, domaine, expérience et message. Le CV est optionnel, en PDF, avec une limite de 30 Mo. " .
+                "Domaines principaux : développement, data/BI, conseil, gestion de projet, formation, commercial, marketing ou profil transversal. Contact RH : {$rhEmail}.";
         }
 
         if (preg_match('/delai|delais|temps|combien de temps|livraison/', $text)) {
-            return "Le delai depend du perimetre et du niveau de complexite. A titre indicatif, un site vitrine peut etre livre en 2 a 4 semaines, tandis qu'une application metier ou un projet de transformation plus large peut demander plusieurs mois. Nous fixons un planning clair des la phase de cadrage pour donner de la visibilite des le depart.";
+            return "Le délai dépend du périmètre et du niveau de complexité. À titre indicatif, un site vitrine peut être livré en 2 à 4 semaines, tandis qu'une application métier ou un projet de transformation plus large peut demander plusieurs mois. Nous fixons un planning clair dès la phase de cadrage pour donner de la visibilité dès le départ.";
         }
 
         if (preg_match('/rgpd|donnees personnelles|donnees|confidentialite|vie privee/', $text)) {
-            return "La protection des donnees est une priorite. Vous pouvez consulter /rgpd pour le detail complet: donnees collectees, finalites, durees de conservation, mesures de securite et droits d'acces, rectification ou suppression. Si vous voulez, je peux aussi vous en faire un resume rapide et clair.";
+            return "La protection des données est une priorité. Vous pouvez consulter /rgpd pour le détail complet : données collectées, finalités, durées de conservation, mesures de sécurité et droits d'accès, rectification ou suppression. Si vous voulez, je peux aussi vous en faire un résumé rapide et clair.";
         }
 
         if (preg_match('/orient|hesite|je ne sais pas|pas sur|quel service|quoi choisir/', $text)) {
-            return "Si votre besoin n'est pas encore parfaitement defini, le plus simple est de passer par /contact pour un echange exploratoire. Nous vous repondons sous 24h ouvrrees pour vous orienter vers l'audit, le conseil, l'integration numerique, l'IA, la formation ou la data/BI selon votre contexte et votre priorite business.";
+            return "Si votre besoin n'est pas encore parfaitement défini, le plus simple est de passer par /contact pour un échange exploratoire. Nous vous répondons sous 24 h ouvrées pour vous orienter vers l'audit, le conseil, l'intégration numérique, l'IA, la formation ou la data/BI selon votre contexte et votre priorité business.";
         }
 
         if (preg_match('/mail|email|contacter|contact|telephone|telphone|numero de telephone|numero de tel|\bnumero\b|\btel\b|portable|whatsapp|rdv|rendez|joindre|appeler/', $text)) {
-            return "Vous pouvez nous joindre via /contact, par email a {$contactEmail}, ou par telephone au {$contactPhone}. " .
-                "Si vous le souhaitez, je peux aussi vous aider a formuler un brief court et utile avant envoi.";
+            return "Vous pouvez nous joindre via /contact, par email à {$contactEmail}, ou par téléphone au {$contactPhone}. " .
+                "Si vous le souhaitez, je peux aussi vous aider à formuler un brief court et utile avant envoi.";
         }
 
         if (preg_match('/qui sommes|\ba propos\b|\bpropos\b|membre|membres|\bequipe\b|notre equipe|\bteam\b|\bprofil\b|\bprofils\b|agent|agents|linkedin/', $text)) {
@@ -153,7 +153,7 @@ class ChatbotController extends Controller
                 ->implode("\n");
 
             if ($roles !== '') {
-                $base = "Notre equipe active compte actuellement {$teamCount} profil(s), avec notamment des expertises en {$roles}. Vous pouvez decouvrir les profils et l'approche de Yokkute Labs ici: /a-propos";
+                $base = "Notre équipe active compte actuellement {$teamCount} profil(s), avec notamment des expertises en {$roles}. Vous pouvez découvrir les profils et l'approche de Yokkute Labs ici : /a-propos";
 
                 if ($profiles !== '') {
                     return $base . "\n\nExemples de profils:\n" . $profiles;
@@ -162,21 +162,21 @@ class ChatbotController extends Controller
                 return $base;
             }
 
-            return "Notre equipe active compte actuellement {$teamCount} profil(s). Vous pouvez decouvrir l'equipe et notre approche ici: /a-propos";
+            return "Notre équipe active compte actuellement {$teamCount} profil(s). Vous pouvez découvrir l'équipe et notre approche ici : /a-propos";
         }
 
         if (preg_match('/service|prestation|offre|faites|proposez/', $text)) {
             $titles = $services->pluck('title')->all();
             if (empty($titles)) {
-                return "Nos services sont en cours de mise a jour. Le plus simple est de nous decrire votre besoin via /contact et nous vous orienterons rapidement vers la meilleure option.";
+                return "Nos services sont en cours de mise à jour. Le plus simple est de nous décrire votre besoin via /contact et nous vous orienterons rapidement vers la meilleure option.";
             }
 
-            return "Voici nos services actuellement disponibles: " . implode(', ', $titles) . ". Si vous me donnez votre secteur, votre enjeu principal ou votre objectif, je peux vous recommander le point de depart le plus pertinent.";
+            return "Voici nos services actuellement disponibles : " . implode(', ', $titles) . ". Si vous me donnez votre secteur, votre enjeu principal ou votre objectif, je peux vous recommander le point de départ le plus pertinent.";
         }
 
         if (preg_match('/audit|diagnostic|commencer|debut/', $text)) {
-            return "Dans la plupart des cas, le meilleur point de depart est un audit numerique. Nous identifions les blocages, priorisons les actions et construisons une feuille de route exploitable sur 90 jours. " .
-                "Prochaine etape: faites votre demande via /contact en resumant votre contexte actuel en 4 ou 5 lignes.";
+            return "Dans la plupart des cas, le meilleur point de départ est un audit numérique. Nous identifions les blocages, priorisons les actions et construisons une feuille de route exploitable sur 90 jours. " .
+                "Prochaine étape : faites votre demande via /contact en résumant votre contexte actuel en 4 ou 5 lignes.";
         }
 
         $matchedService = $this->bestServiceMatch($text, $services->all());
@@ -193,17 +193,17 @@ class ChatbotController extends Controller
 
             $audience = trim((string) ($matchedService->audience ?? ''));
 
-            $parts = ["Service recommande: {$matchedService->title}.", (string) $shortDesc];
+            $parts = ["Service recommandé : {$matchedService->title}.", (string) $shortDesc];
 
             if ($audience !== '') {
                 $parts[] = "Cible: {$audience}.";
             }
 
             if ($deliverables !== '') {
-                $parts[] = "Livrables typiques: {$deliverables}.";
+                $parts[] = "Livrables typiques : {$deliverables}.";
             }
 
-            $parts[] = "Prochaine etape: consultez /services puis ecrivez-nous via /contact pour un cadrage rapide et pertinent.";
+            $parts[] = "Prochaine étape : consultez /services puis écrivez-nous via /contact pour un cadrage rapide et pertinent.";
 
             return implode(' ', $parts);
         }
@@ -215,24 +215,24 @@ class ChatbotController extends Controller
         }
 
         if (preg_match('/ia|intelligence artificielle|chatbot|automatisation|agent/', $text)) {
-            return "Oui. Nous deployons des cas d'usage IA concrets: automatisation repetitive, chatbots metier, analyse documentaire et aide a la decision. " .
-                "L'approche recommandee est generalement un pilote court, avec mesure de la valeur creee avant extension.";
+            return "Oui. Nous déployons des cas d'usage IA concrets : automatisation répétitive, chatbots métier, analyse documentaire et aide à la décision. " .
+                "L'approche recommandée est généralement un pilote court, avec mesure de la valeur créée avant extension.";
         }
 
         if (preg_match('/prix|tarif|cout|devis|budget/', $text)) {
-            return "Les couts dependent de votre maturite numerique, du perimetre et des integrations necessaires. " .
-                "Pour obtenir un chiffrage fiable, passez par /contact: nous revenons rapidement avec un cadrage adapte a votre contexte.";
+            return "Les coûts dépendent de votre maturité numérique, du périmètre et des intégrations nécessaires. " .
+                "Pour obtenir un chiffrage fiable, passez par /contact : nous revenons rapidement avec un cadrage adapté à votre contexte.";
         }
 
         if (preg_match('/ou|adresse|ville|dakar|senegal/', $text)) {
-            return "Nous sommes bases a {$contactAddress} et nous accompagnons aussi des clients a distance.";
+            return "Nous sommes basés à {$contactAddress} et nous accompagnons aussi des clients à distance.";
         }
 
         if (preg_match('/merci/', $text)) {
-            return "Avec plaisir. Si vous voulez avancer vite, je peux vous proposer un plan d'action simple en 3 etapes selon votre objectif.";
+            return "Avec plaisir. Si vous voulez avancer vite, je peux vous proposer un plan d'action simple en 3 étapes selon votre objectif.";
         }
 
-        return "Je n'ai pas encore assez d'informations pour repondre precisement a cette question. Vous pouvez nous contacter via /contact, par email a {$contactEmail}, ou par telephone/WhatsApp au {$contactPhone}.";
+        return "Je n'ai pas encore assez d'informations pour répondre précisément à cette question. Vous pouvez nous contacter via /contact, par email à {$contactEmail}, ou par téléphone/WhatsApp au {$contactPhone}.";
     }
 
     private function detectLanguage(string $message): string
@@ -420,7 +420,7 @@ class ChatbotController extends Controller
             return "لا املك بعد معلومات كافية للاجابة بدقة. يمكنك التواصل معنا عبر /contact او البريد {$contactEmail} او الهاتف/واتساب {$contactPhone}.";
         }
 
-        return "Je peux vous aider en francais, english, espanol, italiano ou arabe. Posez votre question.";
+        return "Je peux vous aider en français, en anglais, en espagnol, en italien ou en arabe. Posez votre question.";
     }
 
     private function buildKnowledgeBase(array $settings, array $services, array $team): array
@@ -429,9 +429,9 @@ class ChatbotController extends Controller
         $contactPhone = $settings['contact_phone'] ?? '+221 771488937';
         $rhEmail = $settings['rh_email'] ?? 'solution@yokkutelabs.com';
         $contactAddress = $settings['contact_address'] ?? 'Dakar, Senegal';
-        $homeTitle = trim((string) ($settings['home_hero_title'] ?? 'Transformez votre entreprise a l ere du numerique et de l IA'));
-        $homeSub = trim((string) ($settings['home_hero_sub'] ?? 'Nous accompagnons les entreprises africaines avec des solutions concretes.'));
-        $homePrimaryCtaLabel = trim((string) ($settings['home_primary_cta_label'] ?? 'Demarrer avec un audit gratuit'));
+        $homeTitle = trim((string) ($settings['home_hero_title'] ?? "Transformez votre entreprise à l'ère du numérique et de l'IA"));
+        $homeSub = trim((string) ($settings['home_hero_sub'] ?? 'Nous accompagnons les entreprises africaines avec des solutions concrètes.'));
+        $homePrimaryCtaLabel = trim((string) ($settings['home_primary_cta_label'] ?? 'Démarrer avec un audit gratuit'));
         $homePrimaryCtaUrl = trim((string) ($settings['home_primary_cta_url'] ?? '/contact'));
         $servicesTitles = collect($services)
             ->pluck('title')
@@ -442,57 +442,57 @@ class ChatbotController extends Controller
         $entries = [
             [
                 'keywords' => ['accueil', 'home', 'presentation', 'yokkute', 'yokkute labs', 'votre approche'],
-                'answer' => "Sur la page Accueil (/), notre promesse est claire: {$homeTitle}. {$homeSub} Prochaine etape recommandee: {$homePrimaryCtaLabel} via {$homePrimaryCtaUrl}.",
+                'answer' => "Sur la page Accueil (/), notre promesse est claire : {$homeTitle}. {$homeSub} Prochaine étape recommandée : {$homePrimaryCtaLabel} via {$homePrimaryCtaUrl}.",
             ],
             [
                 'keywords' => ['qui sommes nous', 'a propos', 'apropos', 'histoire', 'identite', 'equipe yokkute'],
-                'answer' => "Sur Qui sommes-nous (/a-propos), nous expliquons notre vision, notre methode terrain et notre equipe pluridisciplinaire. Nous intervenons avec une approche pragmatique, orientee resultats, en combinant conseil, execution et transfert de competences.",
+                'answer' => "Sur Qui sommes-nous (/a-propos), nous expliquons notre vision, notre méthode terrain et notre équipe pluridisciplinaire. Nous intervenons avec une approche pragmatique, orientée résultats, en combinant conseil, exécution et transfert de compétences.",
             ],
             [
                 'keywords' => ['services', 'offres', 'prestations', 'ce que vous faites'],
                 'answer' => $servicesList !== ''
-                    ? "Sur la page Services (/services), vous retrouvez nos domaines d intervention: {$servicesList}. Si vous me decrivez votre besoin, je peux vous recommander le meilleur point de depart."
-                    : "La page Services (/services) presente nos offres de transformation numerique. Dites-moi votre objectif et je vous orienterai vers le service pertinent.",
+                    ? "Sur la page Services (/services), vous retrouvez nos domaines d'intervention : {$servicesList}. Si vous me décrivez votre besoin, je peux vous recommander le meilleur point de départ."
+                    : "La page Services (/services) présente nos offres de transformation numérique. Dites-moi votre objectif et je vous orienterai vers le service pertinent.",
             ],
             [
                 'keywords' => ['contact', 'joindre', 'coordonnees', 'adresse', 'email', 'telephone', 'whatsapp'],
-                'answer' => "Sur la page Contact (/contact), vous pouvez nous ecrire pour un cadrage rapide. Email: {$contactEmail}. Telephone/WhatsApp: {$contactPhone}. Adresse: {$contactAddress}. Nous repondons generalement sous 24h ouvrrees.",
+                'answer' => "Sur la page Contact (/contact), vous pouvez nous écrire pour un cadrage rapide. Email : {$contactEmail}. Téléphone/WhatsApp : {$contactPhone}. Adresse : {$contactAddress}. Nous répondons généralement sous 24 h ouvrées.",
             ],
             [
                 'keywords' => ['rejoindre', 'carriere', 'candidature', 'postuler', 'cv', 'recrutement'],
-                'answer' => "Sur Nous rejoindre (/rejoindre), vous pouvez deposer une candidature spontanee. Champs principaux: prenom, nom, email, domaine, experience, message. CV optionnel en PDF (max 30 Mo). Domaines couverts: developpement, data/BI, conseil, gestion de projet, formation, commercial, marketing et transversal. Contact RH: {$rhEmail}.",
+                'answer' => "Sur Nous rejoindre (/rejoindre), vous pouvez déposer une candidature spontanée. Champs principaux : prénom, nom, email, domaine, expérience, message. CV optionnel en PDF (max 30 Mo). Domaines couverts : développement, data/BI, conseil, gestion de projet, formation, commercial, marketing et transversal. Contact RH : {$rhEmail}.",
             ],
             [
                 'keywords' => ['projet', 'projets', 'prise en charge', 'application', 'site web', 'ux', 'design'],
-                'answer' => "Nous accompagnons les entreprises sur des projets de site web, application sur mesure, design UX/UI et transformation numerique globale. Si vous me donnez votre contexte, je peux vous orienter vers le point de depart le plus pertinent.",
+                'answer' => "Nous accompagnons les entreprises sur des projets de site web, application sur mesure, design UX/UI et transformation numérique globale. Si vous me donnez votre contexte, je peux vous orienter vers le point de départ le plus pertinent.",
             ],
             [
                 'keywords' => ['delai', 'delais', 'temps', 'combien de temps', 'livraison'],
-                'answer' => "Les delais dependent du perimetre: un site vitrine peut prendre 2 a 4 semaines, tandis qu'une application metier ou une transformation plus large peut demander plusieurs mois. Nous cadrons un planning detaille des le debut pour donner une trajectoire claire.",
+                'answer' => "Les délais dépendent du périmètre : un site vitrine peut prendre 2 à 4 semaines, tandis qu'une application métier ou une transformation plus large peut demander plusieurs mois. Nous cadrons un planning détaillé dès le début pour donner une trajectoire claire.",
             ],
             [
                 'keywords' => ['maintenance', 'suivi', 'apres livraison', 'evolution', 'support'],
-                'answer' => "Oui, nous proposons un suivi apres livraison: maintenance, corrections, mises a jour et evolutions. L'objectif est d'assurer la perennite de la solution, pas seulement de livrer un projet.",
+                'answer' => "Oui, nous proposons un suivi après livraison : maintenance, corrections, mises à jour et évolutions. L'objectif est d'assurer la pérennité de la solution, pas seulement de livrer un projet.",
             ],
             [
                 'keywords' => ['rgpd', 'donnees', 'confidentialite', 'protection des donnees', 'vie privee'],
-                'answer' => "La protection des donnees est une priorite. Vous pouvez consulter /rgpd pour le detail complet. Si besoin, je peux aussi vous resumer la politique de confidentialite en quelques points cles.",
+                'answer' => "La protection des données est une priorité. Vous pouvez consulter /rgpd pour le détail complet. Si besoin, je peux aussi vous résumer la politique de confidentialité en quelques points clés.",
             ],
             [
                 'keywords' => ['premier contact', 'comment contacter', 'prise de contact', 'demarrer un projet'],
-                'answer' => "La premiere etape est simple: passez par /contact avec votre contexte, votre besoin et votre horizon. Nous revenons vers vous sous 24 a 48 heures pour un premier echange de cadrage utile et concret.",
+                'answer' => "La première étape est simple : passez par /contact avec votre contexte, votre besoin et votre horizon. Nous revenons vers vous sous 24 à 48 heures pour un premier échange de cadrage utile et concret.",
             ],
             [
                 'keywords' => ['faq', 'questions frequentes', 'question frequente'],
-                'answer' => "Vous pouvez consulter /faq pour retrouver les questions frequentes sur les projets, les delais, le suivi, le RGPD et le recrutement.",
+                'answer' => "Vous pouvez consulter /faq pour retrouver les questions fréquentes sur les projets, les délais, le suivi, le RGPD et le recrutement.",
             ],
             [
                 'keywords' => ['contact', 'email', 'telephone', 'whatsapp', 'rdv', 'rendez vous'],
-                'answer' => "Vous pouvez nous contacter via /contact, par email a {$contactEmail}, ou par telephone/WhatsApp au {$contactPhone}. Un membre de l'equipe lit chaque message et repond sous 24h ouvrrees.",
+                'answer' => "Vous pouvez nous contacter via /contact, par email à {$contactEmail}, ou par téléphone/WhatsApp au {$contactPhone}. Un membre de l'équipe lit chaque message et répond sous 24 h ouvrées.",
             ],
             [
                 'keywords' => ['rejoindre', 'carriere', 'emploi', 'recrutement', 'postuler'],
-                'answer' => "Pour nous rejoindre, allez sur /rejoindre. Nous recherchons notamment des profils en developpement, data/BI, conseil, gestion de projet, formation et business development. Contact RH: {$rhEmail}.",
+                'answer' => "Pour nous rejoindre, allez sur /rejoindre. Nous recherchons notamment des profils en développement, data/BI, conseil, gestion de projet, formation et business development. Contact RH : {$rhEmail}.",
             ],
         ];
 
@@ -518,7 +518,7 @@ class ChatbotController extends Controller
                 $answer .= " Livrables: {$deliverables}.";
             }
 
-            $answer .= " Plus de details sur /services.";
+            $answer .= " Plus de détails sur /services.";
 
             $entries[] = [
                 'keywords' => $keywords,
@@ -552,7 +552,7 @@ class ChatbotController extends Controller
 
             $entries[] = [
                 'keywords' => ['equipe', 'a propos', 'qui sommes nous', 'profils', 'membres', 'agent', 'agents', 'linkedin'],
-                'answer' => "Notre equipe regroupe actuellement " . count($team) . " profil(s) actif(s)" . ($roles !== '' ? ", avec notamment {$roles}" : '') . ". Vous pouvez voir les profils sur /a-propos." . ($teamExamples !== '' ? " Exemples: {$teamExamples}." : ''),
+                'answer' => "Notre équipe regroupe actuellement " . count($team) . " profil(s) actif(s)" . ($roles !== '' ? ", avec notamment {$roles}" : '') . ". Vous pouvez voir les profils sur /a-propos." . ($teamExamples !== '' ? " Exemples : {$teamExamples}." : ''),
             ];
         }
 
@@ -788,10 +788,10 @@ class ChatbotController extends Controller
         $linkedin = trim((string) ($member->linkedin_url ?? ''));
 
         if ($linkedin !== '' && $linkedin !== '#') {
-            return "{$name} fait partie de l'equipe Yokkute Labs en tant que {$role}. Vous pouvez consulter son profil LinkedIn ici: {$linkedin}.";
+            return "{$name} fait partie de l'équipe Yokkute Labs en tant que {$role}. Vous pouvez consulter son profil LinkedIn ici : {$linkedin}.";
         }
 
-        return "{$name} fait partie de l'equipe Yokkute Labs en tant que {$role}.";
+        return "{$name} fait partie de l'équipe Yokkute Labs en tant que {$role}.";
     }
 
     private function formatTeamMemberReplyEn(object $member): string

@@ -1,4 +1,32 @@
 (function () {
+    function createMemoryStorage() {
+        var store = {};
+
+        return {
+            getItem: function (key) {
+                return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null;
+            },
+            setItem: function (key, value) {
+                store[key] = String(value);
+            },
+            removeItem: function (key) {
+                delete store[key];
+            }
+        };
+    }
+
+    function resolveSessionStorage() {
+        try {
+            var storage = window.sessionStorage;
+            var probeKey = '__yokkute_storage_probe__';
+            storage.setItem(probeKey, '1');
+            storage.removeItem(probeKey);
+            return storage;
+        } catch (error) {
+            return createMemoryStorage();
+        }
+    }
+
     function removeExistingChatbot() {
         var existingPanel = document.querySelector('.chatbot-panel');
         var existingLauncher = document.querySelector('.chatbot-launcher');
@@ -51,11 +79,11 @@
         var quickActions = panel.querySelector('#chatbotQuickActions');
         var form = panel.querySelector('#chatbotForm');
         var input = panel.querySelector('#chatbotInput');
-        var submitButton = panel.querySelector('.chatbot-submit');
+        var csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
 
         var storageKey = 'yokkute_chatbot_history_v1';
         var storageTimestampKey = 'yokkute_chatbot_history_updated_at_v1';
-        var storage = window.sessionStorage;
+        var storage = resolveSessionStorage();
         var lifetimeMeta = document.querySelector('meta[name="chatbot-session-lifetime-minutes"]');
         var sessionLifetimeMinutes = lifetimeMeta ? parseInt(lifetimeMeta.getAttribute('content') || '120', 10) : 120;
         var sessionLifetimeMs = Math.max(isNaN(sessionLifetimeMinutes) ? 120 : sessionLifetimeMinutes, 1) * 60 * 1000;
@@ -80,17 +108,6 @@
         }
 
         var chatHistory = [];
-        var requestInFlight = false;
-
-        function getCsrfToken() {
-            var tokenMeta = document.querySelector('meta[name="csrf-token"]');
-            return tokenMeta ? tokenMeta.getAttribute('content') || '' : '';
-        }
-
-        function setInputEnabled(isEnabled) {
-            input.disabled = !isEnabled;
-            submitButton.disabled = !isEnabled;
-        }
 
         function touchHistoryTimestamp() {
             try {
@@ -200,61 +217,25 @@
             updateQuickActionsVisibility();
         }
 
-        async function requestBotReply(userMessage) {
-            var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-            var timeoutId = null;
+        async function fetchBotReply(userMessage) {
+            var csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+            var locale = (document.documentElement.getAttribute('lang') || 'fr').slice(0, 2);
+            var endpoint = '/' + (locale === 'en' ? 'en' : 'fr') + '/chatbot/message';
 
-            if (controller) {
-                timeoutId = window.setTimeout(function () {
-                    controller.abort();
-                }, 12000);
-            }
-
-            var response;
-            try {
-                response = await fetch('/chatbot/message', {
+            var response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': getCsrfToken()
+                    'X-CSRF-TOKEN': csrfToken
                 },
-                signal: controller ? controller.signal : undefined,
                 body: JSON.stringify({
                     message: userMessage,
                     history: chatHistory.slice(-8)
                 })
             });
 
-            } catch (error) {
-                if (timeoutId) {
-                    window.clearTimeout(timeoutId);
-                }
-
-                if (error && error.name === 'AbortError') {
-                    throw new Error('chatbot_timeout');
-                }
-
-                throw new Error('chatbot_network_error');
-            }
-
-            if (timeoutId) {
-                window.clearTimeout(timeoutId);
-            }
-
             if (!response.ok) {
-                if (response.status === 429) {
-                    throw new Error('chatbot_rate_limited');
-                }
-
-                if (response.status === 419) {
-                    throw new Error('chatbot_session_expired');
-                }
-
-                if (response.status >= 500) {
-                    throw new Error('chatbot_server_error');
-                }
-
                 throw new Error('chatbot_request_failed');
             }
 
@@ -266,33 +247,11 @@
             return payload.reply.trim();
         }
 
-        async function fetchBotReply(userMessage) {
-            try {
-                return await requestBotReply(userMessage);
-            } catch (error) {
-                var transientCodes = ['chatbot_network_error', 'chatbot_timeout', 'chatbot_server_error', 'chatbot_session_expired'];
-                var shouldRetry = error && transientCodes.indexOf(error.message) !== -1;
-
-                if (!shouldRetry) {
-                    throw error;
-                }
-
-                await new Promise(function (resolve) {
-                    window.setTimeout(resolve, 500);
-                });
-
-                return requestBotReply(userMessage);
-            }
-        }
-
         async function handleUserMessage(text) {
             var message = (text || '').trim();
-            if (!message || requestInFlight) {
+            if (!message) {
                 return;
             }
-
-            requestInFlight = true;
-            setInputEnabled(false);
 
             addMessage(message, 'user');
             input.value = '';
@@ -306,16 +265,7 @@
                 addMessage(botReply, 'bot');
             } catch (error) {
                 typingBubble.remove();
-                if (error && error.message === 'chatbot_rate_limited') {
-                    addMessage('Vous envoyez des messages tres rapidement. Merci d\'attendre quelques secondes puis de reessayer.', 'bot');
-                } else if (error && error.message === 'chatbot_session_expired') {
-                    addMessage('Votre session a expire. Rechargez la page puis reessayez.', 'bot');
-                } else {
-                    addMessage('Je rencontre un souci technique temporaire. Merci de reessayer, ou contactez-nous via /contact.', 'bot');
-                }
-            } finally {
-                requestInFlight = false;
-                setInputEnabled(true);
+                addMessage('Je rencontre un souci technique temporaire. Merci de reessayer, ou contactez-nous via /contact.', 'bot');
             }
         }
 
@@ -360,38 +310,12 @@
         function openChat() {
             panel.classList.add('is-open');
             launcher.setAttribute('aria-expanded', 'true');
-            document.body.classList.add('chatbot-open');
-            launcher.style.opacity = '0';
-            launcher.style.pointerEvents = 'none';
-            updatePanelHeightForViewport();
             input.focus();
         }
 
         function closeChat() {
             panel.classList.remove('is-open');
             launcher.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('chatbot-open');
-            launcher.style.opacity = '';
-            launcher.style.pointerEvents = '';
-            panel.style.height = '';
-            panel.style.maxHeight = '';
-        }
-
-        function isMobileViewport() {
-            return window.matchMedia('(max-width: 640px)').matches;
-        }
-
-        function updatePanelHeightForViewport() {
-            if (!isMobileViewport() || !panel.classList.contains('is-open')) {
-                return;
-            }
-
-            var viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-            var computedHeight = Math.floor(viewportHeight * 0.62);
-            computedHeight = Math.max(260, Math.min(500, computedHeight));
-            panel.style.height = computedHeight + 'px';
-            panel.style.maxHeight = computedHeight + 'px';
-            messages.scrollTop = messages.scrollHeight;
         }
 
         launcher.addEventListener('click', function () {
@@ -444,26 +368,14 @@
 
         document.addEventListener('click', window.__yokkuteChatbotOutsideClickHandler);
 
-        if (window.__yokkuteChatbotResizeHandler) {
-            window.removeEventListener('resize', window.__yokkuteChatbotResizeHandler);
-            if (window.visualViewport) {
-                window.visualViewport.removeEventListener('resize', window.__yokkuteChatbotResizeHandler);
-            }
-        }
-
-        window.__yokkuteChatbotResizeHandler = function () {
-            updatePanelHeightForViewport();
-        };
-
-        window.addEventListener('resize', window.__yokkuteChatbotResizeHandler);
-        if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', window.__yokkuteChatbotResizeHandler);
-        }
-
         renderQuickActions();
         initializeConversation();
     }
 
     document.addEventListener('DOMContentLoaded', createChatbot, { once: true });
     document.addEventListener('turbo:load', createChatbot);
+
+    if (document.readyState !== 'loading') {
+        createChatbot();
+    }
 })();

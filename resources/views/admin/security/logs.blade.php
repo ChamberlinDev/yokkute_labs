@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Journal securite')
-@section('page-title', 'Journal securite')
+@section('title', 'Journal de sécurité')
+@section('page-title', 'Journal de sécurité')
 
 @section('content')
 <div class="d-flex flex-wrap gap-2 mb-4">
@@ -58,7 +58,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-muted">Aucun evenement de securite.</td>
+                        <td colspan="7" class="text-muted">Aucun événement de sécurité.</td>
                     </tr>
                 @endforelse
             </tbody>

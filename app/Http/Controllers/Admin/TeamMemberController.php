@@ -28,7 +28,7 @@ class TeamMemberController extends Controller
         $member = new TeamMember();
         $this->fillAndSave($request, $member);
 
-        return redirect()->route('admin.team.index')->with('success', 'Membre ajoute avec succes.');
+        return redirect()->route('admin.team.index')->with('success', 'Membre ajouté avec succès.');
     }
 
     public function edit(TeamMember $team): View
@@ -40,7 +40,7 @@ class TeamMemberController extends Controller
     {
         $this->fillAndSave($request, $team);
 
-        return redirect()->route('admin.team.index')->with('success', 'Membre mis a jour avec succes.');
+        return redirect()->route('admin.team.index')->with('success', 'Membre mis à jour avec succès.');
     }
 
     public function destroy(TeamMember $team): RedirectResponse
@@ -48,7 +48,7 @@ class TeamMemberController extends Controller
         PublicUploads::delete($team->image_path);
         $team->delete();
 
-        return redirect()->route('admin.team.index')->with('success', 'Membre supprime.');
+        return redirect()->route('admin.team.index')->with('success', 'Membre supprimé.');
     }
 
     private function fillAndSave(Request $request, TeamMember $member): void
@@ -60,7 +60,9 @@ class TeamMemberController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
+            'role_en' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string'],
+            'bio_en' => ['nullable', 'string'],
             'linkedin_url' => ['nullable', 'url', 'max:255'],
             'order_column' => ['required', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
@@ -75,7 +77,9 @@ class TeamMemberController extends Controller
         $member->fill([
             'name' => $validated['name'],
             'role' => $validated['role'],
+            'role_en' => $validated['role_en'] ?? null,
             'bio' => $validated['bio'] ?? null,
+            'bio_en' => $validated['bio_en'] ?? null,
             'linkedin_url' => $validated['linkedin_url'] ?? null,
             'order_column' => $validated['order_column'],
             'is_active' => $request->boolean('is_active'),

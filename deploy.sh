@@ -32,7 +32,7 @@ on_error() {
     echo "Deployment failed. Current container state:"
     dc ps || true
 
-    for container in yokkute_postgres yokkute_app yokkute_queue yokkute_scheduler; do
+    for container in yokkute_postgres yokkute_app yokkute_nginx yokkute_queue yokkute_scheduler; do
         if docker inspect "$container" >/dev/null 2>&1; then
             echo ""
             echo "--- Recent logs: $container ---"
@@ -115,8 +115,8 @@ fi
 
 cp .env.production .env
 
-print_step 3 "Building production image..."
-dc build --no-cache app
+print_step 3 "Building production images..."
+dc build --no-cache app nginx
 
 print_step 4 "Starting database and application..."
 dc up -d postgres
@@ -135,16 +135,17 @@ artisan db:seed --class=SiteSettingSeeder --force
 print_step 6 "Ensuring storage symlink..."
 dc exec -T app sh -lc 'if [ -L public/storage ]; then echo "Storage link already present."; elif [ ! -e public/storage ]; then php artisan storage:link; else echo "public/storage exists but is not a symlink."; exit 1; fi'
 
-print_step 7 "Caching Laravel and starting workers..."
+print_step 7 "Caching Laravel and starting web/workers..."
 artisan config:cache
 artisan route:cache
 artisan view:cache
 
-dc up -d --force-recreate --no-build --remove-orphans queue scheduler
+dc up -d --force-recreate --no-build --remove-orphans nginx queue scheduler
 sleep 5
 
 ensure_running "yokkute_postgres"
 ensure_running "yokkute_app"
+ensure_running "yokkute_nginx"
 ensure_running "yokkute_queue"
 ensure_running "yokkute_scheduler"
 

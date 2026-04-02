@@ -12,26 +12,56 @@ use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\PageController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::post('/contact', [ContactMessageController::class, 'store'])
-    ->middleware('throttle:contact-form')
-    ->name('contact.store');
-Route::get('/a-propos', [PageController::class, 'about'])->name('about');
-Route::get('/services', [PageController::class, 'services'])->name('services');
-Route::get('/rejoindre', [PageController::class, 'rejoindre'])->name('rejoindre');
+$preferredLocale = static function (Request $request): string {
+    $sessionLocale = $request->session()->get('locale');
 
-Route::post('/rejoindre', [CandidatureController::class, 'store'])
-    ->middleware('throttle:candidature-form')
-    ->name('rejoindre.store');
-Route::get('/faq', [PageController::class, 'faq'])->name('faq');
-Route::get('/rgpd', [PageController::class, 'rgpd'])->name('rgpd');
+    if (is_string($sessionLocale) && in_array($sessionLocale, ['fr', 'en'], true)) {
+        return $sessionLocale;
+    }
 
-Route::post('/chatbot/message', [ChatbotController::class, 'message'])
-    ->middleware('throttle:chatbot')
-    ->name('chatbot.message');
+    return $request->getPreferredLanguage(['fr', 'en']) ?: 'fr';
+};
+
+$redirectToLocalizedRoute = static function (string $routeName) use ($preferredLocale) {
+    return static function (Request $request) use ($preferredLocale, $routeName) {
+        return redirect()->route($routeName, ['locale' => $preferredLocale($request)]);
+    };
+};
+
+Route::get('/', $redirectToLocalizedRoute('home'))->name('landing');
+Route::get('/contact', $redirectToLocalizedRoute('contact'));
+Route::get('/a-propos', $redirectToLocalizedRoute('about'));
+Route::get('/services', $redirectToLocalizedRoute('services'));
+Route::get('/rejoindre', $redirectToLocalizedRoute('rejoindre'));
+Route::get('/faq', $redirectToLocalizedRoute('faq'));
+Route::get('/rgpd', $redirectToLocalizedRoute('rgpd'));
+
+Route::prefix('{locale}')
+    ->whereIn('locale', ['fr', 'en'])
+    ->middleware('set.locale')
+    ->group(function (): void {
+        Route::get('/', [PageController::class, 'home'])->name('home');
+        Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+        Route::post('/contact', [ContactMessageController::class, 'store'])
+            ->middleware('throttle:contact-form')
+            ->name('contact.store');
+        Route::get('/a-propos', [PageController::class, 'about'])->name('about');
+        Route::get('/services', [PageController::class, 'services'])->name('services');
+        Route::get('/rejoindre', [PageController::class, 'rejoindre'])->name('rejoindre');
+
+        Route::post('/rejoindre', [CandidatureController::class, 'store'])
+            ->middleware('throttle:candidature-form')
+            ->name('rejoindre.store');
+        Route::get('/faq', [PageController::class, 'faq'])->name('faq');
+        Route::get('/rgpd', [PageController::class, 'rgpd'])->name('rgpd');
+
+        Route::post('/chatbot/message', [ChatbotController::class, 'message'])
+            ->middleware('throttle:chatbot')
+            ->name('chatbot.message');
+    });
 
 Route::prefix('admin')->group(function (): void {
     Route::get('/login', [AdminAuthController::class, 'create'])->name('admin.login');

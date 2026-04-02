@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Messages contact')
-@section('page-title', 'Messages contact')
+@section('title', 'Messages de contact')
+@section('page-title', 'Messages de contact')
 
 @section('content')
 @php
@@ -55,7 +55,7 @@
         </div>
         <div class="col-md-9 col-lg-3 d-flex gap-2">
             <button type="submit" class="btn btn-success w-100">Filtrer</button>
-            <a href="{{ route('admin.contact-messages.index') }}" class="btn btn-outline-secondary">Reset</a>
+            <a href="{{ route('admin.contact-messages.index') }}" class="btn btn-outline-secondary">Réinitialiser</a>
             <a href="{{ route('admin.contact-messages.export.csv', request()->query()) }}" class="btn btn-outline-success">Exporter CSV</a>
         </div>
     </form>
@@ -106,7 +106,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6" class="text-muted">Aucun message recu.</td></tr>
+                    <tr><td colspan="6" class="text-muted">Aucun message reçu.</td></tr>
                 @endforelse
             </tbody>
         </table>

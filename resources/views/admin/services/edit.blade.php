@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Modifier service')
-@section('page-title', 'Modifier service')
+@section('title', 'Modifier le service')
+@section('page-title', 'Modifier le service')
 
 @section('content')
 <form action="{{ route('admin.services.update', $service) }}" method="POST" enctype="multipart/form-data" class="d-grid gap-4">

@@ -12,7 +12,9 @@ class TeamMember extends Model
     protected $fillable = [
         'name',
         'role',
+        'role_en',
         'bio',
+        'bio_en',
         'image_path',
         'linkedin_url',
         'order_column',

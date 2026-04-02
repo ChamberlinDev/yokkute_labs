@@ -51,6 +51,6 @@ class ContactMessageController extends Controller
 
         return redirect()
             ->route('contact')
-            ->with('success', 'Merci, votre message a ete envoye avec succes.');
+            ->with('success', __('site.flash.contact_success'));
     }
 }
