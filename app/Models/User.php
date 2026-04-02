@@ -28,6 +28,7 @@ class User extends Authenticatable
         'failed_admin_logins',
         'admin_locked_until',
         'last_admin_login_at',
+        'admin_disabled_at',
     ];
 
     /**
@@ -56,6 +57,7 @@ class User extends Authenticatable
             'failed_admin_logins' => 'integer',
             'admin_locked_until' => 'datetime',
             'last_admin_login_at' => 'datetime',
+            'admin_disabled_at' => 'datetime',
         ];
     }
 }

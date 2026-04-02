@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
@@ -60,13 +61,128 @@ class SecurityController extends Controller
             ->limit(20)
             ->get();
 
+        $admins = User::query()
+            ->where('is_admin', true)
+            ->orderBy('email')
+            ->get(['id', 'name', 'email', 'created_at', 'last_admin_login_at', 'admin_disabled_at']);
+
         return view('admin.security.alerts', [
             'lockedAdmins' => $lockedAdmins,
             'passwordRotationRiskAdmins' => $passwordRotationRiskAdmins,
             'failedAttemptsByEmail' => $failedAttemptsByEmail,
             'failedAttemptsByIp' => $failedAttemptsByIp,
+            'admins' => $admins,
             'passwordMaxAgeDays' => $maxAgeDays,
         ]);
+    }
+
+    public function storeAdmin(Request $request): RedirectResponse
+    {
+        $request->merge([
+            'email' => Str::lower(trim((string) $request->input('email', ''))),
+        ]);
+
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(12)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
+        ]);
+
+        $usernameFromEmail = (string) Str::before($validated['email'], '@');
+        $displayName = trim((string) Str::of($usernameFromEmail)->replace(['.', '_', '-'], ' ')->title());
+
+        if ($displayName === '') {
+            $displayName = 'Admin';
+        }
+
+        $admin = User::query()->create([
+            'name' => $displayName,
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+            'is_admin' => true,
+            'password_changed_at' => now(),
+            'force_password_reset' => false,
+            'failed_admin_logins' => 0,
+            'admin_locked_until' => null,
+            'last_admin_login_at' => null,
+            'admin_disabled_at' => null,
+        ]);
+
+        AdminAudit::record($request, 'admin.user.created', [
+            'status_code' => 302,
+            'created_admin_id' => $admin->id,
+            'created_admin_email' => $admin->email,
+        ]);
+
+        return redirect()->route('admin.security.alerts')->with('success', 'Nouveau compte admin créé avec succès.');
+    }
+
+    public function toggleAdmin(Request $request, User $admin): RedirectResponse
+    {
+        if (!$admin->is_admin) {
+            return back()->withErrors([
+                'email' => 'Ce compte n\'est pas un administrateur.',
+            ]);
+        }
+
+        $actor = $request->user();
+
+        if ($actor && (int) $actor->id === (int) $admin->id) {
+            return back()->withErrors([
+                'email' => 'Vous ne pouvez pas désactiver votre propre compte admin.',
+            ]);
+        }
+
+        $isCurrentlyDisabled = $admin->admin_disabled_at !== null;
+
+        if (!$isCurrentlyDisabled) {
+            $activeAdminsCount = User::query()
+                ->where('is_admin', true)
+                ->whereNull('admin_disabled_at')
+                ->count();
+
+            if ($activeAdminsCount <= 1) {
+                return back()->withErrors([
+                    'email' => 'Impossible de désactiver le dernier admin actif.',
+                ]);
+            }
+
+            $admin->forceFill([
+                'admin_disabled_at' => now(),
+                'failed_admin_logins' => 0,
+                'admin_locked_until' => null,
+            ])->save();
+
+            AdminAudit::record($request, 'admin.user.deactivated', [
+                'status_code' => 302,
+                'target_admin_id' => $admin->id,
+                'target_admin_email' => $admin->email,
+            ]);
+
+            return redirect()->route('admin.security.alerts')->with('success', 'Compte admin désactivé avec succès.');
+        }
+
+        $admin->forceFill([
+            'admin_disabled_at' => null,
+            'failed_admin_logins' => 0,
+            'admin_locked_until' => null,
+        ])->save();
+
+        AdminAudit::record($request, 'admin.user.reactivated', [
+            'status_code' => 302,
+            'target_admin_id' => $admin->id,
+            'target_admin_email' => $admin->email,
+        ]);
+
+        return redirect()->route('admin.security.alerts')->with('success', 'Compte admin réactivé avec succès.');
     }
 
     public function logs(Request $request): View

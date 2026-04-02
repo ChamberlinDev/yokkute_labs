@@ -19,6 +19,16 @@ class AdminMiddleware
             abort(403);
         }
 
+        if (Auth::user()?->admin_disabled_at) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()
+                ->route('admin.login')
+                ->withErrors(['email' => 'Compte admin désactivé.']);
+        }
+
         return $next($request);
     }
 }
