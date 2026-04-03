@@ -74,6 +74,8 @@ Route::prefix('admin')->group(function (): void {
         Route::get('/', DashboardController::class)->name('admin.dashboard');
         Route::get('/security/logs', [SecurityController::class, 'logs'])->name('admin.security.logs');
         Route::get('/security/alerts', [SecurityController::class, 'alerts'])->name('admin.security.alerts');
+        Route::post('/security/admins', [SecurityController::class, 'storeAdmin'])->name('admin.security.admins.store');
+        Route::patch('/security/admins/{admin}', [SecurityController::class, 'toggleAdmin'])->name('admin.security.admins.toggle');
         Route::get('/security/password', [SecurityController::class, 'editPassword'])->name('admin.password.edit');
         Route::put('/security/password', [SecurityController::class, 'updatePassword'])->name('admin.password.update');
 

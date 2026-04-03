@@ -58,6 +58,95 @@
 </div>
 
 <div class="row g-4">
+    <div class="col-12">
+        <div class="card card-soft p-4 border-primary-subtle">
+            <h2 class="h5 mb-3">Créer un compte admin</h2>
+            <p class="text-muted small mb-3">Créer rapidement un nouvel accès administrateur via e-mail et mot de passe.</p>
+
+            <form action="{{ route('admin.security.admins.store') }}" method="POST" class="row g-3">
+                @csrf
+                <div class="col-md-4">
+                    <label for="new_admin_email" class="form-label">E-mail admin</label>
+                    <input
+                        type="email"
+                        id="new_admin_email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        class="form-control"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+                <div class="col-md-4">
+                    <label for="new_admin_password" class="form-label">Mot de passe</label>
+                    <input
+                        type="password"
+                        id="new_admin_password"
+                        name="password"
+                        class="form-control"
+                        required
+                        autocomplete="new-password"
+                    >
+                </div>
+                <div class="col-md-4">
+                    <label for="new_admin_password_confirmation" class="form-label">Confirmer le mot de passe</label>
+                    <input
+                        type="password"
+                        id="new_admin_password_confirmation"
+                        name="password_confirmation"
+                        class="form-control"
+                        required
+                        autocomplete="new-password"
+                    >
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success">Créer l'admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card card-soft p-4">
+            <h2 class="h5 mb-3">Comptes admin existants</h2>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead><tr><th>Nom</th><th>E-mail</th><th>Statut</th><th>Créé le</th><th>Dernière connexion</th><th>Action</th></tr></thead>
+                    <tbody>
+                        @forelse($admins as $admin)
+                            <tr>
+                                <td>{{ $admin->name }}</td>
+                                <td>{{ $admin->email }}</td>
+                                <td>
+                                    @if($admin->admin_disabled_at)
+                                        <span class="badge text-bg-warning">Inactif</span>
+                                    @else
+                                        <span class="badge text-bg-success">Actif</span>
+                                    @endif
+                                </td>
+                                <td>{{ optional($admin->created_at)->format('d/m/Y H:i:s') }}</td>
+                                <td>{{ optional($admin->last_admin_login_at)->format('d/m/Y H:i:s') ?? 'Jamais' }}</td>
+                                <td>
+                                    <form action="{{ route('admin.security.admins.toggle', $admin) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        @if($admin->admin_disabled_at)
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Réactiver</button>
+                                        @else
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Désactiver</button>
+                                        @endif
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="6" class="text-muted">Aucun compte admin trouvé.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="col-lg-6">
         <div class="card card-soft p-4 h-100">
             <h2 class="h5 mb-3">Échecs de connexion (24 h) par compte</h2>

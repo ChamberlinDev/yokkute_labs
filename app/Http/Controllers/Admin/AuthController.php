@@ -51,6 +51,17 @@ class AuthController extends Controller
             ])->onlyInput('email');
         }
 
+        if ($user?->is_admin && $user->admin_disabled_at) {
+            AdminAudit::record($request, 'admin.login.disabled', [
+                'status_code' => 403,
+                'email' => $credentials['email'],
+            ]);
+
+            return back()->withErrors([
+                'email' => 'Compte admin désactivé. Contactez un administrateur actif.',
+            ])->onlyInput('email');
+        }
+
         if (!Auth::attempt($credentials, $request->boolean('remember'))) {
             if ($user?->is_admin) {
                 $failedCount = ((int) $user->failed_admin_logins) + 1;
