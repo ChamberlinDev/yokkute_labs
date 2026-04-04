@@ -7,6 +7,15 @@
 @extends('layouts.app')
 
 @section('title', __('site.privacy.title'))
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Consultez la politique de confidentialite de Yokkute Labs : donnees collectees, finalites, conservation et droits des utilisateurs.'
+    : 'Read the Yokkute Labs privacy policy: collected data, processing purposes, retention and user rights.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'Politique RGPD - Yokkute Labs'
+    : 'Privacy Policy - Yokkute Labs')
+@section('og_description', app()->getLocale() === 'fr'
+    ? 'Transparence et confiance sur l utilisation de vos donnees personnelles chez Yokkute Labs.'
+    : 'Transparency and trust about how Yokkute Labs handles your personal data.')
 
 @section('content')
 <section class="py-5 mt-5">

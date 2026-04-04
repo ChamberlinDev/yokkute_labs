@@ -4,7 +4,7 @@
     $orientationWhatsappText = app()->getLocale() === 'en'
         ? "Hello Yokkute Labs, I would like guidance on the service that best fits my needs."
         : "Bonjour Yokkute Labs, j'aimerais être orienté vers le service le plus adapté à mon besoin.";
-    $orientationEmailSubject = app()->getLocale() === 'en' ? 'Guidance request' : "Demande d’orientation";
+    $orientationEmailSubject = app()->getLocale() === 'en' ? 'Guidance request' : "Demande d'orientation";
     $orientationEmailBody = app()->getLocale() === 'en'
         ? 'Hello, I would like guidance toward the service that best fits my needs.'
         : "Bonjour, j'aimerais être orienté vers le service le plus adapté à mon besoin.";
@@ -12,6 +12,17 @@
 
 @extends('layouts.app')
 @section('title', __('site.contact.title'))
+
+{{-- SEO — Description & Open Graph spécifiques à la page Contact --}}
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Contactez Yokkuté Labs à Dakar, Sénégal. Réponse sous 24h. Démarrez avec un audit gratuit et parlez à un expert de votre transformation numérique.'
+    : 'Contact Yokkuté Labs in Dakar, Senegal. Reply within 24 hours. Start with a free audit and speak to an expert about your digital transformation.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'Contactez Yokkuté Labs — Dakar, Sénégal'
+    : 'Contact Yokkuté Labs — Dakar, Senegal')
+@section('og_description', app()->getLocale() === 'fr'
+    ? 'Audit gratuit, réponse sous 24h. Parlons de votre projet numérique.'
+    : 'Free audit, response within 24h. Let\'s talk about your digital project.')
 
 @section('content')
 <link href="{{ $versionedAsset('css/contact.css') }}" rel="stylesheet">

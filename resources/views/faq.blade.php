@@ -3,8 +3,15 @@
 @endphp
 
 @extends('layouts.app')
-
 @section('title', __('site.faq.title'))
+
+{{-- SEO — Description & Open Graph spécifiques à la page FAQ --}}
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Questions fréquentes sur Yokkuté Labs : nos services, notre approche, nos tarifs, et comment démarrer votre transformation numérique à Dakar, Sénégal.'
+    : 'Frequently asked questions about Yokkuté Labs: our services, approach, pricing, and how to start your digital transformation in Dakar, Senegal.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'FAQ · Vos questions sur Yokkuté Labs, agence numérique Dakar'
+    : 'FAQ · Your Questions About Yokkuté Labs, Dakar Digital Agency')
 
 @section('content')
 <section class="py-5 mt-5">

@@ -14,13 +14,33 @@
 
 @extends('layouts.app')
 @section('title', $homeMetaTitle)
+
+{{-- SEO — Description & Open Graph spécifiques à l'accueil --}}
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Agence de transformation numérique à Dakar, Sénégal — audit, SEO, IA, ERP pour PME africaines. Solutions concrètes, sans jargon. Màgg ak yaw !'
+    : 'Digital transformation agency in Dakar, Senegal — audit, SEO, AI, ERP for African SMEs. Concrete solutions, no jargon.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'Yokkuté Labs — Agence numérique à Dakar, Sénégal'
+    : 'Yokkuté Labs — Digital Agency in Dakar, Senegal')
+@section('og_description', app()->getLocale() === 'fr'
+    ? 'De l\'audit initial à l\'intégration de l\'IA — des solutions sur-mesure pour les entreprises africaines.'
+    : 'From initial audit to AI integration — tailor-made solutions for African businesses.')
+
 @section('content')
 
 <link href="{{ $versionedAsset('css/home.css') }}" rel="stylesheet">
 <link href="{{ $versionedAsset('css/hero.css') }}" rel="stylesheet">
 
 <section class="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+    {{--
+        Vidéo hero — Optimisation LCP (Core Web Vitals) :
+        - preload="none" : le navigateur ne télécharge pas la vidéo avant que le reste de la page soit prêt
+        - poster : image statique affichee immediatement en attendant la video
+        - ici on reutilise un visuel deja present dans le projet pour eviter toute 404
+    --}}
+    <video class="hero-video" autoplay muted loop playsinline preload="none"
+           poster="{{ $versionedAsset('images/videoframe_4349.png') }}"
+           aria-hidden="true">
         <source src="{{ $versionedAsset('images/id1.mp4') }}" type="video/mp4">
     </video>
 

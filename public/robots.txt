@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://yokkutelabs.com/sitemap.xml
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /admin/login

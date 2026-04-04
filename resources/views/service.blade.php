@@ -1,6 +1,17 @@
 @extends('layouts.app')
 @section('title', __('site.services_page.title'))
 
+{{-- SEO — Description & Open Graph spécifiques à la page Services --}}
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Découvrez nos services : audit numérique, SEO, ERP, intelligence artificielle, Big Data et formation. Solutions sur-mesure pour PME africaines à Dakar.'
+    : 'Discover our services: digital audit, SEO, ERP, artificial intelligence, Big Data and training. Tailor-made solutions for African SMEs in Dakar.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'Nos services — SEO, ERP, IA, Big Data · Yokkuté Labs Dakar'
+    : 'Our Services — SEO, ERP, AI, Big Data · Yokkuté Labs Dakar')
+@section('og_description', app()->getLocale() === 'fr'
+    ? '7 expertises pour accompagner votre transformation numérique. 100% sur-mesure, adaptées au marché africain.'
+    : '7 areas of expertise to support your digital transformation. 100% tailor-made, adapted to the African market.')
+
 @section('content')
 
 <link href="{{ $versionedAsset('css/service.css') }}" rel="stylesheet">

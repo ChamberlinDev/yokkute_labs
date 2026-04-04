@@ -8,6 +8,15 @@
 
 @extends('layouts.app')
 @section('title', __('site.join.title'))
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Rejoignez Yokkute Labs a Dakar. Nous recrutons des profils tech, data, conseil et digital pour accompagner la transformation numerique des entreprises africaines.'
+    : 'Join Yokkute Labs in Dakar. We welcome tech, data, consulting and digital profiles to support the digital transformation of African businesses.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'Nous rejoindre - Yokkute Labs Dakar'
+    : 'Join Us - Yokkute Labs Dakar')
+@section('og_description', app()->getLocale() === 'fr'
+    ? 'Envoyez votre candidature et decouvrez notre vision, nos profils recherches et notre mode de travail.'
+    : 'Send your application and discover our vision, the profiles we seek and how we work.')
 
 @section('content')
 <link href="{{ $versionedAsset('css/rejoindre.css') }}" rel="stylesheet">

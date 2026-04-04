@@ -6,6 +6,18 @@
 
 @extends('layouts.app')
 @section('title', __('site.about.title'))
+
+{{-- SEO — Description & Open Graph spécifiques à la page À propos --}}
+@section('meta_description', app()->getLocale() === 'fr'
+    ? 'Qui sommes-nous ? Yokkuté Labs est une agence numérique fondée à Dakar par des experts en Big Data et IA. Notre mission : accompagner les PME africaines dans leur transformation digitale.'
+    : 'Who are we? Yokkuté Labs is a digital agency founded in Dakar by Big Data and AI experts. Our mission: supporting African SMEs in their digital transformation.')
+@section('og_title', app()->getLocale() === 'fr'
+    ? 'Qui sommes-nous ? · Yokkuté Labs, agence numérique à Dakar'
+    : 'Who Are We? · Yokkuté Labs, Digital Agency in Dakar')
+@section('og_description', app()->getLocale() === 'fr'
+    ? 'Expertise locale, méthodes internationales. Une équipe engagée pour la transformation numérique des entreprises africaines.'
+    : 'Local expertise, international methods. A committed team for the digital transformation of African businesses.')
+
 @section('content')
 
 <link href="{{ $versionedAsset('css/propos.css') }}" rel="stylesheet">
@@ -74,6 +86,7 @@
                     <img
                         src="{{ $versionedAsset('images/quisommesnous.jpg') }}"
                         alt="{{ __('site.about.identity.image_alt') }}"
+                        loading="lazy"
                         style="
                             position: relative;
                             z-index: 1;
@@ -187,7 +200,7 @@
                 <div class="team-showcase" id="teamShowcase">
                     @foreach($teamMembers as $member)
                         <article class="team-photo-card reveal">
-                            <img src="{{ asset($member->image_path) }}" alt="{{ $member->name }}" class="team-photo">
+                            <img src="{{ asset($member->image_path) }}" alt="{{ $member->name }}" loading="lazy" class="team-photo">
                             <div class="team-photo-meta">
                                 <div class="team-photo-text">
                                     <h5>{{ $member->name }}</h5>
