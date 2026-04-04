@@ -11,7 +11,7 @@
     ? 'Consultez la politique de confidentialite de Yokkute Labs : donnees collectees, finalites, conservation et droits des utilisateurs.'
     : 'Read the Yokkute Labs privacy policy: collected data, processing purposes, retention and user rights.')
 @section('og_title', app()->getLocale() === 'fr'
-    ? 'Politique RGPD - Yokkute Labs'
+    ? 'Politique de confidentialite - Yokkute Labs'
     : 'Privacy Policy - Yokkute Labs')
 @section('og_description', app()->getLocale() === 'fr'
     ? 'Transparence et confiance sur l utilisation de vos donnees personnelles chez Yokkute Labs.'

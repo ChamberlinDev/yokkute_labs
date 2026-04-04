@@ -173,6 +173,9 @@
                     <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="bi bi-grid me-2"></i>Tableau de bord</a>
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}"><i class="bi bi-box-seam me-2"></i>Services</a>
                     <a href="{{ route('admin.team.index') }}" class="nav-link {{ request()->routeIs('admin.team.*') ? 'active' : '' }}"><i class="bi bi-people me-2"></i>Équipe</a>
+                    @if(Route::has('admin.partners.index'))
+                        <a href="{{ route('admin.partners.index') }}" class="nav-link {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}"><i class="bi bi-building me-2"></i>Partenaires</a>
+                    @endif
                     <a href="{{ route('admin.contact-messages.index') }}" class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}"><i class="bi bi-envelope me-2"></i>Messages</a>
                     <a href="{{ route('admin.candidatures.index') }}" class="nav-link {{ request()->routeIs('admin.candidatures.*') ? 'active' : '' }}"><i class="bi bi-person-workspace me-2"></i>Candidatures</a>
                     <a href="{{ route('admin.security.logs') }}" class="nav-link {{ request()->routeIs('admin.security.*') ? 'active' : '' }}"><i class="bi bi-shield-check me-2"></i>Sécurité</a>

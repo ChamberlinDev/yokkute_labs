@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partner;
 use App\Models\Service;
 use App\Models\TeamMember;
 use Illuminate\View\View;
@@ -10,7 +11,9 @@ class PageController extends Controller
 {
     public function home(): View
     {
-        return view('home');
+        return view('home', [
+            'partners' => Partner::query()->where('is_active', true)->orderBy('order_column')->get(),
+        ]);
     }
 
     public function contact(): View
@@ -31,6 +34,7 @@ class PageController extends Controller
                 ->where('image_path', '!=', '')
                 ->orderBy('order_column')
                 ->get(),
+            'partners' => Partner::query()->where('is_active', true)->orderBy('order_column')->get(),
         ]);
     }
 

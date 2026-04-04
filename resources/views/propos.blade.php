@@ -110,6 +110,39 @@
     </div>
 </section>
 
+@if(isset($partners) && $partners->isNotEmpty())
+<section class="partners-section">
+    <div class="container">
+        <div class="text-center mb-5 reveal propos-safe-text">
+            <p class="partners-tag">{{ __('site.partners.tag') }}</p>
+            <h2 class="partners-title">{{ __('site.partners.title') }}</h2>
+            <p class="partners-sub">{{ __('site.partners.text') }}</p>
+        </div>
+        <div class="partners-grid">
+            @foreach($partners as $i => $partner)
+                <div class="partner-card reveal" style="transition-delay:{{ $i * 0.06 }}s;">
+                    @if($partner->website_url)
+                        <a href="{{ $partner->website_url }}" target="_blank" rel="noopener noreferrer" class="partner-card-inner" title="{{ $partner->name }}">
+                    @else
+                        <div class="partner-card-inner">
+                    @endif
+                        @if($partner->logo_path)
+                            <img src="{{ asset($partner->logo_path) }}" alt="{{ $partner->name }}" class="partner-logo">
+                        @else
+                            <span class="partner-initials">{{ strtoupper(substr($partner->name, 0, 2)) }}</span>
+                        @endif
+                    @if($partner->website_url)
+                        </a>
+                    @else
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 <section class="py-5" style="background:#f5f7fa;">
     <div class="container">
         <div class="row g-4">
@@ -225,6 +258,97 @@
         @endif
     </div>
 </section>
+
+@push('styles')
+<style>
+.partners-section {
+    background: #fff;
+    padding: 4.5rem 0;
+    border-top: 1px solid #e8edf2;
+}
+.partners-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #1a7a4a;
+    background: rgba(26,122,74,.08);
+    border-radius: 999px;
+    padding: .3rem .85rem;
+    margin-bottom: .75rem;
+}
+.partners-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: .5rem;
+}
+.partners-sub {
+    color: #6b7280;
+    font-size: .95rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.partners-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: .5rem;
+}
+.partner-card {
+    flex: 0 0 auto;
+    width: 230px;
+}
+.partner-card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 126px;
+    background: #fff;
+    border: 1.5px solid #e8edf2;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    transition: border-color .22s, box-shadow .22s, transform .22s;
+    text-decoration: none;
+    cursor: default;
+}
+a.partner-card-inner {
+    cursor: pointer;
+}
+.partner-card-inner:hover {
+    border-color: #c5d9cc;
+    box-shadow: 0 6px 22px rgba(26,122,74,.09);
+    transform: translateY(-3px);
+}
+.partner-logo {
+    max-width: 100%;
+    max-height: 78px;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition: filter .22s;
+}
+.partner-card-inner:hover .partner-logo {
+    filter: grayscale(0%);
+}
+.partner-initials {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a7a4a;
+    font-family: 'Sora', sans-serif;
+}
+@media (max-width: 576px) {
+    .partner-card {
+        width: calc(50% - .65rem);
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>

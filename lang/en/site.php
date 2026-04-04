@@ -459,4 +459,9 @@ return [
         ],
         'cta' => 'A question about your data? Contact us',
     ],
+    'partners' => [
+        'tag'   => 'Our partners',
+        'title' => 'Our partners & references.',
+        'text'  => 'Trusted collaborations with renowned organisations.',
+    ],
 ];

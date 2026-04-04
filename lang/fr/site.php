@@ -15,7 +15,7 @@ return [
         'services' => 'Services',
         'contact' => 'Contact',
         'faq' => 'FAQ',
-        'privacy' => 'Politique RGPD',
+        'privacy' => 'Politique de confidentialité',
         'copyright' => 'Tous droits réservés',
         'admin' => 'Admin',
     ],
@@ -430,14 +430,14 @@ return [
             ['question' => 'Quel est le délai moyen pour réaliser un projet ?', 'answer' => "Le délai varie selon la complexité du projet. Un site vitrine peut être livré en 2 à 4 semaines, tandis qu'une application métier sur mesure peut nécessiter plusieurs mois. Nous établissons un planning détaillé dès la phase de cadrage."],
             ['question' => 'Comment se déroule une première prise de contact ?', 'answer' => "Il vous suffit de remplir notre formulaire de contact. Nous vous recontactons sous 24 à 48 heures pour un premier échange afin de comprendre vos besoins et de définir ensemble les grandes lignes du projet."],
             ['question' => 'Proposez-vous un suivi après la livraison du projet ?', 'answer' => "Oui. Nous proposons des contrats de maintenance et d'évolution pour assurer la pérennité de vos solutions. Nous restons disponibles pour toute correction, mise à jour ou ajout de fonctionnalité après la livraison."],
-            ['question' => 'Comment protégez-vous mes données personnelles ?', 'answer' => "La protection de vos données est une priorité. Consultez notre Politique RGPD pour en savoir plus sur la collecte, l'utilisation et la durée de conservation de vos informations."],
+            ['question' => 'Comment protégez-vous mes données personnelles ?', 'answer' => "La protection de vos données est une priorité. Consultez notre Politique de confidentialité pour en savoir plus sur la collecte, l'utilisation et la durée de conservation de vos informations."],
             ['question' => "Puis-je rejoindre l'équipe Yokkute Labs ?", 'answer' => 'Oui ! Nous sommes toujours à la recherche de talents passionnés. Consultez notre page Nous rejoindre pour soumettre votre candidature.'],
         ],
         'closing' => "Vous n'avez pas trouvé la réponse à votre question ?",
         'button' => 'Contactez-nous',
     ],
     'privacy' => [
-        'title' => 'Politique RGPD - Yokkute Labs',
+        'title' => 'Politique de confidentialité - Yokkute Labs',
         'tag' => 'Transparence et confiance',
         'heading' => 'Politique de confidentialité (RGPD)',
         'sections' => [
@@ -491,4 +491,9 @@ return [
         ],
         'cta' => 'Une question sur vos données ? Contactez-nous',
     ],
+    'partners' => [
+        'tag'   => 'Nos partenaires',
+        'title' => 'Nos partenaires & références.',
+        'text'  => "Des collaborations de confiance avec des organisations renommées.",
+    ]
 ];
