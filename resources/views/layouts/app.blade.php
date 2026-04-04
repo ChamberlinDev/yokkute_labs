@@ -23,6 +23,56 @@
 
     @include('layouts.footer')
 
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <style>
+        .scroll-top-btn {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #1a7a4a, #23a065);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(26, 122, 74, 0.28);
+            z-index: 1040;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: opacity .22s ease, visibility .22s ease, transform .22s ease, filter .2s ease;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top-btn:hover {
+            filter: brightness(1.04);
+        }
+
+        .scroll-top-btn:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-top-btn {
+                right: .85rem;
+                bottom: 5.4rem;
+            }
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         (() => {
@@ -133,10 +183,33 @@
                 }
             };
 
+            const initializeScrollTopButton = () => {
+                const btn = document.getElementById('scrollTopBtn');
+
+                if (!btn || btn.dataset.bound === '1') {
+                    return;
+                }
+
+                const toggleVisibility = () => {
+                    const shouldShow = window.scrollY > 320;
+                    btn.classList.toggle('visible', shouldShow);
+                };
+
+                btn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+
+                window.addEventListener('scroll', toggleVisibility, { passive: true });
+                toggleVisibility();
+                btn.dataset.bound = '1';
+            };
+
             document.addEventListener('DOMContentLoaded', initializeMobileNav, { once: true });
             document.addEventListener('turbo:load', initializeMobileNav);
             document.addEventListener('DOMContentLoaded', initializePageEffects, { once: true });
             document.addEventListener('turbo:load', initializePageEffects);
+            document.addEventListener('DOMContentLoaded', initializeScrollTopButton, { once: true });
+            document.addEventListener('turbo:load', initializeScrollTopButton);
         })();
     </script>
     @stack('scripts')

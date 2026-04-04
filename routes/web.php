@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SecurityController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CandidatureController;
@@ -81,6 +82,7 @@ Route::prefix('admin')->group(function (): void {
 
         Route::resource('services', AdminServiceController::class)->names('admin.services')->except(['show']);
         Route::resource('team', TeamMemberController::class)->names('admin.team')->parameters(['team' => 'team'])->except(['show']);
+        Route::resource('partners', PartnerController::class)->names('admin.partners')->except(['show']);
 
         Route::get('/candidatures', [AdminCandidatureController::class, 'index'])->name('admin.candidatures.index');
         Route::get('/candidatures/export/csv', [AdminCandidatureController::class, 'exportCsv'])->name('admin.candidatures.export.csv');

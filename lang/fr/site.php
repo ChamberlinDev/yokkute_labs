@@ -491,4 +491,9 @@ return [
         ],
         'cta' => 'Une question sur vos données ? Contactez-nous',
     ],
+    'partners' => [
+        'tag'   => 'Nos partenaires',
+        'title' => 'Nos partenaires & références.',
+        'text'  => 'Des collaborations de confiance avec des organisations de renom.',
+    ],
 ];
