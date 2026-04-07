@@ -50,9 +50,6 @@
 
             <span class="footer-copyright">
                 &copy; {{ date('Y') }} Yokkute Labs - {{ __('site.footer.copyright') }}
-                <span class="ms-2" style="opacity:.7; font-size:.85em;">
-                    <a href="{{ route('admin.login') }}" class="footer-link footer-admin-link text-decoration-none text-light" style="opacity:.85;">{{ __('site.footer.admin') }}</a>
-                </span>
             </span>
 
             <div class="footer-icons mt-3 mt-md-0">
