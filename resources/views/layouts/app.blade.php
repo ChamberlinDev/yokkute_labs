@@ -124,8 +124,8 @@
     <style>
         .scroll-top-btn {
             position: fixed;
-            right: 5.25rem;
-            bottom: 1rem;
+            right: 1rem;
+            bottom: 5.25rem;
             width: 44px;
             height: 44px;
             border: 0;
